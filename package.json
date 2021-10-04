@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "description": "",
-  "source": "static/index.html",
+  "source": "static/index.pug",
   "scripts": {
     "start": "parcel --port 3000",
     "build": "parcel build",
@@ -21,6 +21,7 @@
     "node": ">=12.x"
   },
   "devDependencies": {
+    "@parcel/transformer-pug": "^2.0.0-rc.0",
     "@parcel/transformer-sass": "^2.0.0-rc.0",
     "parcel": "^2.0.0-rc.0"
   },
