@@ -1,0 +1,29 @@
+{
+  "name": "chat",
+  "version": "0.1.0",
+  "private": true,
+  "description": "",
+  "source": "static/index.html",
+  "scripts": {
+    "dev": "parcel --port 4000",
+    "build": "parcel build"
+  },
+  "author": {
+    "name": "Anton.Voronkov",
+    "email": "amvoronkov@yandex.ru"
+  },
+  "license": "ISC",
+  "bugs": {
+    "email": "amvoronkov@yandex.ru"
+  },
+  "engines": {
+    "node": ">=12.x"
+  },
+  "devDependencies": {
+    "@parcel/transformer-sass": "^2.0.0-rc.0",
+    "parcel": "^2.0.0-rc.0"
+  },
+  "dependencies": {
+    "autoprefixer": "^10.3.6"
+  }
+}
