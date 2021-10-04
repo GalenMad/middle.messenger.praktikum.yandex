@@ -5,8 +5,9 @@
   "description": "",
   "source": "static/index.html",
   "scripts": {
-    "dev": "parcel --port 4000",
-    "build": "parcel build"
+    "start": "parcel --port 3000",
+    "build": "parcel build",
+    "server": "node server.js"
   },
   "author": {
     "name": "Anton.Voronkov",
@@ -24,6 +25,7 @@
     "parcel": "^2.0.0-rc.0"
   },
   "dependencies": {
-    "autoprefixer": "^10.3.6"
+    "autoprefixer": "^10.3.6",
+    "express": "^4.17.1"
   }
 }
