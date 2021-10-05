@@ -1,8 +1,15 @@
-doctype
+doctype html
 html(lang="ru")
-    include ../src/includes/head.pug
+    include ../src/mixins/head.pug
+    +head()
     body
-        h1 Chat
-        a(href="../src/pages/404/index.pug") link
+        h1 Разводящая
+        p Страницы
+        ul
+        - let list = ['authorization', 'registartion', 'main', 'user-settings', '404', '500'];
+        ul 
+            each item in list
+                li
+                    a(href="../src/pages/" + item) #{item}
         script(src="../src/index.js" type="module") 
 
