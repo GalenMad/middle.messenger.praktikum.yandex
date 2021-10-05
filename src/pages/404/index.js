@@ -1,2 +1,1 @@
-import page from './index.pug';
-export default page;
+import './styles.scss';
