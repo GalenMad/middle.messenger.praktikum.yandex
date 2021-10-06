@@ -1,7 +1,6 @@
-doctype html
-html
-    include ../../mixins/head.pug
-    +head('Настройки')
-    body
-        h1.super-puper Настройки
-        include ../../includes/script.pug
+extends ../../blocks/layout.pug
+block head
+    title Настройки — #{title}
+    script(src="./script.js" type="module")
+block content
+    h1 Настройки

@@ -1,7 +1,6 @@
-doctype html
-html
-    include ../../mixins/head.pug
-    +head('Авторизация')
-    body
-        h1.super-puper Авторизация
-        include ../../includes/script.pug
+extends ../../blocks/layout.pug
+block head
+    title Авторизация — #{title}
+    script(src="./script.js" type="module")
+block content
+    h1 Авторизация

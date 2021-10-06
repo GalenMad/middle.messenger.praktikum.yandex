@@ -1,7 +1,6 @@
-doctype html
-html
-    include ../../mixins/head.pug
-    +head('Регистрация')
-    body
-        h1.super-puper Регистрация
-        include ../../includes/script.pug
+extends ../../blocks/layout.pug
+block head
+    title Регистрация — #{title} 
+    script(src="./script.js" type="module")
+block content
+    h1 Регистрация

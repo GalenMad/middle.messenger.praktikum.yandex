@@ -1,15 +1,14 @@
-doctype html
-html(lang="ru")
-    include ../src/mixins/head.pug
-    +head()
-    body
-        h1 Разводящая
-        p Страницы
-        ul
-        - let list = ['authorization', 'registartion', 'main', 'user-settings', '404', '500'];
-        ul 
-            each item in list
-                li
-                    a(href="../src/pages/" + item) #{item}
-        script(src="../src/index.js" type="module") 
+extends ../src/blocks/layout.pug
+block head
+    title #{title} 
+    script(src="../src/index.js" type="module") 
+block content
+    h1 Разводящая
+    p Страницы
+    ul
+    - let list = ['authorization', 'registartion', 'main', 'user-settings', '404', '500'];
+    ul 
+        each item in list
+            li
+                a(href="../src/pages/" + item) #{item}
 

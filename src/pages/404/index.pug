@@ -1,7 +1,6 @@
-doctype html
-html
-    include ../../mixins/head.pug
-    +head('404')
-    body
-        h1.super-puper 404
-        include ../../includes/script.pug
+extends ../../blocks/layout.pug
+block head
+    title 404 — #{title}
+    script(src="./script.js" type="module")
+block content
+    h1 404        
