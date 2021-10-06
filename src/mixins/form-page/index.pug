@@ -5,6 +5,8 @@ mixin form-page(title, submitText, footerMessage, linkText, linkAddress)
             h2.form-title= title
             block
             button.form-submit(type="submit")= submitText
-            footer.form-footer
-                p= footerMessage
-                +link(linkText, linkAddress)
+            if footerMessage
+                footer.form-footer
+                    p= footerMessage
+                    if linkText && linkAddress
+                        +link(linkText, linkAddress)

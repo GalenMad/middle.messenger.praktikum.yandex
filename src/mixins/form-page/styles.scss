@@ -1,27 +1,14 @@
 @import '../../scss/globals';
 .form-container {
-    font-family: $primary-font-family;
-    display: flex;
-    min-height: 100vh;
-    align-items: center;
-    justify-content: center;
-    background-color: $base-dark;
-    color: white;
+    @extend .content;
     box-sizing: border-box;
     padding: 100px 0;
 }
 
 .form {
-    width: 520px;
-    box-sizing: border-box;
+    @extend .content-inner;
     padding: 56px 74px 40px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    border-radius: 4px;
-    background-color: $base-dark;
-    box-shadow: 0px 4px 22px rgba(0, 0, 0, 0.44);
+    
 
     &-title {
         font-family: $primary-font-family;

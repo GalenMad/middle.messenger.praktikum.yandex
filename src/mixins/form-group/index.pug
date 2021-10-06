@@ -1,5 +1,5 @@
-mixin form-group(label, id, inputType, validationMessage, isRequired)
+mixin form-group(label, id, inputType, validationMessage, isRequired, value)
     label(for=id).form-group
         span.label=label
-        input.control(id=id name=id type=inputType required=isRequired)
+        input.control(id=id name=id type=inputType required=isRequired value=value)
         span.validation= validationMessage
