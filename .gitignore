@@ -1,0 +1,10 @@
+
+node_modules/
+vendor/
+upload/
+dist/
+.parcel-cache/
+*.log
+.env
+.vscode
+.idea
