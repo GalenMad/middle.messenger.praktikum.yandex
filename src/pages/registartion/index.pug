@@ -1,6 +1,16 @@
-extends ../../blocks/layout.pug
+extends ../../blocks/layout
+include ../../mixins/form-page/index
+include ../../mixins/form-group/index
 block head
-    title Регистрация — #{title} 
+    title Регистрация — #{title}
     script(src="./script.js" type="module")
 block content
-    h1 Регистрация
+    h1(hidden) Регистрация
+    +form-page('Регистрация', 'Поехали', 'Уже есть аккаунт?', 'Чего молчишь', '/')
+        +form-group('Почта', 'email', 'email', 'Неправильный что-то там', true)
+        +form-group('Логин', 'login', 'text', 'Неправильный что-то там', true)
+        +form-group('Имя', 'first_name', 'text', 'Неправильный что-то там', true)
+        +form-group('Фамилия', 'last_name', 'text', 'Неправильный что-то там', true)
+        +form-group('Телефон', 'phone', 'text', 'Неправильный что-то там', true)
+        +form-group('Пароль', 'password', 'password', 'Неправильный что-то там', true)
+        +form-group('Повторите пароль', 'repeatPassword', 'password', 'Неправильный что-то там', true)
