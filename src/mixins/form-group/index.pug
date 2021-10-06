@@ -1,0 +1,5 @@
+mixin form-group(label, id, inputType, validationMessage, isRequired)
+    div.form-group
+        label.label(for=id)=label
+        input.control(id=id type=inputType required=isRequired)
+        span.validation= validationMessage

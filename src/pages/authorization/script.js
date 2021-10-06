@@ -1,2 +1,2 @@
-import './styles.scss';
-import '../../mixins/link/styles.scss';
+import '../../mixins/form-page/styles.scss';
+import '../../mixins/form-group/styles.scss';

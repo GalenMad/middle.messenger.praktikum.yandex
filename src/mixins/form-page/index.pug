@@ -1,0 +1,10 @@
+include ../link/index.pug
+mixin form-page(title, submitText, footerMessage, linkText, linkAddress)
+    main.form-container
+        form.form
+            h2.form-title= title
+            block
+            button.form-submit(type="submit")= submitText
+            footer.form-footer
+                p= footerMessage
+                +link(linkText, linkAddress)
