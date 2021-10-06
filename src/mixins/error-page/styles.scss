@@ -1,0 +1,71 @@
+@import '../../scss/globals';
+
+.error-container {
+    font-family: $primary-font-family;
+    display: flex;
+    min-height: 100vh;
+    align-items: center;
+    justify-content: center;
+    background-color: $base-dark;
+    color: white;
+}
+
+.error-block {
+    display: inline-flex;
+
+    .error-label {
+        font-family: $secondary-font-family;
+        font-weight: 500;
+        font-size: 208px;
+        line-height: 0.8;
+        margin: 0 24px 0 0;
+        padding-right: 18px;
+        border-right: solid white 8px;
+    }
+
+    .error-mount {
+        display: flex;
+        flex-direction: column;
+        max-width: 260px;
+
+        .title {
+            font-weight: 700;
+            font-size: 54px;
+            line-height: 1.1;
+            margin: 0 0 5px -2px;
+        }
+
+        .message {
+            font-weight: 500;
+            font-size: 24px;
+            line-height: 1.4;
+            margin: 0 0 24px;
+            opacity: 0.7;
+        }
+
+        .link {
+            font-family: $primary-font-family;
+            margin: auto 0 6px;
+            color: $base-sky;
+            font-weight: 500;
+            font-size: 18px;
+            line-height: 1.1;
+            text-decoration: none;
+            padding-bottom: 1px;
+            border-bottom: 1px solid $base-sky;
+            transition: 0.2s ease-in;
+            width: fit-content;
+
+            &:hover, &:focus {
+                border-bottom-color: transparent;
+                opacity: 0.8;
+            }
+
+            &:active {
+                opacity: 1;
+            }
+
+            
+        }
+    }
+}

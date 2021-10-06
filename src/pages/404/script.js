@@ -1,1 +1,1 @@
-import './styles.scss';
+import '../../mixins/error-page/styles.scss';

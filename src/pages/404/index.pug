@@ -1,6 +1,7 @@
 extends ../../blocks/layout.pug
+include ../../mixins/error-page/index.pug
 block head
     title 404 — #{title}
     script(src="./script.js" type="module")
 block content
-    h1 404        
+    +error-page('404', 'Ошибка', 'Не туда попали?', 'Вернуться к чатам', '/')
