@@ -1,2 +1,7 @@
+@import './fonts';
 @import './normalize';
 @import './variables';
+
+fieldset {
+    border: 0;
+}

@@ -1,6 +1,23 @@
 extends ../../blocks/layout.pug
+include ../../mixins/link/index.pug
 block head
     title Авторизация — #{title}
     script(src="./script.js" type="module")
 block content
-    h1 Авторизация
+    h1(hidden) Авторизация
+    main.form-container
+        form.form
+            h2.form-title Вход
+            div.form-group
+                label.label(for="login") Логин
+                input.control#login(type="text" required)
+                span.validation Неправильный что-то там
+            div.form-group
+                label.label(for="password") Пароль
+                input.control#password(type="password" required)
+                span.validation Неправильный что-то там
+            button.form-submit(type="submit") Поехали
+            footer.form-footer
+                p Нет аккаунта?
+                +link('Создать', '/')
+

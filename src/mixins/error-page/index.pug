@@ -1,3 +1,4 @@
+include ../link/index.pug
 mixin error-page(errorCode, title, message, linkText, linkAddress)
     section.error-container
         article.error-block
@@ -5,4 +6,4 @@ mixin error-page(errorCode, title, message, linkText, linkAddress)
             div.error-mount
                 h2.title= title
                 p.message= message
-                a.link(href=linkAddress)= linkText
+                +link(linkText, linkAddress)
