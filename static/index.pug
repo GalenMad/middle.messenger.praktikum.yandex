@@ -1,0 +1,15 @@
+extends ../src/blocks/layout.pug
+block head
+    title #{title} 
+    script(src="../src/index.js" type="module") 
+block content
+    main.content
+        div.content-inner
+            h1 Разводящая
+            p Страницы
+            - let list = ['authorization', 'registartion', 'main', 'user-settings', '404', '500'];
+            ul 
+                each item in list
+                    li
+                        a.link(href="../src/pages/" + item) #{item}
+

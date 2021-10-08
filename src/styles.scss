@@ -1,0 +1,19 @@
+@import './scss/globals';
+@import './mixins/link/styles';
+
+.content {
+  flex-direction: column;
+  color: white;
+
+  &-inner {
+    padding: 56px 40px 40px;
+  }
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  li {
+    margin-bottom: 16px;
+  }
+}

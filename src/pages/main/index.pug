@@ -1,0 +1,10 @@
+extends ../../blocks/layout.pug
+include ../../mixins/link/index.pug
+block head
+    title #{title} 
+    script(src="./script.js" type="module")
+block content
+    main.content 
+        div
+            h1 Чаты (Заглушка, как и просили)
+            +link('Назад', '/')
