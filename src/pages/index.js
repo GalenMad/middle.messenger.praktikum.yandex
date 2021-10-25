@@ -1,8 +1,15 @@
-// const pages = {
-//     'authorization': import('./authorization/index.pug'),
-//     'registartion': import('./registartion/index.pug'),
-//     'user-settings': import('./user-settings/index.pug'),
-//     'main': import('./main/index.pug'),
-//     '404': import('./404/index.pug'),
-//     '500': import('./500/index.pug')
-// }
+import Authorization from './authorization/';
+import Registration from './registration/';
+import UserSettings from './user-settings/';
+import Page404 from './404/';
+import Page500 from './500/';
+import Main from './main/';
+
+export default {
+    'main': Main,
+    'authorization': Authorization,
+    'registration': Registration,
+    'user-settings': UserSettings,
+    '404': Page404,
+    '500': Page500
+}

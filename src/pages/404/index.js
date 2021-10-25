@@ -1,2 +1,4 @@
 import '../../mixins/error-page/styles.scss';
-import template from './index/pug'
+import compileTemplate from './template.pug'
+const compile = (props) => compileTemplate(props);
+export default compile;
