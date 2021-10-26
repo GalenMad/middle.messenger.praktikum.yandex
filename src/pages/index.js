@@ -3,14 +3,11 @@ import Registration from './registration/';
 import UserSettings from './user-settings/';
 import Page404 from './404/';
 import Page500 from './500/';
-import Main from './main/';
+import SpreadPage from './spread-page';
+
+export { SpreadPage };
 
 export default {
-    'main': {
-        name: 'main',
-        render: Main,
-        path: ''
-    },
     'authorization': {
         name: 'authorization',
         render: Authorization,

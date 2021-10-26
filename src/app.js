@@ -1,6 +1,7 @@
 
 import './styles.scss';
-import pages from './pages/'
+import pages from './pages/';
+import { SpreadPage } from './pages/';
 import Router from './Router';
 
 const root = document.querySelector('#app');
@@ -20,4 +21,5 @@ for (const page in pages) {
     root.innerHTML = render.render();
   })
 }
-router.add('', () => root.innerHTML = pages['main'].render({list}));
+
+router.add('', () => root.innerHTML = SpreadPage({list}));
