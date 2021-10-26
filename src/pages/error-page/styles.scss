@@ -1,5 +1,5 @@
 @import '../../scss/globals';
-@import '../link/styles';
+@import '../../mixins/link/styles';
 
 .error-container {
     @extend .content;

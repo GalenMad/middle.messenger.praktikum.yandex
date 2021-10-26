@@ -1,8 +1,7 @@
 import Authorization from './authorization/';
 import Registration from './registration/';
 import UserSettings from './user-settings/';
-import Page404 from './404/';
-import Page500 from './500/';
+import ErrorPage from './error-page/';
 import SpreadPage from './spread-page';
 
 // TODO: Временная заглушка для разводящей страницы;
@@ -26,12 +25,12 @@ export default {
     },
     'page-404': {
         name: 'Ошибка 404',
-        render: Page404,
+        render: (props) => ErrorPage(Object.assign({errorCode: '404', title: 'Ошибка', message: 'Не туда попали?', linkText: 'Вернуться к чатам', linkAddress: '/'}, props)),
         path: '404'
     },
     'page-500': {
         name: 'Ошибка 500',
-        render: Page500,
+        render: (props) => ErrorPage(Object.assign({errorCode: '500', title: 'Ошибка', message: 'Ага, уже бежим', linkText: 'Вернуться к чатам', linkAddress: '/'}, props)),
         path: '500'
     }
 };

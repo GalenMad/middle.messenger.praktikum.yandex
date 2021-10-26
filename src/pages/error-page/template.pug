@@ -1,0 +1,9 @@
+include ../../mixins/link/index.pug
+//- mixin error-page(errorCode, title, message, linkText, linkAddress)
+section.error-container
+    article.error-block
+        h1.error-label= errorCode
+        div.error-mount
+            h2.title= title
+            p.message= message
+            +link(linkText, linkAddress)
