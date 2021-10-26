@@ -1,6 +1,6 @@
 import './styles.scss';
-import '../../mixins/link/styles.scss';
 import compileTemplate from './template.pug'
+import defaultAvatar from '../../assets/images/default-avatar.svg'
 
 const userData = [{
     name: 'Почта',
@@ -22,5 +22,5 @@ const userData = [{
     value: '+7 (909) 967 30 30'
 }];
 
-const compile = (props) => compileTemplate(Object.assign({userData}, props));
+const compile = (props) => compileTemplate(Object.assign({userData, defaultAvatar}, props));
 export default compile;
