@@ -4,6 +4,7 @@ import pages from './pages/';
 import { SpreadPage } from './pages/';
 import Router from './Router';
 
+// Router нужен, чтобы не плодить лишних html-страниц
 const root = document.querySelector('#app');
 const router = new Router({
   mode: 'hash',
@@ -11,15 +12,16 @@ const router = new Router({
 });
 
 const list = Object.entries(pages).map(item => {
-  return { path: `/${item[0]}`, name: item[0] }
+  const { path, name } = item[1];
+  return { path: `/${path}`, name }
 });
 
 for (const page in pages) {
-  const render = pages[page]
-  console.log(page);
-  router.add(page, () => {
-    root.innerHTML = render.render();
+  const {render, path} = pages[page]
+  router.add(path, () => {
+    root.innerHTML = render();
   })
 }
 
+// TODO: Временная заглушка для разводящей страницы;
 router.add('', () => root.innerHTML = SpreadPage({list}));
