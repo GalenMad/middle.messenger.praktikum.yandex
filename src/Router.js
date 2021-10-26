@@ -1,3 +1,5 @@
+// Роутер взят для скорости и чтобы не плодить html-страницы
+// Отсюда: https://habr.com/ru/post/496590/
 class Router {
     routes = [];
 
