@@ -9,4 +9,4 @@ mixin form-page(title, submitText, footerMessage, linkText, linkAddress)
                 footer.form-footer
                     p= footerMessage
                     if linkText && linkAddress
-                        +link(linkText, linkAddress)
+                        a.link(href=linkAddress)=linkText
