@@ -2,5 +2,5 @@ include ../../mixins/form-page/index
 include ../../mixins/form-group/index
 h1(hidden) Авторизация
 +form-page('Вход', 'Поехали', 'Нет аккаунта?', 'Создать', '/')
-    +form-group('Логин', 'login', 'text', 'Неправильный что-то там', true)
-    +form-group('Пароль', 'password', 'password', 'Неправильный что-то там', true)
+    each f in formGroups
+        +form-group(f.label, f.id, f.inputType, f.validationMessage, f.isRequired)
