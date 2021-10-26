@@ -15,7 +15,7 @@ export default {
         path: 'authorization'
     },
     'registration': {
-        name: 'Регситрация',
+        name: 'Регистрация',
         render: Registration,
         path: 'registration'
     },
@@ -24,12 +24,12 @@ export default {
         render: UserSettings,
         path: 'user-settings'
     },
-    '404': {
+    'page-404': {
         name: 'Ошибка 404',
         render: Page404,
         path: '404'
     },
-    '500': {
+    'page-500': {
         name: 'Ошибка 500',
         render: Page500,
         path: '500'
