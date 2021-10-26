@@ -1,6 +1,11 @@
-include ../../mixins/form-page/index
 include ../../mixins/form-group/index
 h1(hidden) Регистрация
-+form-page('Регистрация', 'Поехали', 'Уже есть аккаунт?', 'Чего молчишь', '/')
-    each f in formGroups
-        +form-group(f.label, f.id, f.inputType, f.validationMessage, f.isRequired)
+main.form-container
+    form.form
+        h2.form-title Регистрация
+        each f in formGroups
+            +form-group(f.label, f.id, f.inputType, f.validationMessage, f.isRequired)
+        button.form-submit(type="submit") Поехали
+        footer.form-footer
+            p Уже есть аккаунт?
+            a.link(href="/") Чего молчишь

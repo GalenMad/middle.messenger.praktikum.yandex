@@ -1,6 +1,11 @@
-include ../../mixins/form-page/index
 include ../../mixins/form-group/index
 h1(hidden) Авторизация
-+form-page('Вход', 'Поехали', 'Нет аккаунта?', 'Создать', '/')
-    each f in formGroups
-        +form-group(f.label, f.id, f.inputType, f.validationMessage, f.isRequired)
+main.form-container
+    form.form
+        h2.form-title Авторизация
+        each f in formGroups
+            +form-group(f.label, f.id, f.inputType, f.validationMessage, f.isRequired)
+        button.form-submit(type="submit") Поехали
+        footer.form-footer
+            p Нет аккаунта?
+            a.link(href="/") Создать

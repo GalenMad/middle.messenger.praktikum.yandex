@@ -1,5 +1,5 @@
 
-import './styles.scss';
+import './scss/styles.scss';
 import pages from './pages/';
 import { SpreadPage } from './pages/';
 import Router from './Router';
