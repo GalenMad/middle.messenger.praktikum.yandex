@@ -14,11 +14,12 @@ const list = Object.entries(pages).map(item => {
   return { path: `/${item[0]}`, name: item[0] }
 });
 
-router.add('', () => root.innerHTML = SpreadPage({list}));
-
 for (const page in pages) {
   const render = pages[page]
+  console.log(page);
   router.add(page, () => {
     root.innerHTML = render.render();
   })
 }
+
+router.add('', () => root.innerHTML = SpreadPage({list}));
