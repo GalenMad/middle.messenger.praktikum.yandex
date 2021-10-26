@@ -6,10 +6,34 @@ import Page500 from './500/';
 import Main from './main/';
 
 export default {
-    'main': Main,
-    'authorization': Authorization,
-    'registration': Registration,
-    'user-settings': UserSettings,
-    '404': Page404,
-    '500': Page500
-}
+    'main': {
+        name: 'main',
+        render: Main,
+        path: ''
+    },
+    'authorization': {
+        name: 'authorization',
+        render: Authorization,
+        path: 'authorization'
+    },
+    'registration': {
+        name: 'registration',
+        render: Registration,
+        path: 'registration'
+    },
+    'user-settings': {
+        name: 'user-settings',
+        render: UserSettings,
+        path: 'user-settings'
+    },
+    '404': {
+        name: '404',
+        render: Page404,
+        path: '404'
+    },
+    '500': {
+        name: '500',
+        render: Page500,
+        path: '500'
+    }
+};

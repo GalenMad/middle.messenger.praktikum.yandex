@@ -17,7 +17,7 @@ for (const page in pages) {
   const render = pages[page]
   console.log(page);
   router.add(page, () => {
-    root.innerHTML = render();
+    root.innerHTML = render.render();
   })
 }
-router.add('', () => root.innerHTML = pages['main']({name: 'Разводящая', list}));
+router.add('', () => root.innerHTML = pages['main'].render({list}));
