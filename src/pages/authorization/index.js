@@ -1,4 +1,3 @@
-import '../../mixins/form-group/styles.scss';
 import compileTemplate from './template.pug'
 
 const formGroups = [

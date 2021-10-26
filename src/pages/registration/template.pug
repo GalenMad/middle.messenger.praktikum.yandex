@@ -1,10 +1,12 @@
-include ../../mixins/form-group/index
 h1(hidden) Регистрация
 main.form-container
     form.form
         h2.form-title Регистрация
         each f in formGroups
-            +form-group(f.label, f.id, f.inputType, f.validationMessage, f.isRequired)
+            label(for=f.id).form-group
+                span.label=f.label
+                input.control(id=f.id name=f.id type=f.inputType required=f.isRequired)
+                span.validation= f.validationMessage
         button.form-submit(type="submit") Поехали
         footer.form-footer
             p Уже есть аккаунт?
