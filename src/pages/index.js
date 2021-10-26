@@ -2,6 +2,7 @@ import Authorization from './authorization/';
 import Registration from './registration/';
 import UserSettings from './user-settings/';
 import ErrorPage from './error-page/';
+import ChatsPage from './chats-page/';
 import SpreadPage from './spread-page';
 
 // TODO: Временная заглушка для разводящей страницы;
@@ -17,6 +18,11 @@ export default {
         name: 'Регистрация',
         render: Registration,
         path: 'registration'
+    },
+    'chats-page': {
+        name: 'Чаты',
+        render: ChatsPage,
+        path: 'chats'
     },
     'user-settings': {
         name: 'Настройки пользователя',

@@ -1,0 +1,56 @@
+@import '../../scss/variables';
+
+.chats-content {
+    font-family: $primary-font-family;
+    display: grid;
+    grid-template-columns: 3.5fr 6.5fr;
+    min-height: 100vh;
+    background-color: $base-dark;
+    color: white;
+}
+
+.chats-aside {
+    padding: 16px 22px 16px 16px;
+    background-color: rgba(19, 176, 229, 0.04);
+    position: relative;
+
+    &::after {
+        content: '';
+        background-color: white;
+        display: block;
+        position: absolute;
+        border-radius: 10px;
+        opacity: 0.5;
+        right: 0;
+        width: 2px;
+        top: 16px;
+        bottom: 0;
+    }
+}
+
+.chats-aside_header {}
+
+.user-settings_avatar {
+    width: 40px;
+    height: 40px;
+}
+
+.chat-item {
+    &_avatar {
+        width: 49px;
+        height: 49px;
+    }
+}
+
+.chat-feed {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &_plug {
+        font-weight: 600;
+        font-size: 14px;
+        line-height: 12px;
+        opacity: 0.6;
+    }
+}

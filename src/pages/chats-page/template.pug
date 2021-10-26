@@ -1,0 +1,17 @@
+h1(hidden) Чаты
+main.chats-content
+    aside.chats-aside
+        header.chats-aside_header
+            a(href="/user-settings").user-settings 
+                img(src=userAvatar, alt="Вы").user-settings_avatar
+            input(type="text").search-input
+        section.chat-tape
+            each chat in chats
+                article.chat-item
+                    img.chat-item_avatar(src=chat.avatar, alt=chat.chatName)
+                    h3.chat-item_name= chat.chatName
+                    p.chat-item_teaser= chat.chatTeaser
+                    span.chat-item_time= chat.lastMessageTime 
+                    span.chat-item_message-count= chat.newMessageCount
+    section.chat-feed
+        span.chat-feed_plug У тебя тут чё, реально одни Андреи?
