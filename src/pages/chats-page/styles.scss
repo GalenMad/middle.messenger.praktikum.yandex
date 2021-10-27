@@ -4,9 +4,11 @@
     font-family: $primary-font-family;
     display: grid;
     grid-template-columns: 3.5fr 6.5fr;
-    min-height: 100vh;
+    max-height: 100vh;
+    overflow-y: hidden;
     background-color: $base-dark;
     color: white;
+    position: relative;
 }
 
 .chats-aside {
@@ -26,16 +28,23 @@
         top: 16px;
         bottom: 0;
     }
-}
 
-.chats-aside_header {
-    padding-bottom: 18px;
-    border-bottom: 2px solid rgba(255, 255, 255, 0.7);
-    margin-bottom: 20px;
-    display: grid;
-    grid-template-columns: 120px 1fr;
-    grid-template-rows: 48px;
-    grid-column-gap: 10px;
+    &_header {
+        padding-bottom: 18px;
+        border-bottom: 2px solid rgba(255, 255, 255, 0.7);
+        display: grid;
+        grid-template-columns: 120px 1fr;
+        grid-template-rows: 48px;
+        grid-column-gap: 10px;
+    }
+
+    &_tape {
+        max-height: 100vh;
+        overflow-y: scroll;
+        margin-right: -12px;
+        padding-right: 12px;
+        padding-top: 20px;
+    }
 }
 
 .user-settings {
@@ -101,6 +110,7 @@
     display: flex;
     align-items: stretch;
     padding-bottom: 16px;
+    margin-bottom: 16px;
     border-bottom: 1px solid $grey-filler;
 
     &_avatar {
@@ -167,6 +177,19 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    max-height: 100vh;
+    position: relative;
+
+    &_inner {
+        position: fixed;
+        left: 35%;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
 
     &_plug {
         font-weight: 600;

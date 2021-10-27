@@ -6,7 +6,7 @@ main.chats-content
                 img(src=userAvatar, alt="Вы").user-settings_avatar
                 span.user-settings_name Вы
             input(type="text" name="search").search-input
-        section.chat-tape
+        section.chats-aside_tape
             each chat in chats
                 article.chat-item
                     img.chat-item_avatar(src=chat.avatar, alt=chat.chatName)
@@ -17,4 +17,5 @@ main.chats-content
                         span.chat-item_time= chat.lastMessageTime 
                         span.chat-item_message-counter= chat.newMessageCount
     section.chat-feed
-        span.chat-feed_plug У тебя тут чё, реально одни Андреи?
+        div.chat-feed_inner
+            span.chat-feed_plug У тебя тут чё, реально одни Андреи?

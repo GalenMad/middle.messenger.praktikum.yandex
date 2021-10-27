@@ -9,6 +9,19 @@
     }
 }
 
+/* полоса прокрутки (скроллбар) */
+::-webkit-scrollbar {
+    width: 3px; 
+    height: 1px; 
+    background-color: $base-grey;
+    border-radius: 9em;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: $grey-filler;
+    border-radius: 9em;
+}
+
 fieldset {
     border: 0;
 }
