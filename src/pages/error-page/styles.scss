@@ -1,4 +1,5 @@
-@import '../../scss/globals';
+@import '../../scss/commons/variables';
+@import '../../scss/base/globals';
 
 .error-container {
     @extend .content;

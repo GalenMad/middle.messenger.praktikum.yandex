@@ -1,4 +1,6 @@
-@import '../../scss/globals';
+@import '../../scss/commons/variables';
+@import '../../scss/base/globals';
+
 .form-container {
     @extend .content;
     box-sizing: border-box;
