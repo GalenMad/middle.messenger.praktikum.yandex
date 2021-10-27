@@ -1,13 +1,13 @@
 @import '../../scss/globals';
 
 .profile {
-    &-container {
-        @extend .content;
+    @extend .content;
+    &_inner {
+        @extend .content-inner;
+        width: 640px;
+        align-items: flex-start;
+        padding: 56px 40px 40px;
     }
-    @extend .content-inner;
-    width: 640px;
-    align-items: flex-start;
-    padding: 56px 40px 40px;
 
     .link {
         font-size: 14px;
@@ -18,17 +18,17 @@
         border-bottom-color: $base-cherry;
     }
 
-    &-header {
+    &_header {
         display: flex;
         align-items: flex-start;
         margin-bottom: 28px;
     }
 
-    &-avatar {
+    &_avatar {
         margin-right: 32px;
     }
 
-    &-name {
+    &_name {
         margin: 0 0 16px;
         font-family: $primary-font-family;
         font-weight: 600;
@@ -44,7 +44,7 @@
         }
     }
 
-    &-list {
+    &_list {
         margin: 0 0 28px;
         padding: 0;
         width: 100%;
@@ -61,5 +61,4 @@
             border-bottom: 1px solid white;
         }
     }
-
 }

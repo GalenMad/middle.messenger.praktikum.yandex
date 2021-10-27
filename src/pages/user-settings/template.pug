@@ -1,15 +1,15 @@
 h1(hidden) Настройки пользователя
-main.profile-container
-    article.profile
-        header.profile-header
-            img.profile-avatar(src=defaultAvatar)
-            div.profile-title
-                h2.profile-name Иван
+main.profile
+    article.profile_inner
+        header.profile_header
+            img.profile_avatar(src=defaultAvatar)
+            div.profile_title
+                h2.profile_name Иван
                 p 
                     a.link(href="/") Изменить данные
                 p
                     a.link(href="/") Изменить пароль
-        ul.profile-list
+        ul.profile_list
             each item in userData
                 li
                     span= item.name
