@@ -1,8 +1,8 @@
 import Authorization from './authorization/';
 import Registration from './registration/';
-import UserSettings from './user-settings/';
+import UserSettings from './profile/';
 import ErrorPage from './error-page/';
-import ChatsPage from './chats-page/';
+import ChatsPage from './chats/';
 import SpreadPage from './spread-page';
 
 // TODO: Временная заглушка для разводящей страницы;
@@ -19,15 +19,15 @@ export default {
         render: Registration,
         path: 'registration'
     },
-    'chats-page': {
+    'chats': {
         name: 'Чаты',
         render: ChatsPage,
         path: 'chats'
     },
-    'user-settings': {
-        name: 'Настройки пользователя',
+    'profile': {
+        name: 'Профиль пользователя',
         render: UserSettings,
-        path: 'user-settings'
+        path: 'profile'
     },
     'page-404': {
         name: 'Ошибка 404',

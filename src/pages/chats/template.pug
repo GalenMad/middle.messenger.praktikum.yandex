@@ -2,9 +2,9 @@ h1(hidden) Чаты
 main.chats-content
     aside.chats-aside
         header.chats-aside_header
-            a(href="/user-settings").user-settings 
-                img(src=userAvatar, alt="Вы").user-settings_avatar
-                span.user-settings_name Вы
+            a(href="/profile").profile-link
+                img(src=userAvatar, alt="Вы").profile-link_avatar
+                span.profile-link_name Вы
             input(type="text" name="search").search-input
         section.chats-aside_tape
             each chat in chats
