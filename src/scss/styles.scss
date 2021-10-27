@@ -1,6 +1,13 @@
 @import './globals';
 @import './blocks';
 
+* {
+  box-sizing: content-box;
+  &::after, &::before {
+    box-sizing: content-box;
+  }
+}
+
 .content {
   flex-direction: column;
   color: white;
