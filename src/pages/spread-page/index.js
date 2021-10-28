@@ -1,2 +1,2 @@
-import compileTemplate from './template.pug'
+import compileTemplate from './template.pug';
 export default (props) => compileTemplate(props);
