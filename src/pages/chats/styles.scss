@@ -1,10 +1,10 @@
 @import '../../scss/commons/variables';
 
-.chats-content {
+.chats {
     font-family: $primary-font-family;
     display: grid;
     grid-template-columns: 3.5fr 6.5fr;
-    max-height: 100vh;
+    height: 100vh;
     overflow-y: hidden;
     background-color: $base-dark;
     color: white;
@@ -12,22 +12,9 @@
 }
 
 .chats-aside {
-    padding: 16px 22px 16px 16px;
+    padding: 16px;
     background-color: rgba(19, 176, 229, 0.04);
     position: relative;
-
-    &::after {
-        content: '';
-        background-color: white;
-        display: block;
-        position: absolute;
-        border-radius: 10px;
-        opacity: 0.7;
-        right: 0;
-        width: 2px;
-        top: 16px;
-        bottom: 0;
-    }
 
     &_header {
         padding-bottom: 18px;
@@ -36,14 +23,15 @@
         grid-template-columns: 120px 1fr;
         grid-template-rows: 48px;
         grid-column-gap: 10px;
+        margin-bottom: 10px;
     }
 
     &_tape {
-        max-height: 100vh;
-        overflow-y: scroll;
+        max-height: calc(100vh - 100px);
+        overflow-y: auto;
         margin-right: -12px;
-        padding-right: 12px;
-        padding-top: 20px;
+        padding-right: 15px;
+        padding-top: 10px;
     }
 }
 
@@ -58,7 +46,7 @@
     align-items: center;
     justify-content: flex-start;
     height: 100%;
-    
+
 
     &_avatar {
         width: 40px;
@@ -114,6 +102,10 @@
     margin-bottom: 16px;
     border-bottom: 1px solid $grey-filler;
 
+    &:last-of-type {
+        border-bottom-color: transparent;
+    }
+
     &_avatar {
         width: 68px;
         height: 68px;
@@ -123,6 +115,7 @@
     &_body {
         padding-top: 4px;
         max-height: 68px;
+        flex-grow: 1;
     }
 
     &_name {

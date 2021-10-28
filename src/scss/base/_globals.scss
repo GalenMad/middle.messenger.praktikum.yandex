@@ -1,25 +1,23 @@
 @import '../commons/variables';
 
 * {
-    box-sizing: content-box;
+    box-sizing: border-box;
 
     &::after,
     &::before {
-        box-sizing: content-box;
+        box-sizing: border-box;
     }
 }
 
-/* полоса прокрутки (скроллбар) */
 ::-webkit-scrollbar {
     width: 3px; 
-    height: 1px; 
     background-color: $base-grey;
-    border-radius: 9em;
+    border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb {
-    background-color: $grey-filler;
-    border-radius: 9em;
+    background-color: $base-sky;
+    border-radius: 10px;
 }
 
 fieldset {

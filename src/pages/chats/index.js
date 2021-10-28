@@ -4,13 +4,13 @@ import avatar from '../../assets/images/default-avatar.svg'
 
 const chats = [];
 
-for (let i = 0; i < 10; i++) {
+for (let i = 0; i < 4; i++) {
     chats.push({
         avatar,
         chatName: 'Андрей',
-        chatTeaser: 'И Human Interface Guidelines и Material Design рекомендуют…',
+        chatTeaser: 'И Human Interface Guidelines и Material Design рекомендуют не выпендриваться…',
         lastMessageTime: '10:20',
-        newMessageCount: 2
+        newMessageCount: i + 2
     });
 }
 
