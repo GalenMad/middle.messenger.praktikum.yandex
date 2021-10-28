@@ -4,12 +4,12 @@ import avatar from '../../assets/images/default-avatar.svg';
 
 const chats = [];
 
-for (let i = 0; i < 4; i++) {
+for (let i = 0; i < 14; i++) {
 	chats.push({
 		"id": 123,
 		"title": "Андрей",
 		"avatar": avatar,
-		"unread_count": i + 2,
+		"unread_count": i + 2*i,
 		"last_message": {
 			"user": {
 				"first_name": "Petya",
