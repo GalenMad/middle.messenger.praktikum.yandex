@@ -2,40 +2,40 @@
 @import '../../scss/base/globals';
 
 .error-container {
-    @extend .content;
+  @extend %content;
 }
 
 .error-block {
-    display: inline-flex;
+  display: inline-flex;
 
-    .error-label {
-        font-family: $secondary-font-family;
-        font-weight: 500;
-        font-size: 208px;
-        line-height: 0.8;
-        margin: 0 24px 0 0;
-        padding-right: 18px;
-        border-right: solid white 8px;
+  .error-label {
+    font-family: $secondary-font-family;
+    font-weight: 500;
+    font-size: 208px;
+    line-height: 0.8;
+    margin: 0 24px 0 0;
+    padding-right: 18px;
+    border-right: solid white 8px;
+  }
+
+  .error-mount {
+    display: flex;
+    flex-direction: column;
+    max-width: 260px;
+
+    .title {
+      font-weight: 700;
+      font-size: 54px;
+      line-height: 1.1;
+      margin: 0 0 5px -2px;
     }
 
-    .error-mount {
-        display: flex;
-        flex-direction: column;
-        max-width: 260px;
-
-        .title {
-            font-weight: 700;
-            font-size: 54px;
-            line-height: 1.1;
-            margin: 0 0 5px -2px;
-        }
-
-        .message {
-            font-weight: 500;
-            font-size: 24px;
-            line-height: 1.4;
-            margin: 0 0 24px;
-            opacity: 0.7;
-        }
+    .message {
+      font-weight: 500;
+      font-size: 24px;
+      line-height: 1.4;
+      margin: 0 0 24px;
+      opacity: 70%;
     }
+  }
 }

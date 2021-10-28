@@ -2,67 +2,71 @@
 @import '../../scss/base/globals';
 
 .profile {
-    @extend .content;
-    &_inner {
-        @extend .content-inner;
-        width: 640px;
-        align-items: flex-start;
-        padding: 56px 40px 40px;
-    }
+  @extend %content;
 
-    .link {
-        font-size: 14px;
-    }
+  &_inner {
+    @extend %content-inner;
 
-    .return-link {
-        color: $base-cherry;
-        border-bottom-color: $base-cherry;
-    }
+    width: 640px;
+    align-items: flex-start;
+    padding: 56px 40px 40px;
+  }
 
-    &_header {
-        display: flex;
-        align-items: flex-start;
-        margin-bottom: 28px;
-    }
+  .link {
+    font-size: 14px;
+  }
 
-    &_avatar {
-        margin-right: 32px;
-        width: 132px;
-        height: 132px;
-    }
+  .return-link {
+    color: $base-cherry;
+    border-bottom-color: $base-cherry;
+  }
 
-    &_name {
-        margin: 0 0 16px;
-        font-family: $primary-font-family;
-        font-weight: 600;
-        font-size: 40px;
-        color: white;;
+  &_header {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 28px;
+  }
 
-        &::after {
-            content: "";
-            display: block;
-            width: 72px;
-            height: 4px;
-            background-color: white;
-            margin: 10px auto 0 3px;
-        }
-    }
+  &_avatar {
+    margin-right: 32px;
+    width: 132px;
+    height: 132px;
+  }
 
-    &_list {
-        margin: 0 0 28px;
-        padding: 0;
-        width: 100%;
-        li {
-            span:nth-of-type(2) {
-                opacity: 0.8;
-            }
-            width: 100%;
-            list-style: none;
-            display: flex;
-            justify-content: space-between;
-            padding-bottom: 9px;
-            margin-bottom: 20px;
-            border-bottom: 1px solid white;
-        }
+  &_name {
+    margin: 0 0 16px;
+    font-family: $primary-font-family;
+    font-weight: 600;
+    font-size: 40px;
+    color: white;
+
+    &::after {
+      content: '';
+      display: block;
+      width: 72px;
+      height: 4px;
+      background-color: white;
+      margin: 10px auto 0 3px;
     }
+  }
+
+  &_list {
+    margin: 0 0 28px;
+    padding: 0;
+    width: 100%;
+
+    li {
+      span:nth-of-type(2) {
+        opacity: 80%;
+      }
+
+      width: 100%;
+      list-style: none;
+      display: flex;
+      justify-content: space-between;
+      padding-bottom: 9px;
+      margin-bottom: 20px;
+      border-bottom: 1px solid white;
+    }
+  }
 }
