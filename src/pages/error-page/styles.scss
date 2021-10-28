@@ -2,7 +2,7 @@
 @import '../../scss/base/globals';
 
 .error-container {
-  @extend %content;
+  @extend .content;
 }
 
 .error-block {

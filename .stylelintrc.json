@@ -1,6 +1,7 @@
 {
     "extends": "stylelint-config-standard-scss",
     "rules": {
-        "string-quotes": "single"
+        "string-quotes": "single",
+        "scss/at-extend-no-missing-placeholder": null
     }
 }

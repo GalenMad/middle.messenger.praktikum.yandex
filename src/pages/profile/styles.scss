@@ -2,10 +2,10 @@
 @import '../../scss/base/globals';
 
 .profile {
-  @extend %content;
+  @extend .content;
 
   &_inner {
-    @extend %content-inner;
+    @extend .content-inner;
 
     width: 640px;
     align-items: flex-start;

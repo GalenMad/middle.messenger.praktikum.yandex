@@ -2,14 +2,14 @@
 @import '../../scss/base/globals';
 
 .form-container {
-  @extend %content;
+  @extend .content;
 
   box-sizing: border-box;
   padding: 100px 0;
 }
 
 .form {
-  @extend %content-inner;
+  @extend .content-inner;
 
   padding: 56px 74px 40px;
 
