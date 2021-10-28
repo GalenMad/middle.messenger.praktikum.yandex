@@ -1,7 +1,7 @@
 
 import './scss/styles.scss';
-import pages from './pages/';
-import { SpreadPage } from './pages/';
+import pages from './pages';
+import { SpreadPage } from './pages';
 import Router from './Router';
 
 // Router нужен, чтобы не плодить лишних html-страниц
