@@ -17,11 +17,11 @@ const list = Object.entries(pages).map(item => {
 });
 
 for (const page in pages) {
-	const {render, path} = pages[page];
+	const { render, path } = pages[page];
 	router.add(path, () => {
 		root.innerHTML = render();
 	});
 }
 
 // TODO: Временная заглушка для разводящей страницы;
-router.add('', () => root.innerHTML = SpreadPage({list}));
+router.add('', () => root.innerHTML = SpreadPage({ list }));
