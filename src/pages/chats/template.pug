@@ -9,13 +9,13 @@ main.chats
         section.chats-aside_tape
             each chat in chats
                 article.chat-item
-                    img.chat-item_avatar(src=chat.avatar, alt=chat.chatName)
+                    img.chat-item_avatar(src=chat.avatar, alt=chat.title)
                     div.chat-item_body
-                        h3.chat-item_name= chat.chatName
-                        p.chat-item_teaser= chat.chatTeaser
+                        h3.chat-item_name= chat.title
+                        p.chat-item_teaser= chat.last_message.content
                     div.chat-item_details
-                        span.chat-item_time= chat.lastMessageTime 
-                        span.chat-item_message-counter= chat.newMessageCount
+                        span.chat-item_time= chat.last_message.time
+                        span.chat-item_message-counter= chat.unread_count
     section.chat-feed
         div.chat-feed_inner
             span.chat-feed_plug У тебя тут чё, реально одни Андреи?
