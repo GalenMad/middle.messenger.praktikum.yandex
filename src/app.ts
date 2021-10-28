@@ -2,7 +2,7 @@
 import './scss/styles.scss';
 import pages from './pages';
 import { SpreadPage } from './pages';
-import Router from './Router';
+import Router from './modules/router';
 
 const root: HTMLElement | null = document.querySelector('#app');
 
@@ -17,7 +17,7 @@ const router = new Router({
 });
 
 
-const list = Object.values(pages).map((item: { path: string, name: string }) => {
+const list: object[] = Object.values(pages).map((item: { path: string, name: string }) => {
 	return { path: item.path, name: item.name };
 });
 
