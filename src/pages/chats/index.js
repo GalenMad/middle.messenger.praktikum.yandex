@@ -9,7 +9,7 @@ for (let i = 0; i < 14; i++) {
 		'id': 123,
 		'title': 'Андрей',
 		'avatar': avatar,
-		'unread_count': i + 2 * i,
+		'unread_count': i + 2 * i + 1,
 		'last_message': {
 			'user': {
 				'first_name': 'Petya',
