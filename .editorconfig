@@ -3,9 +3,12 @@
 # top-most EditorConfig file
 root = true
 
+[core]
+autocrlf = false
+
 # Unix-style newlines with a newline ending every file
 [*]
-end_of_line = lf
+end_of_line = crlf
 insert_final_newline = true
 
 # Matches multiple files with brace expansion notation
