@@ -1,14 +1,23 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-empty-function */
 import EventBus from './event-bus';
 
 // TODO:
-// 1. Дописать базовый класс Block. Он должен уметь:
-// 1.1 Принимать events (обработчики)
-// 1.2 Навешивать обработчики
-// 1.3 Удалять обработчики при апдейте
-// 1.4 Возвращать внутренность обёртки
+// + 0. Дописать базовый класс Block. Он должен уметь:
+// + 0.1 Принимать events (обработчики)
+// + 0.2 Навешивать обработчики
+// + 0.3 Удалять обработчики при апдейте
+// - 0.4 Возвращать внутренность обёртки
+// - 0.4 Создавать плоский элемент
+
+// 1. Написать функцию compile. Она должна уметь:
+// 1.2 Принимать на вход compileTemplate и props, а возвращать DOM-ноду 
+// 1.3 Распознавать среди props инстансы и массивы инстансов и внедрять их в DOM-элемент
+// 1.4 Использовать компонент template без класса
+// 1.5 parent.replaceChild
 
 // 2. Написать класс-компонент Input. Он должен уметь:
-// 2.1 Принимать на себя обработчики
+// + 2.1 Принимать на себя обработчики
 // 2.2 Принимать на себя правила валидации
 // 2.3 Отдавать статус валидации
 // 2.4 Отдавать значение
@@ -40,45 +49,18 @@ class Block {
 	_element = null;
 	_meta = null;
 
-	constructor(props = {}, tagName = 'template') {
+	constructor(tagName = 'div', props = {}) {
 		const eventBus = new EventBus();
-		this._meta = { tagName, props };
+		const { attributes } = props;
+		this._meta = {
+			tagName,
+			props,
+			attributes: attributes ? attributes : {}
+		};
 		this.props = this._makePropsProxy(props);
 		this.eventBus = () => eventBus;
 		this._registerEvents(eventBus);
 		eventBus.emit(Block.EVENTS.INIT);
-	}
-
-	get element() {
-		return this._element;
-	}
-
-	_makePropsProxy(props) {
-		const handler = {
-			get: (target, prop) => {
-				if (prop.indexOf('_') === 0) {
-					throw new Error(this.MESSAGE_ACCESS_ERROR);
-				}
-				const value = target[prop];
-				return typeof value === 'function' ? value.bind(target) : value;
-			},
-			set: (target, prop, value) => {
-				if (prop.indexOf('_') === 0) {
-					throw new Error(this.MESSAGE_ACCESS_ERROR);
-				}
-				// console.log('target[prop]', target[prop]);
-				// console.log('prop', prop);
-				// console.log('value', value);
-				this.eventBus().emit(Block.EVENTS.FLOW_CDU, target[prop], value);
-				target[prop] = value;
-				return true;
-			},
-			deleteProperty: () => {
-				throw new Error(this.MESSAGE_ACCESS_ERROR);
-			},
-		};
-
-		return new Proxy(props, handler);
 	}
 
 	_registerEvents(eventBus) {
@@ -88,9 +70,27 @@ class Block {
 		eventBus.on(Block.EVENTS.FLOW_RENDER, this._render.bind(this));
 	}
 
+	_setAttributes(element, attributes = {}) {
+		Object.keys(attributes).forEach(attr => {
+			element.setAttribute(attr, attributes[attr]);
+		});
+	}
+
+	_createDocumentElement(tagName, attributes) {
+		const element = document.createElement(tagName);
+		this._setAttributes(element, attributes);
+		return element;
+	}
+
+	_updateResources(newProps) {
+		const { attributes } = newProps;
+		Object.assign(this._meta.attributes, attributes);
+		this._setAttributes(this.element, attributes);
+	}
+
 	_createResources() {
-		const { tagName } = this._meta;
-		this._element = document.createElement(tagName);
+		const { tagName, attributes } = this._meta;
+		this._element = this._createDocumentElement(tagName, attributes);
 	}
 
 	init() {
@@ -103,26 +103,18 @@ class Block {
 		this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
 	}
 
-	componentDidMount() {
-		return true;
-	}
+	// Может переопределять пользователь, необязательно трогать
+	componentDidMount(oldProps) { }
 
 	_componentDidUpdate(oldProps, newProps) {
-		this.eventBus().emit(Block.EVENTS.FLOW_CDM);
 		this.componentDidUpdate(oldProps, newProps);
+		this._removeEvents(oldProps);
+		this._updateResources(newProps);
+		this.eventBus().emit(Block.EVENTS.FLOW_CDM);
 	}
 
-	componentDidUpdate() {
-		return true;
-	}
-
-	_render() {
-		const block = this.render();
-		console.log(block);
-		this._element.innerHTML = block;
-	}
-
-	render() {
+	// Может переопределять пользователь, необязательно трогать
+	componentDidUpdate(oldProps, newProps) {
 		return true;
 	}
 
@@ -132,8 +124,62 @@ class Block {
 		}
 	};
 
+	get element() {
+		return this._element;
+	}
+
+	_render() {
+		const block = this.render();
+		this._element.innerHTML = block;
+		this._addEvents(this.props);
+	}
+
+	_addEvents(props) {
+		const { events = {} } = props;
+
+		Object.keys(events).forEach(eventName => {
+			this.element.addEventListener(eventName, events[eventName]);
+		});
+	}
+
+	_removeEvents(props) {
+		const { events = {} } = props;
+
+		Object.keys(events).forEach(eventName => {
+			this.element.removeEventListener(eventName, events[eventName]);
+		});
+	}
+
+	// Может переопределять пользователь, необязательно трогать
+	render() { }
+
 	getContent() {
-		return this.element.content;
+		return this.element;
+	}
+
+	_makePropsProxy(props) {
+		const handler = {
+			get: (target, prop) => {
+				if (prop.indexOf('_') === 0) {
+					throw new Error(this.MESSAGE_ACCESS_ERROR);
+				}
+				const value = target[prop];
+				return typeof value === 'function' ? value.bind(target) : value;
+			},
+			set: (target, prop, value) => {
+				const oldProps = { ...target };
+				target[prop] = value;
+				const newProps = { ...target };
+				this.eventBus().emit(Block.EVENTS.FLOW_CDU, oldProps, newProps);
+				return true;
+			},
+			deleteProperty: () => {
+				throw new Error(this.MESSAGE_ACCESS_ERROR);
+			},
+		};
+
+		// eslint-disable-next-line no-undef
+		return new Proxy(props, handler);
 	}
 }
 
