@@ -17,6 +17,7 @@
         "@typescript-eslint"
     ],
     "rules": {
+        "no-prototype-builtins": 0,
         "indent": [
             "error",
             "tab"

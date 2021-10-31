@@ -5,7 +5,7 @@
   "description": "",
   "source": "static/index.html",
   "scripts": {
-    "start": "parcel --port 3000",
+    "start": "parcel --port 3000 --no-cache",
     "build": "parcel build",
     "server": "node server.js",
     "lint:styles": "npx stylelint **/*.scss --fix",
