@@ -1,6 +1,6 @@
-h2.form-title Регистрация
+h2.form-title= title
 != formGroups
-button.form-submit(type="submit") Поехали
+button.form-submit(type="submit")= buttonText
 footer.form-footer
-    p Уже есть аккаунт?
-    a.link(href="/") Чего молчишь
+    p= footerText
+    a.link(href=link)= linkText

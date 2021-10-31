@@ -47,11 +47,18 @@ class Form extends Block {
 	}
 
 	componentDidMount() {
-		console.log(this.props.events);
-		this.props.events.submit = (evt) => {
+
+		const handler = (evt) => {
 			evt.preventDefault();
 			this.localEventBus().emit(Form.EVENTS.SUBMIT);
 		};
+
+		if (this.props.hasOwnProperty('events')) {
+			Object.assign(this.props.events, { submit: handler });
+		} else {
+			this.props.events = { submit: handler };
+		}
+
 		this.createFormGroups();
 	}
 
@@ -80,3 +87,5 @@ class Form extends Block {
 		return compile(compileTemplate, Object.assign({}, this.props, { formGroups }));
 	}
 }
+
+export default Form;
