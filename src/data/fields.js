@@ -17,17 +17,7 @@ export default {
 			firstCapital: {
 				func: firstCapital,
 				message: 'Первая буква должна быть заглавной'
-			},
-			minLength: {
-				argument: 2,
-				func: minLength,
-				message: (argument) => `Минимум симоволов — ${argument}`
-			},
-			maxLength: {
-				argument: 40,
-				func: maxLength,
-				message: (argument) => `Максимум символов — ${argument}`
-			},
+			}
 		},
 	},
 	second_name: {
@@ -46,16 +36,6 @@ export default {
 			firstCapital: {
 				func: firstCapital,
 				message: 'Первая буква должна быть заглавной'
-			},
-			minLength: {
-				argument: 2,
-				func: minLength,
-				message: (argument) => `Минимум симоволов — ${argument}`
-			},
-			maxLength: {
-				argument: 40,
-				func: maxLength,
-				message: (argument) => `Максимум символов — ${argument}`
 			},
 		},
 	},
