@@ -1,20 +1,19 @@
+import allFields from '../../data/fields';
+import Form from './../../components/form';
+import compile from '../../utils/compile';
 import compileTemplate from './template.pug';
 
-const formGroups = [
-	{
-		label: 'Логин',
-		id: 'login',
-		inputType: 'text',
-		validationMessage: 'Неправильный что-то там',
-		isRequired: true
-	},
-	{
-		label: 'Пароль',
-		id: 'password',
-		inputType: 'password',
-		validationMessage: 'Неправильный что-то там',
-		isRequired: true
-	}
-];
+const fields = ['login', 'password'].map(field => allFields[field]);
 
-export default (props) => compileTemplate(Object.assign({formGroups}, props));
+const props = {
+	fields,
+	title: 'Авторизация',
+	buttonText: 'Поехали',
+	// footerText: 'Уже есть аккаунт?',
+	footerText: 'Нет аккаунта?',
+	linkText: 'Зарегестрироваться',
+	link: '/registration'
+};
+
+const form = new Form(props);
+export default (props) => compile(compileTemplate, Object.assign({ form }, props));
