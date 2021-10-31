@@ -8,33 +8,35 @@ import EventBus from './event-bus';
 // + 0.2 Навешивать обработчики
 // + 0.3 Удалять обработчики при апдейте
 // - 0.4 Возвращать внутренность обёртки
-// - 0.4 Создавать плоский элемент
+// + 0.4 Создавать плоский элемент
 
-// 1. Написать функцию compile. Она должна уметь:
-// 1.2 Принимать на вход compileTemplate и props, а возвращать DOM-ноду 
-// 1.3 Распознавать среди props инстансы и массивы инстансов и внедрять их в DOM-элемент
-// 1.4 Использовать компонент template без класса
-// 1.5 parent.replaceChild
+// + 1. Написать функцию compile. Она должна уметь:
+// + 1.2 Принимать на вход compileTemplate и props, а возвращать Document Fragment
+// + 1.3 Распознавать среди props инстансы и массивы инстансов и внедрять их в DOM-элемент
+// + 1.4 Использовать компонент template без класса
+// + 1.5 parent.replaceChild
 
-// 2. Написать класс-компонент Input. Он должен уметь:
+// + 2. Написать класс-компонент Input. Он должен уметь:
 // + 2.1 Принимать на себя обработчики
-// 2.2 Принимать на себя правила валидации
-// 2.3 Отдавать статус валидации
-// 2.4 Отдавать значение
-// 2.5 Генерить и эмитить собственные ивенты (input:validate, focus, blur)
+// + 2.2 Принимать на себя правила валидации
+// + 2.3 Отдавать статус валидации
+// + 2.4 Отдавать значение
+// - 2.5 Генерить и эмитить собственные ивенты (input:validate, focus, blur)
 
-// 3. Написать класс-компонент FormGroup. Он должен уметь:
-// 3.1 Интегрировать внутрь себя класс Input 
-// 3.2 Передавать внутрь себя правила валидации
-// 3.3 Генерить и эмитить собственные ивенты (form-group:validate)
-// 3.4 Эмитить ивенты вложенного класса Input
-// 3.5 Подписываться на ивенты вложенного класса Input
-// 3.5 В зависимости от статуса валидации показывать сообщение валидации
+// + 3. Написать класс-компонент FormGroup. Он должен уметь:
+// + 3.1 Интегрировать внутрь себя класс Input 
+// + 3.2 Передавать внутрь себя правила валидации
+// + 3.3 Генерить и эмитить собственные ивенты (form-group:validate)
+// - 3.4 Эмитить ивенты вложенного класса Input
+// + 3.5 Подписываться на ивенты вложенного класса Input
+// + 3.5 В зависимости от статуса валидации показывать сообщение валидации
 
 // 4. Написать класс-компонент Form. Он должен уметь:
 // 4.1 Генерировать по модели данных множество экземпляров класса FormGroup
 // 4.2 Генерить и эмитить собственные ивенты (form-group:submit)
 // 4.3 Собирать данные инпутов из экземпляров класса FormGroup
+
+// Разобраться с приватными методами
 
 class Block {
 	static EVENTS = {
@@ -51,12 +53,11 @@ class Block {
 
 	constructor(tagName = 'div', props = {}) {
 		const eventBus = new EventBus();
-		const { attributes } = props;
-		this._meta = {
-			tagName,
-			props,
-			attributes: attributes ? attributes : {}
-		};
+		this._meta = { tagName, props };
+		if (props.hasOwnProperty('attributes')) {
+			const { attributes } = props;
+			this._meta.attributes = attributes;
+		}
 		this.props = this._makePropsProxy(props);
 		this.eventBus = () => eventBus;
 		this._registerEvents(eventBus);
@@ -111,6 +112,7 @@ class Block {
 		this._removeEvents(oldProps);
 		this._updateResources(newProps);
 		this.eventBus().emit(Block.EVENTS.FLOW_CDM);
+
 	}
 
 	// Может переопределять пользователь, необязательно трогать
@@ -130,9 +132,15 @@ class Block {
 
 	_render() {
 		const block = this.render();
-		this._element.innerHTML = block;
+		if (block) {
+			this._element.innerHTML = '';
+			this._element.appendChild(block);
+		}
 		this._addEvents(this.props);
 	}
+
+	// Может переопределять пользователь, необязательно трогать
+	render() { }
 
 	_addEvents(props) {
 		const { events = {} } = props;
@@ -149,9 +157,6 @@ class Block {
 			this.element.removeEventListener(eventName, events[eventName]);
 		});
 	}
-
-	// Может переопределять пользователь, необязательно трогать
-	render() { }
 
 	getContent() {
 		return this.element;
