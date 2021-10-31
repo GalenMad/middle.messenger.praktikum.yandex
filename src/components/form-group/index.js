@@ -1,74 +1,137 @@
 import Block from '../../modules/block';
+import Input from '../input';
+import EventBus from '../../modules/event-bus';
+import compile from '../../utils/compile';
 import compileTemplate from './template.pug';
 
-const props = {
-	label: 'Логин',
-	id: 'login',
-	name: 'login',
-	type: 'text',
-	validationMessage: 'Неправильный что-то там',
-	isRequired: true
+const parseValidatorsFromDefinition = (validators) => {
+	const result = {};
+	Object.keys(validators).map(validatorName => {
+		const validator = validators[validatorName];
+		const { argument, func } = validator;
+		if (validator.hasOwnProperty('argument')) {
+			const expandFunction = func(argument);
+			result[validatorName] = expandFunction;
+		} else {
+			const expandFunction = func();
+			result[validatorName] = expandFunction;
+		}
+		return validator;
+	});
+	return result;
 };
 
 class FormGroup extends Block {
-
 	static EVENTS = {
-		VALIDATE: 'input:validate'
+		VALIDATION: 'validation',
+		VALIDATION_HIDE: 'validation:hide',
+	};
+
+	// TODO:
+	// Почему-то не получается передать значения в местный _input
+	// Узнать почему
+	get input() {
+		return this._meta.input;
 	}
-	
-	render() {
-		return compileTemplate(this.props);
+
+	set input(value) {
+		this._meta.input = value;
 	}
 
-	// function showValidationMessage
-	// Показать валидационное сообщение
+	// TODO: 
+	// Не уверен, что мне нужны все эти геттеры
+	get value() {
+		return this._meta.input.value;
+	}
 
-	// function hideValidationMessage
-	// Скрыть валидационное сообщение
+	get validity() {
+		return this.input.validity;
+	}
 
-	// function checkValidation
-	// Проверка значения инпута на правила валидации в props
+	get isValid() {
+		return Object.values(this.validity).every(item => item);
+	}
 
-	// on event validate запускать checkValidation 
-	// Если не ок, то показываем валидацию
+	constructor(props = {}) {
+		// TODO: Громоздкая конструкция, хочется как-то упростить
+		if (props.hasOwnProperty('attributes')) {
+			Object.assign(props.attributes, { class: 'form-group' });
+		} else {
+			props.attributes = { class: 'form-group' };
+		}
 
-	// На событие blur вешаем emit validate
+		const eventBus = new EventBus();
+		super('label', props);
+		this.localEventBus = () => eventBus;
+		this._registerLocalEvents(eventBus);
+	}
 
-	// На событие focus вешаем hideValidationMessage
+	_registerLocalEvents(eventBus) {
+		eventBus.on(FormGroup.EVENTS.VALIDATION, this.checkValidity.bind(this));
+		eventBus.on(FormGroup.EVENTS.VALIDATION_HIDE, this.hideValidationMessage.bind(this));
+	}
 
+	componentDidMount() {
+		this.createInputElement();
+	}
 
-	_getContent = this.getContent;
+	componentDidUpdate() {
+		this.createInputElement();
+	}
 
-	getContent = () => {
-		console.log(Block.EVENTS);
-		console.log(FormGroup.EVENTS);
-		const content = this._getContent();
-		const input = content.querySelector('input');
-		const validation = content.querySelector('.validation');
-		input.addEventListener('blur', () => {
-			console.log('blur');
-			validation.style.display = 'block';
-			validation.textContent = this.props.validationMessage;
+	hideValidationMessage() {
+		const container = this.element.querySelector('.validation');
+		container.style.display = 'none';
+	}
+
+	showValidationMessage(message) {
+		const container = this.element.querySelector('.validation');
+		container.style.display = 'block';
+		container.textContent = message;
+	}
+
+	checkValidity() {
+		const { validators } = this.props;
+		const validity = Object.entries(this.validity);
+		console.log(this.isValid);
+		for (let i = 0; i < validity.length; i++) {
+			const value = validity[i][1];
+			if (!value) {
+				const name = validity[i][0];
+				let { message } = validators[name];
+				if (typeof message === 'function') {
+					message = message(validators[name].argument);
+				}
+				this.showValidationMessage(message);
+				break;
+			}
+		}
+	}
+
+	createInputElement() {
+		const { id, name, validators } = this.props;
+		this.input = new Input({
+			attributes: {
+				class: 'control',
+				type: 'text',
+				id,
+				name
+			},
+			validators: parseValidatorsFromDefinition(validators),
+			events: {
+				blur: () => this.localEventBus().emit(FormGroup.EVENTS.VALIDATION),
+				focus: () => this.localEventBus().emit(FormGroup.EVENTS.VALIDATION_HIDE),
+			}
 		});
-		return content;
+	}
+
+	render() {
+		const input = this.input;
+		return compile(compileTemplate, Object.assign({}, this.props, { input }));
 	}
 }
 
-window.formGroup = new FormGroup(props);
-// document.querySelector('#exp').append(formGroup.getContent());
+export default FormGroup;
 
 
-// setTimeout(() => {
-// 	formGroup.setProps({
-// 		label: 'Пароль',
-// 		id: 'password',
-// 		name: 'password',
-// 		type: 'password',
-// 		validationMessage: 'Неправильный что-то там',
-// 		isRequired: false
-// 	});
-// }, 1000);
 
-
-// document.querySelector('#exp').innerHTML = ''
-// document.querySelector('#exp').append(formGroup.getContent());
