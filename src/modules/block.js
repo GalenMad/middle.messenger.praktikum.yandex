@@ -2,42 +2,6 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import EventBus from './event-bus';
 
-// TODO:
-// + 0. Дописать базовый класс Block. Он должен уметь:
-// + 0.1 Принимать events (обработчики)
-// + 0.2 Навешивать обработчики
-// + 0.3 Удалять обработчики при апдейте
-// - 0.4 Возвращать внутренность обёртки
-// + 0.4 Создавать плоский элемент
-
-// + 1. Написать функцию compile. Она должна уметь:
-// + 1.2 Принимать на вход compileTemplate и props, а возвращать Document Fragment
-// + 1.3 Распознавать среди props инстансы и массивы инстансов и внедрять их в DOM-элемент
-// + 1.4 Использовать компонент template без класса
-// + 1.5 parent.replaceChild
-
-// + 2. Написать класс-компонент Input. Он должен уметь:
-// + 2.1 Принимать на себя обработчики
-// + 2.2 Принимать на себя правила валидации
-// + 2.3 Отдавать статус валидации
-// + 2.4 Отдавать значение
-// - 2.5 Генерить и эмитить собственные ивенты (input:validate, focus, blur)
-
-// + 3. Написать класс-компонент FormGroup. Он должен уметь:
-// + 3.1 Интегрировать внутрь себя класс Input 
-// + 3.2 Передавать внутрь себя правила валидации
-// + 3.3 Генерить и эмитить собственные ивенты (form-group:validate)
-// - 3.4 Эмитить ивенты вложенного класса Input
-// + 3.5 Подписываться на ивенты вложенного класса Input
-// + 3.5 В зависимости от статуса валидации показывать сообщение валидации
-
-// 4. Написать класс-компонент Form. Он должен уметь:
-// 4.1 Генерировать по модели данных множество экземпляров класса FormGroup
-// 4.2 Генерить и эмитить собственные ивенты (form-group:submit)
-// 4.3 Собирать данные инпутов из экземпляров класса FormGroup
-
-// Разобраться с приватными методами
-
 class Block {
 	static EVENTS = {
 		INIT: 'init',
@@ -50,6 +14,10 @@ class Block {
 
 	_element = null;
 	_meta = null;
+
+	get element() {
+		return this._element;
+	}
 
 	constructor(tagName = 'div', props = {}) {
 		const eventBus = new EventBus();
@@ -104,7 +72,6 @@ class Block {
 		this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
 	}
 
-	// Может переопределять пользователь, необязательно трогать
 	componentDidMount(oldProps) { }
 
 	_componentDidUpdate(oldProps, newProps) {
@@ -115,7 +82,6 @@ class Block {
 
 	}
 
-	// Может переопределять пользователь, необязательно трогать
 	componentDidUpdate(oldProps, newProps) {
 		return true;
 	}
@@ -126,10 +92,6 @@ class Block {
 		}
 	};
 
-	get element() {
-		return this._element;
-	}
-
 	_render() {
 		const block = this.render();
 		if (block) {
@@ -139,7 +101,6 @@ class Block {
 		this._addEvents(this.props);
 	}
 
-	// Может переопределять пользователь, необязательно трогать
 	render() { }
 
 	_addEvents(props) {

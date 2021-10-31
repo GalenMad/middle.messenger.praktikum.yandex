@@ -5,7 +5,6 @@
 // ВАЖНО! 
 // Прямого запрета использовать роутер я не обнаружил
 // Только запрет использовать express.Router()
-/* eslint no-mixed-spaces-and-tabs: ["error", "smart-tabs"] */
 class Router {
 	routes = [];
 

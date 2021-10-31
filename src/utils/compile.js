@@ -6,7 +6,7 @@ const compile = (compileTemplate, props = {}) => {
 	const newProps = {};
 
 	// TODO:
-	// Здесь я делаю копию props чтобы избежать срабатывания Proxy на set
+	// Здесь я делаю копию props чтобы избежать срабатывания Proxy на set в случае рендера инстанса 
 	// Нет, это не перезаписывает свойства в оригинальных props
 	Object.keys(props).forEach((propName) => {
 		let prop = props[propName];

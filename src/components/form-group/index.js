@@ -74,48 +74,31 @@ class FormGroup extends Block {
 		this._registerLocalEvents(eventBus);
 	}
 
-	_registerLocalEvents(eventBus) {
-		eventBus.on(FormGroup.EVENTS.VALIDATION, this.checkValidity.bind(this));
-		eventBus.on(FormGroup.EVENTS.VALIDATION_HIDE, this.hideValidationMessage.bind(this));
-	}
-
 	componentDidMount() {
-		this.createInputElement();
+		this._createInputElement();
 	}
 
 	componentDidUpdate() {
-		this.createInputElement();
+		this._createInputElement();
 	}
 
-	hideValidationMessage() {
+	_registerLocalEvents(eventBus) {
+		eventBus.on(FormGroup.EVENTS.VALIDATION, this.checkValidity.bind(this));
+		eventBus.on(FormGroup.EVENTS.VALIDATION_HIDE, this._hideValidationMessage.bind(this));
+	}
+
+	_hideValidationMessage() {
 		const container = this.element.querySelector('.validation');
 		container.style.display = 'none';
 	}
 
-	showValidationMessage(message) {
+	_showValidationMessage(message) {
 		const container = this.element.querySelector('.validation');
 		container.style.display = 'block';
 		container.textContent = message;
 	}
 
-	checkValidity() {
-		const { validators } = this.props;
-		const validity = Object.entries(this.validity);
-		for (let i = 0; i < validity.length; i++) {
-			const value = validity[i][1];
-			if (!value) {
-				const name = validity[i][0];
-				let { message } = validators[name];
-				if (typeof message === 'function') {
-					message = message(validators[name].argument);
-				}
-				this.showValidationMessage(message);
-				break;
-			}
-		}
-	}
-
-	createInputElement() {
+	_createInputElement() {
 		const { id, name, validators } = this.props;
 		const type = this.props.hasOwnProperty('type') ? this.props.type : 'text';
 		this.input = new Input({
@@ -131,6 +114,23 @@ class FormGroup extends Block {
 				focus: () => this.localEventBus().emit(FormGroup.EVENTS.VALIDATION_HIDE),
 			}
 		});
+	}
+
+	checkValidity() {
+		const { validators } = this.props;
+		const validity = Object.entries(this.validity);
+		for (let i = 0; i < validity.length; i++) {
+			const value = validity[i][1];
+			if (!value) {
+				const name = validity[i][0];
+				let { message } = validators[name];
+				if (typeof message === 'function') {
+					message = message(validators[name].argument);
+				}
+				this._showValidationMessage(message);
+				break;
+			}
+		}
 	}
 
 	render() {

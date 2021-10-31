@@ -43,7 +43,7 @@ class Form extends Block {
 	}
 
 	_registerLocalEvents(eventBus) {
-		eventBus.on(Form.EVENTS.SUBMIT, this.formSubmit.bind(this));
+		eventBus.on(Form.EVENTS.SUBMIT, this._formSubmit.bind(this));
 	}
 
 	componentDidMount() {
@@ -59,21 +59,21 @@ class Form extends Block {
 			this.props.events = { submit: handler };
 		}
 
-		this.createFormGroups();
+		this._createFormGroups();
 	}
 
 	componentDidUpdate() {
-		this.createFormGroups();
+		this._createFormGroups();
 	}
 
-	createFormGroups() {
+	_createFormGroups() {
 		const { fields } = this.props;
 		this.formGroups = fields.map((field) => {
 			return new FormGroup(field);
 		});
 	}
 
-	formSubmit() {
+	_formSubmit() {
 		this.formGroups.forEach((element) => {
 			element.checkValidity();
 		});
