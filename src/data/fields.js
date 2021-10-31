@@ -1,4 +1,4 @@
-import { login, required, minLength, maxLength, alphaNum, name, firstCapital, email, phone, hasUppercase, hasDigit } from '../../utils/validators';
+import { login, required, minLength, maxLength, alphaNum, name, firstCapital, email, phone, hasUppercase, hasDigit } from '../utils/validators.js';
 
 export default {
 	first_name: {
@@ -134,8 +134,8 @@ export default {
 		}
 	},
 	phone: {
-		label: 'phone',
-		id: 'Телефон',
+		label: 'Телефон',
+		id: 'phone',
 		name: 'phone',
 		type: 'tel',
 		validators: {
