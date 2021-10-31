@@ -1,10 +1,12 @@
 import Block from '../../modules/block';
 
 class Input extends Block {
-	constructor(props) {
+	constructor(props = {}) {
 		super('input', props);
-		const { validators } = props;
-		this._meta.validators = validators ? validators : {};
+		if (props.hasOwnProperty('validators')) {
+			const { validators } = props;
+			this._meta.validators = validators ? validators : {};
+		}
 	}
 
 	get value() {
