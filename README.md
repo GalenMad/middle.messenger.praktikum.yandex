@@ -7,7 +7,7 @@
 Voronkov Production представляет прототип уникального чата, способного ошеломить неподготовленного отшельника-луддита в возрасте.
 
 * Макет пректа в Figma: [link](https://www.figma.com/file/06T7F3jCKad58dX8vH7MN7/Yandex.Praktikum?node-id=0%3A1 "Ultimate Chat 🍍 — Figma")
-* Ссылка на Pull Request первого спринта: [link](https://github.com/GalenMad/middle.messenger.praktikum.yandex/pull/3)
+* Ссылка на Pull Request второго спринта: [link](https://github.com/GalenMad/middle.messenger.praktikum.yandex/pull/4)
 * Ссылка на домен Netlify: [link](https://boring-goldwasser-8ca173.netlify.app/)
 
 ## Работа с проектом
