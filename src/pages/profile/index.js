@@ -1,6 +1,7 @@
-import './styles.scss';
-import compileTemplate from './template.pug';
+import compile from '../../utils/compile';
 import defaultAvatar from '../../assets/images/default-avatar.svg';
+import compileTemplate from './template.pug';
+import './styles.scss';
 
 const userData = [{
 	name: 'Почта',
@@ -22,5 +23,5 @@ const userData = [{
 	value: '+7 (909) 967 30 30'
 }];
 
-const compile = (props) => compileTemplate(Object.assign({userData, defaultAvatar}, props));
-export default compile;
+export default (props) => compile(compileTemplate, Object.assign({userData, defaultAvatar}, props));
+

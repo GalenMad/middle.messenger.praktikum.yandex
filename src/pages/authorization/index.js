@@ -9,7 +9,6 @@ const props = {
 	fields,
 	title: 'Авторизация',
 	buttonText: 'Поехали',
-	// footerText: 'Уже есть аккаунт?',
 	footerText: 'Нет аккаунта?',
 	linkText: 'Зарегестрироваться',
 	link: '/registration'

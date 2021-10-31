@@ -4,7 +4,6 @@ import compile from '../../utils/compile';
 import compileTemplate from './template.pug';
 
 const fields = Object.values(allFields);
-console.log(fields);
 
 const props = {
 	fields,

@@ -1,6 +1,7 @@
-import './styles.scss';
-import compileTemplate from './template.pug';
+import compile from '../../utils/compile';
 import avatar from '../../assets/images/default-avatar.svg';
+import compileTemplate from './template.pug';
+import './styles.scss';
 
 const chats = [];
 
@@ -24,5 +25,4 @@ for (let i = 0; i < 14; i++) {
 		}
 	});
 }
-
-export default (props) => compileTemplate(Object.assign({ chats, userAvatar: avatar }, props));
+export default (props) => compile(compileTemplate, Object.assign({ chats, userAvatar: avatar }, props));
