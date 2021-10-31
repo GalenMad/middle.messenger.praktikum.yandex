@@ -3,8 +3,12 @@ import Input from '../input';
 import EventBus from '../../modules/event-bus';
 import compile from '../../utils/compile';
 import compileTemplate from './template.pug';
+import './styles.scss';
 
 const parseValidatorsFromDefinition = (validators) => {
+	if (!validators) {
+		return {};
+	}
 	const result = {};
 	Object.keys(validators).map(validatorName => {
 		const validator = validators[validatorName];
@@ -39,9 +43,13 @@ class FormGroup extends Block {
 	}
 
 	// TODO: 
-	// Не уверен, что мне нужны все эти геттеры
+	// Есть подозрение, что мне не нужны все эти геттеры
 	get value() {
 		return this._meta.input.value;
+	}
+
+	get name() {
+		return this.props.name;
 	}
 
 	get validity() {
@@ -93,7 +101,6 @@ class FormGroup extends Block {
 	checkValidity() {
 		const { validators } = this.props;
 		const validity = Object.entries(this.validity);
-		console.log(this.isValid);
 		for (let i = 0; i < validity.length; i++) {
 			const value = validity[i][1];
 			if (!value) {
@@ -110,10 +117,11 @@ class FormGroup extends Block {
 
 	createInputElement() {
 		const { id, name, validators } = this.props;
+		const type = this.props.hasOwnProperty('type') ? this.props.type : 'text';
 		this.input = new Input({
 			attributes: {
 				class: 'control',
-				type: 'text',
+				type,
 				id,
 				name
 			},
