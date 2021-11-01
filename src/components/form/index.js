@@ -4,6 +4,11 @@ import EventBus from '../../modules/event-bus';
 import compile from '../../utils/compile';
 import compileTemplate from './template.pug';
 import './styles.scss';
+
+const attributes = {
+	class: 'form'
+};
+
 class Form extends Block {
 	static EVENTS = {
 		SUBMIT: 'submit'
@@ -30,16 +35,21 @@ class Form extends Block {
 	}
 
 	constructor(props = {}) {
-		if (props.hasOwnProperty('attributes')) {
-			Object.assign(props.attributes, { class: 'form' });
-		} else {
-			props.attributes = { class: 'form' };
-		}
-
 		const eventBus = new EventBus();
-		super('form', props);
+		const attributes = { ...props.attributes, class: 'form' };
+		super('form', { ...props, attributes });
 		this.localEventBus = () => eventBus;
 		this._registerLocalEvents(eventBus);
+
+		// TODO: Нужно сохранять обработчики
+		// Если задать новые ивенты через setProps, то этот хэндлер умрёт
+		// Если задать этот обработчик в CDM, то уйдёт в рекурсию
+		const handler = (evt) => {
+			evt.preventDefault();
+			this.localEventBus().emit(Form.EVENTS.SUBMIT);
+		};
+
+		this.props.events = { ...this.props.events, submit: handler };
 	}
 
 	_registerLocalEvents(eventBus) {
@@ -47,18 +57,6 @@ class Form extends Block {
 	}
 
 	componentDidMount() {
-
-		const handler = (evt) => {
-			evt.preventDefault();
-			this.localEventBus().emit(Form.EVENTS.SUBMIT);
-		};
-
-		if (this.props.hasOwnProperty('events')) {
-			Object.assign(this.props.events, { submit: handler });
-		} else {
-			this.props.events = { submit: handler };
-		}
-
 		this._createFormGroups();
 	}
 
@@ -84,7 +82,8 @@ class Form extends Block {
 
 	render() {
 		const formGroups = this.formGroups;
-		return compile(compileTemplate, Object.assign({}, this.props, { formGroups }));
+		const props = this.props;
+		return compile(compileTemplate, { ...props, formGroups });
 	}
 }
 

@@ -31,9 +31,6 @@ class FormGroup extends Block {
 		VALIDATION_HIDE: 'validation:hide',
 	};
 
-	// TODO:
-	// Почему-то не получается передать значения в местный _input
-	// Узнать почему
 	get input() {
 		return this._meta.input;
 	}
@@ -61,15 +58,10 @@ class FormGroup extends Block {
 	}
 
 	constructor(props = {}) {
-		// TODO: Громоздкая конструкция, хочется как-то упростить
-		if (props.hasOwnProperty('attributes')) {
-			Object.assign(props.attributes, { class: 'form-group' });
-		} else {
-			props.attributes = { class: 'form-group' };
-		}
-
 		const eventBus = new EventBus();
-		super('label', props);
+		// TODO: Переделать запись чтобы присвоение снаружи было в приоритете
+		const attributes = { ...props.attributes, class: 'form-group' };
+		super('label', {...props, attributes});
 		this.localEventBus = () => eventBus;
 		this._registerLocalEvents(eventBus);
 	}
@@ -99,8 +91,7 @@ class FormGroup extends Block {
 	}
 
 	_createInputElement() {
-		const { id, name, validators } = this.props;
-		const type = this.props.hasOwnProperty('type') ? this.props.type : 'text';
+		const { id, name, validators, type = 'text' } = this.props;
 		this.input = new Input({
 			attributes: {
 				class: 'control',
@@ -135,11 +126,8 @@ class FormGroup extends Block {
 
 	render() {
 		const input = this.input;
-		return compile(compileTemplate, Object.assign({}, this.props, { input }));
+		return compile(compileTemplate, { ...this.props, input });
 	}
 }
 
 export default FormGroup;
-
-
-
