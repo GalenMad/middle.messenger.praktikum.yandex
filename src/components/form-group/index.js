@@ -5,12 +5,9 @@ import compile from '../../utils/compile';
 import compileTemplate from './template.pug';
 import './styles.scss';
 
-const parseValidatorsFromDefinition = (validators) => {
-	if (!validators) {
-		return {};
-	}
+const parseValidatorsFromDefinition = (validators = {}) => {
 	const result = {};
-	Object.keys(validators).map(validatorName => {
+	Object.keys(validators).forEach(validatorName => {
 		const validator = validators[validatorName];
 		const { argument, func } = validator;
 		if (validator.hasOwnProperty('argument')) {
@@ -25,7 +22,9 @@ const parseValidatorsFromDefinition = (validators) => {
 	return result;
 };
 
+// TODO: Пройтись по коду, вынести строки в константы
 const FORM_GROUP_CLASS = 'form-group';
+
 class FormGroup extends Block {
 	static EVENTS = {
 		VALIDATION: 'validation',
@@ -64,7 +63,7 @@ class FormGroup extends Block {
 		const className = props.attributes && props.attributes.class || FORM_GROUP_CLASS;
 		const attributes = { ...props.attributes, class: className };
 		super('label', {...props, attributes});
-		
+
 		this.localEventBus = () => eventBus;
 		this._registerLocalEvents(eventBus);
 	}
