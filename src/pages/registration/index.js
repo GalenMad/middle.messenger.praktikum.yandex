@@ -15,5 +15,4 @@ const props = {
 };
 
 const form = new Form(props);
-
-export default (props) => compile(compileTemplate, Object.assign({ form }, props));
+export default (props) => compile(compileTemplate, { ...props, form });
