@@ -3,7 +3,7 @@ import Block from '../../modules/block';
 class Input extends Block {
 	constructor(props = {}) {
 		super('input', props);
-		if (props.hasOwnProperty('validators')) {
+		if (props.validators) {
 			const { validators } = props;
 			this._meta.validators = validators ? validators : {};
 		}

@@ -10,7 +10,7 @@ const parseValidatorsFromDefinition = (validators = {}) => {
 	Object.keys(validators).forEach(validatorName => {
 		const validator = validators[validatorName];
 		const { argument, func } = validator;
-		if (validator.hasOwnProperty('argument')) {
+		if (validator.argument) {
 			const expandFunction = func(argument);
 			result[validatorName] = expandFunction;
 		} else {
