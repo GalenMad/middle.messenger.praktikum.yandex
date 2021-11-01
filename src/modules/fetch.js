@@ -1,4 +1,11 @@
-import { queryStringify } from '../utils';
+const stringifyQuery = (data) => {
+	if (!data || typeof data !== 'object') {
+		return '';
+	}
+	return Object.entries(data).reduceRight((prev, curr) => {
+		return `${curr[0]}=${curr[1].toString()}${prev ? '&' + prev : ''}`;
+	}, null);
+};
 
 const METHODS = {
 	GET: 'GET',
@@ -7,9 +14,11 @@ const METHODS = {
 	PATCH: 'PATCH',
 	DELETE: 'DELETE'
 };
+
 class HTTPTransport {
 	get = (url, options = {}) => {
-		this.request(url, { ...options, method: METHODS.GET }, options.timeout);
+		const { data = {} } = options;
+		this.request(`${url}?${stringifyQuery(data) || ''}`, { ...options, method: METHODS.GET }, options.timeout);
 	};
 	put = (url, options = {}) => {
 		this.request(url, { ...options, method: METHODS.PUT }, options.timeout);
@@ -24,7 +33,7 @@ class HTTPTransport {
 	request = (url, options, timeout = 10000) => {
 		const { method, headers = {}, data } = options;
 		if (method === METHODS.GET && data) {
-			url += `?${queryStringify(data)}`;
+			url += `?${stringifyQuery(data)}`;
 		}
 		return new Promise((resolve, reject) => {
 			const xhr = new XMLHttpRequest();
