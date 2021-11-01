@@ -22,10 +22,6 @@ class Block {
 	constructor(tagName = 'div', props = {}) {
 		const eventBus = new EventBus();
 		this._meta = { tagName, props };
-		if (props.hasOwnProperty('attributes')) {
-			const { attributes } = props;
-			this._meta.attributes = attributes;
-		}
 		this.props = this._makePropsProxy(props);
 		this.eventBus = () => eventBus;
 		this._registerEvents(eventBus);
@@ -45,20 +41,20 @@ class Block {
 		});
 	}
 
-	_createDocumentElement(tagName, attributes) {
+	_createDocumentElement(tagName, attributes = {}) {
 		const element = document.createElement(tagName);
 		this._setAttributes(element, attributes);
 		return element;
 	}
 
 	_updateResources(newProps) {
-		const { attributes } = newProps;
-		Object.assign(this._meta.attributes, attributes);
+		const { attributes = {} } = newProps;
 		this._setAttributes(this.element, attributes);
 	}
 
 	_createResources() {
-		const { tagName, attributes } = this._meta;
+		const { tagName } = this._meta;
+		const {attributes = {}} = this.props;
 		this._element = this._createDocumentElement(tagName, attributes);
 	}
 
