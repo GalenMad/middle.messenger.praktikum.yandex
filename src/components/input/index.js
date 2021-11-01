@@ -2,8 +2,9 @@ import Block from '../../modules/block';
 
 class Input extends Block {
 	constructor(props = {}) {
-		const { validators = {} } = props;
-		super('input', {...props, validators});
+		const autocomplete = props.attributes.name || '';
+		const attributes = { ...props.attributes, autocomplete };
+		super('input', { ...props, attributes });
 	}
 
 	get value() {
@@ -11,7 +12,7 @@ class Input extends Block {
 	}
 
 	get validators() {
-		return this._meta.props.validators;
+		return this._meta.props.validators || {};
 	}
 
 	get validity() {
