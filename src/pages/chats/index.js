@@ -25,4 +25,4 @@ for (let i = 0; i < 14; i++) {
 		}
 	});
 }
-export default (props) => compile(compileTemplate, Object.assign({ chats, userAvatar: avatar }, props));
+export default (props) => compile(compileTemplate, { ...props, chats, userAvatar: avatar });

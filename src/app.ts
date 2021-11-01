@@ -1,4 +1,3 @@
-
 import './scss/styles.scss';
 import pages from './pages';
 import { SpreadPage } from './pages';

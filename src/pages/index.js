@@ -36,12 +36,12 @@ export default {
 	},
 	'page-404': {
 		name: 'Ошибка 404',
-		render: (props) => ErrorPage(Object.assign(errorPages['404'], props)),
+		render: (props) => ErrorPage({...props, ...errorPages['404']}),
 		path: '404'
 	},
 	'page-500': {
 		name: 'Ошибка 500',
-		render: (props) => ErrorPage(Object.assign(errorPages['500'], props)),
+		render: (props) => ErrorPage({...props, ...errorPages['500']}),
 		path: '500'
 	}
 };
