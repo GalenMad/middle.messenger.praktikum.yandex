@@ -101,19 +101,14 @@ class FormGroup extends Block {
 
 	checkValidity() {
 		const { validators } = this.props;
-		const validity = Object.entries(this.validity);
-		for (let i = 0; i < validity.length; i++) {
-			const value = validity[i][1];
-			if (!value) {
-				const name = validity[i][0];
-				let { message } = validators[name];
-				if (typeof message === 'function') {
-					message = message(validators[name].argument);
-				}
-				this._showValidationMessage(message);
-				break;
-			}
+		const validity = this.validity;
+		const currentValidator = Object.keys(validity).find((elem) => !validity[elem]);
+		if (!currentValidator) {
+			return;
 		}
+		let { message, argument = null } = validators[currentValidator];
+		message = typeof message === 'function' && message(argument) || message;
+		this._showValidationMessage(message);
 	}
 
 	render() {
