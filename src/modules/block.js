@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @typescript-eslint/no-empty-function */
+/* global Proxy */
+
 import EventBus from './event-bus';
 
 class Block {
@@ -68,7 +69,9 @@ class Block {
 		this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
 	}
 
-	componentDidMount(oldProps) { }
+	componentDidMount(oldProps) { 
+		return;
+	}
 
 	_componentDidUpdate(oldProps, newProps) {
 		this.componentDidUpdate(oldProps, newProps);
@@ -97,7 +100,9 @@ class Block {
 		this._addEvents(this.props);
 	}
 
-	render() { }
+	render() { 
+		return;
+	}
 
 	_addEvents(props) {
 		const { events = {} } = props;
@@ -140,7 +145,6 @@ class Block {
 			},
 		};
 
-		// eslint-disable-next-line no-undef
 		return new Proxy(props, handler);
 	}
 }
