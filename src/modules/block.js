@@ -30,10 +30,15 @@ class Block {
 	}
 
 	_registerEvents(eventBus) {
+		this.registerEvents(eventBus);
 		eventBus.on(Block.EVENTS.INIT, this.init.bind(this));
 		eventBus.on(Block.EVENTS.FLOW_CDM, this._componentDidMount.bind(this));
 		eventBus.on(Block.EVENTS.FLOW_CDU, this._componentDidUpdate.bind(this));
 		eventBus.on(Block.EVENTS.FLOW_RENDER, this._render.bind(this));
+	}
+
+	registerEvents(eventBus) {
+		return;
 	}
 
 	_setAttributes(element, attributes = {}) {
@@ -65,7 +70,7 @@ class Block {
 	}
 
 	_componentDidMount() {
-		this.componentDidMount();
+		this.componentDidMount(this.props);
 		this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
 	}
 

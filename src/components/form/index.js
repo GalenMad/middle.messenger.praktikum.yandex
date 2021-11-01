@@ -1,6 +1,5 @@
 import Block from '../../modules/block';
 import FormGroup from '../form-group';
-import EventBus from '../../modules/event-bus';
 import compile from '../../utils/compile';
 import compileTemplate from './template.pug';
 import './styles.scss';
@@ -32,29 +31,22 @@ class Form extends Block {
 		});
 	}
 
+	handler = (evt) => {
+		evt.preventDefault();
+		this._formSubmit();
+	};
+
 	constructor(props = {}) {
-		const eventBus = new EventBus();
 		// Конструкция ниже нужна для того, чтобы класс, заданный снаружи, был в приоритете
 		const className = props.attributes && props.attributes.class || FORM_CLASS;
 		const attributes = { ...props.attributes, class: className };
 		super('form', { ...props, attributes });
 
-		this.localEventBus = () => eventBus;
-		this._registerLocalEvents(eventBus);
-
 		// TODO: Нужно сохранять обработчики
 		// Если задать новые ивенты через setProps, то этот хэндлер умрёт
 		// Если задать этот обработчик в CDM, то уйдёт в рекурсию
-		const handler = (evt) => {
-			evt.preventDefault();
-			this.localEventBus().emit(Form.EVENTS.SUBMIT);
-		};
-
+		const handler = this.handler;
 		this.props.events = { ...this.props.events, submit: handler };
-	}
-
-	_registerLocalEvents(eventBus) {
-		eventBus.on(Form.EVENTS.SUBMIT, this._formSubmit.bind(this));
 	}
 
 	componentDidMount() {

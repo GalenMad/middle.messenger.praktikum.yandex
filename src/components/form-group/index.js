@@ -1,6 +1,5 @@
 import Block from '../../modules/block';
 import Input from '../input';
-import EventBus from '../../modules/event-bus';
 import compile from '../../utils/compile';
 import compileTemplate from './template.pug';
 import './styles.scss';
@@ -58,14 +57,10 @@ class FormGroup extends Block {
 	}
 
 	constructor(props = {}) {
-		const eventBus = new EventBus();
 		// Конструкция ниже нужна для того, чтобы класс, заданный снаружи, был в приоритете
 		const className = props.attributes && props.attributes.class || FORM_GROUP_CLASS;
 		const attributes = { ...props.attributes, class: className };
-		super('label', {...props, attributes});
-
-		this.localEventBus = () => eventBus;
-		this._registerLocalEvents(eventBus);
+		super('label', { ...props, attributes });
 	}
 
 	componentDidMount() {
@@ -74,11 +69,6 @@ class FormGroup extends Block {
 
 	componentDidUpdate() {
 		this._createInputElement();
-	}
-
-	_registerLocalEvents(eventBus) {
-		eventBus.on(FormGroup.EVENTS.VALIDATION, this.checkValidity.bind(this));
-		eventBus.on(FormGroup.EVENTS.VALIDATION_HIDE, this._hideValidationMessage.bind(this));
 	}
 
 	_hideValidationMessage() {
@@ -103,8 +93,8 @@ class FormGroup extends Block {
 			},
 			validators: parseValidatorsFromDefinition(validators),
 			events: {
-				blur: () => this.localEventBus().emit(FormGroup.EVENTS.VALIDATION),
-				focus: () => this.localEventBus().emit(FormGroup.EVENTS.VALIDATION_HIDE),
+				blur: () => this.checkValidity(),
+				focus: () => this._hideValidationMessage(),
 			}
 		});
 	}
