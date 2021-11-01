@@ -24,7 +24,7 @@ class Block {
 		const eventBus = new EventBus();
 		this._meta = { tagName, props };
 		this.props = this._makePropsProxy(props);
-		this.eventBus = () => eventBus;
+		this.eventBus = eventBus;
 		this._registerEvents(eventBus);
 		eventBus.emit(Block.EVENTS.INIT);
 	}
@@ -66,12 +66,12 @@ class Block {
 
 	init() {
 		this._createResources();
-		this.eventBus().emit(Block.EVENTS.FLOW_CDM);
+		this.eventBus.emit(Block.EVENTS.FLOW_CDM);
 	}
 
 	_componentDidMount() {
 		this.componentDidMount(this.props);
-		this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
+		this.eventBus.emit(Block.EVENTS.FLOW_RENDER);
 	}
 
 	componentDidMount(oldProps) { 
@@ -82,7 +82,7 @@ class Block {
 		this.componentDidUpdate(oldProps, newProps);
 		this._removeEvents(oldProps);
 		this._updateResources(newProps);
-		this.eventBus().emit(Block.EVENTS.FLOW_CDM);
+		this.eventBus.emit(Block.EVENTS.FLOW_CDM);
 
 	}
 
@@ -142,7 +142,7 @@ class Block {
 				const oldProps = { ...target };
 				target[prop] = value;
 				const newProps = { ...target };
-				this.eventBus().emit(Block.EVENTS.FLOW_CDU, oldProps, newProps);
+				this.eventBus.emit(Block.EVENTS.FLOW_CDU, oldProps, newProps);
 				return true;
 			},
 			deleteProperty: () => {
