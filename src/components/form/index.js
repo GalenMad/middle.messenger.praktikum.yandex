@@ -12,11 +12,11 @@ class Form extends Block {
 	}
 
 	get formGroups() {
-		return this._meta.formGroups;
+		return this._formGroups;
 	}
 
 	set formGroups(value) {
-		this._meta.formGroups = value;
+		this._formGroups = value;
 	}
 
 	get isValid() {
@@ -31,7 +31,9 @@ class Form extends Block {
 		});
 	}
 
-	handler = (evt) => {
+	_formGroups = null;
+
+	submitHandler = (evt) => {
 		evt.preventDefault();
 		this._formSubmit();
 	};
@@ -45,8 +47,8 @@ class Form extends Block {
 		// TODO: Нужно сохранять обработчики
 		// Если задать новые ивенты через setProps, то этот хэндлер умрёт
 		// Если задать этот обработчик в CDM, то уйдёт в рекурсию
-		const handler = this.handler;
-		this.props.events = { ...this.props.events, submit: handler };
+		const submitHandler = this.submitHandler;
+		this.props.events = { ...this.props.events, submit: submitHandler };
 	}
 
 	componentDidMount() {
