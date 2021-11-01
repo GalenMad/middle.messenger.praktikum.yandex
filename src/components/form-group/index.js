@@ -25,6 +25,7 @@ const parseValidatorsFromDefinition = (validators) => {
 	return result;
 };
 
+const FORM_GROUP_CLASS = 'form-group';
 class FormGroup extends Block {
 	static EVENTS = {
 		VALIDATION: 'validation',
@@ -59,9 +60,11 @@ class FormGroup extends Block {
 
 	constructor(props = {}) {
 		const eventBus = new EventBus();
-		// TODO: Переделать запись чтобы присвоение снаружи было в приоритете
-		const attributes = { ...props.attributes, class: 'form-group' };
+		// Конструкция ниже нужна для того, чтобы класс, заданный снаружи, был в приоритете
+		const className = props.attributes && props.attributes.class || FORM_GROUP_CLASS;
+		const attributes = { ...props.attributes, class: className };
 		super('label', {...props, attributes});
+		
 		this.localEventBus = () => eventBus;
 		this._registerLocalEvents(eventBus);
 	}

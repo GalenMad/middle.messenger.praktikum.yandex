@@ -5,9 +5,7 @@ import compile from '../../utils/compile';
 import compileTemplate from './template.pug';
 import './styles.scss';
 
-const attributes = {
-	class: 'form'
-};
+const FORM_CLASS = 'form';
 
 class Form extends Block {
 	static EVENTS = {
@@ -36,8 +34,11 @@ class Form extends Block {
 
 	constructor(props = {}) {
 		const eventBus = new EventBus();
-		const attributes = { ...props.attributes, class: 'form' };
+		// Конструкция ниже нужна для того, чтобы класс, заданный снаружи, был в приоритете
+		const className = props.attributes && props.attributes.class || FORM_CLASS;
+		const attributes = { ...props.attributes, class: className };
 		super('form', { ...props, attributes });
+		
 		this.localEventBus = () => eventBus;
 		this._registerLocalEvents(eventBus);
 
