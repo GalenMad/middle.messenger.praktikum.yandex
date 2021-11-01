@@ -38,7 +38,7 @@ class Form extends Block {
 		const className = props.attributes && props.attributes.class || FORM_CLASS;
 		const attributes = { ...props.attributes, class: className };
 		super('form', { ...props, attributes });
-		
+
 		this.localEventBus = () => eventBus;
 		this._registerLocalEvents(eventBus);
 
@@ -77,7 +77,7 @@ class Form extends Block {
 			element.checkValidity();
 		});
 		if (this.isValid) {
-			console.log(this.formData);
+			console.log(this.formData.reduceRight((prev, curr) => `${Object.entries(curr)[0].join(': ')}\n${prev}`, ''));
 		}
 	}
 
