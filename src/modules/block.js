@@ -23,7 +23,6 @@ class Block {
 	constructor(tagName = 'div', props = {}, children = {}) {
 		const eventBus = new EventBus();
 		this._meta = { tagName, props };
-		console.log(tagName);
 		this.props = this._makePropsProxy(props);
 		this.eventBus = eventBus;
 		this.children = children;

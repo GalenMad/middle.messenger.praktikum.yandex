@@ -33,7 +33,6 @@ const createInputElement = (props) => {
 	});
 };
 
-// TODO: Пройтись по коду, вынести строки в константы
 const FORM_GROUP_CLASS = 'form-group';
 const FORM_GROUP_TAG = 'label';
 const VALIDATION_SELECTOR = '.validation';
