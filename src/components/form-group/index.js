@@ -1,6 +1,5 @@
 import Block from '../../modules/block';
 import Input from '../input';
-import compile from '../../utils/compile';
 import compileTemplate from './template.pug';
 import './styles.scss';
 
@@ -21,99 +20,73 @@ const parseValidatorsFromDefinition = (validators = {}) => {
 	return result;
 };
 
+const createInputElement = (props) => {
+	const { id, name, validators, type = 'text' } = props;
+	return new Input({
+		attributes: {
+			class: 'control',
+			type,
+			id,
+			name
+		},
+		validators: parseValidatorsFromDefinition(validators),
+	});
+};
+
 // TODO: Пройтись по коду, вынести строки в константы
 const FORM_GROUP_CLASS = 'form-group';
+const FORM_GROUP_TAG = 'label';
+const VALIDATION_SELECTOR = '.validation';
 
 class FormGroup extends Block {
-	static EVENTS = {
-		VALIDATION: 'validation',
-		VALIDATION_HIDE: 'validation:hide',
-	};
-
-	get input() {
-		return this._meta.input;
-	}
-
-	set input(value) {
-		this._meta.input = value;
-	}
-
-	// TODO: 
-	// Есть подозрение, что мне не нужны все эти геттеры
 	get value() {
-		return this._meta.input.value;
+		return this.children.input.value;
+	}
+
+	get isValid() {
+		return !this.children.input.triggeredValidator;
 	}
 
 	get name() {
 		return this.props.name;
 	}
 
-	get validity() {
-		return this.input.validity;
-	}
-
-	get isValid() {
-		return Object.values(this.validity).every(item => item);
-	}
-
 	constructor(props = {}) {
 		// Конструкция ниже нужна для того, чтобы класс, заданный снаружи, был в приоритете
 		const className = props.attributes && props.attributes.class || FORM_GROUP_CLASS;
 		const attributes = { ...props.attributes, class: className };
-		super('label', { ...props, attributes });
+		const input = createInputElement(props);
+		super(FORM_GROUP_TAG, { ...props, attributes }, { input });
 	}
 
 	componentDidMount() {
-		this._createInputElement();
-	}
-
-	componentDidUpdate() {
-		this._createInputElement();
+		const input = this.children.input.getContent();
+		input.addEventListener('focus', () => this._hideValidationMessage());
+		input.addEventListener('blur', () => this.checkValidity());
 	}
 
 	_hideValidationMessage() {
-		const container = this.element.querySelector('.validation');
+		const container = this.element.querySelector(VALIDATION_SELECTOR);
 		container.style.display = 'none';
 	}
 
-	_showValidationMessage(message) {
-		const container = this.element.querySelector('.validation');
-		container.style.display = 'block';
-		container.textContent = message;
-	}
-
-	_createInputElement() {
-		const { id, name, validators, type = 'text' } = this.props;
-		this.input = new Input({
-			attributes: {
-				class: 'control',
-				type,
-				id,
-				name
-			},
-			validators: parseValidatorsFromDefinition(validators),
-			events: {
-				blur: () => this.checkValidity(),
-				focus: () => this._hideValidationMessage(),
-			}
-		});
+	componentDidUpdate(newProps) {
+		this.children.input = createInputElement(newProps);
 	}
 
 	checkValidity() {
 		const { validators } = this.props;
-		const validity = this.validity;
-		const currentValidator = Object.keys(validity).find((elem) => !validity[elem]);
-		if (!currentValidator) {
-			return;
+		const validity = this.children.input.triggeredValidator;
+		if (validity) {
+			let { message, argument = null } = validators[validity];
+			const container = this.element.querySelector(VALIDATION_SELECTOR);
+			container.style.display = 'block';
+			container.textContent = typeof message === 'function' ? message(argument) : message;
 		}
-		let { message, argument = null } = validators[currentValidator];
-		message = typeof message === 'function' && message(argument) || message;
-		this._showValidationMessage(message);
 	}
 
 	render() {
-		const input = this.input;
-		return compile(compileTemplate, { ...this.props, input });
+		return compileTemplate(this.props);
 	}
 }
 
