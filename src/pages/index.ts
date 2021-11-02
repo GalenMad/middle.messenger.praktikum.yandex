@@ -1,8 +1,8 @@
-import Authorization from './authorization/';
-import Registration from './registration/';
-import UserSettings from './profile/';
-import ErrorPage from './error-page/';
-import ChatsPage from './chats/';
+import Authorization from './authorization';
+import Registration from './registration';
+import UserSettings from './profile';
+import ErrorPage from './error-page';
+import ChatsPage from './chats';
 import SpreadPage from './spread-page';
 
 const errorPages = {
@@ -35,11 +35,11 @@ export default [{
 },
 {
 	name: 'Ошибка 404',
-	render: (props) => ErrorPage({ ...props, ...errorPages['404'] }),
+	render: () => ErrorPage({...errorPages['404'] }),
 	path: '404'
 },
 {
 	name: 'Ошибка 500',
-	render: (props) => ErrorPage({ ...props, ...errorPages['500'] }),
+	render: () => ErrorPage({...errorPages['500'] }),
 	path: '500'
 }];
