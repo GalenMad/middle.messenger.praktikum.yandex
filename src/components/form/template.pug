@@ -1,5 +1,6 @@
 h2.form-title= title
-!= formGroups
+each field, index in fields 
+    template(data-component="form-group-" + index)
 button.form-submit(type="submit")= buttonText
 footer.form-footer
     p= footerText

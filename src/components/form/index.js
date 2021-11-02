@@ -1,84 +1,41 @@
 import Block from '../../modules/block';
 import FormGroup from '../form-group';
-import compile from '../../utils/compile';
 import compileTemplate from './template.pug';
 import './styles.scss';
 
 const FORM_CLASS = 'form';
+const FORM_TAG = 'form';
+
+const createFormGroups = (props) => {
+	const { fields = [] } = props;
+	const formGroups = {};
+	fields.forEach((field, index) => formGroups[`form-group-${index}`] = new FormGroup(field));
+	return formGroups;
+};
 
 class Form extends Block {
-	static EVENTS = {
-		SUBMIT: 'submit'
-	}
-
-	get formGroups() {
-		return this._formGroups;
-	}
-
-	set formGroups(value) {
-		this._formGroups = value;
-	}
-
-	get isValid() {
-		return this.formGroups.map(element => element.isValid).every(status => status);
-	}
-
-	get formData() {
-		return this.formGroups.map(element => {
-			const field = {};
-			field[element.name] = element.value;
-			return field;
-		});
-	}
-
-	_formGroups = null;
-
-	submitHandler = (evt) => {
-		evt.preventDefault();
-		this._formSubmit();
-	};
-
 	constructor(props = {}) {
 		// Конструкция ниже нужна для того, чтобы класс, заданный снаружи, был в приоритете
 		const className = props.attributes && props.attributes.class || FORM_CLASS;
 		const attributes = { ...props.attributes, class: className };
-		super('form', { ...props, attributes });
+		const formGroups = createFormGroups(props);
+		super(FORM_TAG, { ...props, attributes }, formGroups);
 
-		// TODO: Нужно сохранять обработчики
-		// Если задать новые ивенты через setProps, то этот хэндлер умрёт
-		// Если задать этот обработчик в CDM, то уйдёт в рекурсию
-		const submitHandler = this.submitHandler;
-		this.props.events = { ...this.props.events, submit: submitHandler };
-	}
-
-	componentDidMount() {
-		this._createFormGroups();
-	}
-
-	componentDidUpdate() {
-		this._createFormGroups();
-	}
-
-	_createFormGroups() {
-		const { fields } = this.props;
-		this.formGroups = fields.map((field) => {
-			return new FormGroup(field);
+		// Объявление в конструкторе не очень красиво, зато просто и не дублируется
+		this.element.addEventListener('submit', (evt) => {
+			evt.preventDefault();
+			const formGroups = Object.values(this.children);
+			const isValid = formGroups.map(element => element.isValid).every(status => status);
+			formGroups.forEach((element) => element.checkValidity());
+			if (isValid) {
+				const formData = formGroups.map(element => [element.name, element.value]);
+				console.log(formData.reduceRight((prev, curr) => `${curr.join(': ')}\n${prev}`, ''));
+			}
 		});
-	}
-
-	_formSubmit() {
-		this.formGroups.forEach((element) => {
-			element.checkValidity();
-		});
-		if (this.isValid) {
-			console.log(this.formData.reduceRight((prev, curr) => `${Object.entries(curr)[0].join(': ')}\n${prev}`, ''));
-		}
 	}
 
 	render() {
-		const formGroups = this.formGroups;
-		const props = this.props;
-		return compile(compileTemplate, { ...props, formGroups });
+		return compileTemplate(this.props);
 	}
 }
 
