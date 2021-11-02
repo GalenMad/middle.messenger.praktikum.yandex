@@ -1,12 +1,15 @@
+/* eslint-disable import/no-extraneous-dependencies */
+/* eslint-disable no-console */
 /* eslint @typescript-eslint/no-var-requires: 0 */
 /* eslint no-undef: 0 */
 
-const express = require('express');
+import express, { static } from 'express';
+
 const PORT = 3000;
 const app = express();
 
-app.use(express.static(`${__dirname}/dist/`));
+app.use(static(`${__dirname}/dist/`));
 
 app.listen(PORT, () => {
-	console.log(`Server listening on port ${PORT}!`);
+  console.log(`Server listening on port ${PORT}!`);
 });
