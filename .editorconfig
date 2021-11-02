@@ -26,7 +26,7 @@ indent_size = 4
 indent_style = space
 
 # Indentation override for all JS under lib directory
-[src/**.js, src/**.ts]
+[*.{js,ts,css}]
 indent_style = space
 indent_size = 2
 
