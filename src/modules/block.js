@@ -20,25 +20,22 @@ class Block {
 		return this._element;
 	}
 
-	constructor(tagName = 'div', props = {}) {
+	constructor(tagName = 'div', props = {}, children = {}) {
 		const eventBus = new EventBus();
 		this._meta = { tagName, props };
+		console.log(tagName);
 		this.props = this._makePropsProxy(props);
 		this.eventBus = eventBus;
+		this.children = children;
 		this._registerEvents(eventBus);
 		eventBus.emit(Block.EVENTS.INIT);
 	}
 
 	_registerEvents(eventBus) {
-		this.registerEvents(eventBus);
 		eventBus.on(Block.EVENTS.INIT, this.init.bind(this));
+		eventBus.on(Block.EVENTS.FLOW_RENDER, this._render.bind(this));
 		eventBus.on(Block.EVENTS.FLOW_CDM, this._componentDidMount.bind(this));
 		eventBus.on(Block.EVENTS.FLOW_CDU, this._componentDidUpdate.bind(this));
-		eventBus.on(Block.EVENTS.FLOW_RENDER, this._render.bind(this));
-	}
-
-	registerEvents(eventBus) {
-		return;
 	}
 
 	_setAttributes(element, attributes = {}) {
@@ -53,40 +50,37 @@ class Block {
 		return element;
 	}
 
-	_updateResources(newProps) {
-		const { attributes = {} } = newProps;
-		this._setAttributes(this.element, attributes);
-	}
-
 	_createResources() {
 		const { tagName } = this._meta;
-		const {attributes = {}} = this.props;
+		const { attributes = {} } = this.props;
 		this._element = this._createDocumentElement(tagName, attributes);
 	}
 
 	init() {
 		this._createResources();
-		this.eventBus.emit(Block.EVENTS.FLOW_CDM);
+		this.eventBus.emit(Block.EVENTS.FLOW_RENDER);
 	}
 
 	_componentDidMount() {
 		this.componentDidMount(this.props);
-		this.eventBus.emit(Block.EVENTS.FLOW_RENDER);
 	}
 
-	componentDidMount(oldProps) { 
+	componentDidMount(oldProps) {
 		return;
 	}
 
-	_componentDidUpdate(oldProps, newProps) {
-		this.componentDidUpdate(oldProps, newProps);
-		this._removeEvents(oldProps);
-		this._updateResources(newProps);
-		this.eventBus.emit(Block.EVENTS.FLOW_CDM);
-
+	_updateResources(newProps) {
+		const { attributes = {} } = newProps;
+		this._setAttributes(this.element, attributes);
 	}
 
-	componentDidUpdate(oldProps, newProps) {
+	_componentDidUpdate(newProps, oldProps) {
+		this.componentDidUpdate(newProps, oldProps);
+		this._updateResources(newProps);
+		this.eventBus.emit(Block.EVENTS.FLOW_RENDER);
+	}
+
+	componentDidUpdate(newProps, oldProps) {
 		return true;
 	}
 
@@ -96,33 +90,36 @@ class Block {
 		}
 	};
 
+	stringToDocumentFragment(string) {
+		const template = document.createElement('template');
+		template.innerHTML = string;
+		return template.content;
+	}
+
+	replaceChildren() {
+		if (!Object.values(this.children).length) return;
+		const childrensToReplace = this.element.querySelectorAll('[data-component]');
+		for (const childrenToReplace of childrensToReplace) {
+			const componentName = childrenToReplace.dataset.component;
+			const parentBlock = childrenToReplace.parentNode;
+			const child = this.children[componentName];
+			parentBlock.replaceChild(child.getContent(), childrenToReplace);
+		}
+	}
+
 	_render() {
+		this.element.innerHTML = '';
 		const block = this.render();
 		if (block) {
-			this._element.innerHTML = '';
-			this._element.appendChild(block);
+			const fragment = this.stringToDocumentFragment(block);
+			this.element.append(fragment);
 		}
-		this._addEvents(this.props);
+		this.replaceChildren();
+		this.eventBus.emit(Block.EVENTS.FLOW_CDM);
 	}
 
-	render() { 
-		return;
-	}
-
-	_addEvents(props) {
-		const { events = {} } = props;
-
-		Object.keys(events).forEach(eventName => {
-			this.element.addEventListener(eventName, events[eventName]);
-		});
-	}
-
-	_removeEvents(props) {
-		const { events = {} } = props;
-
-		Object.keys(events).forEach(eventName => {
-			this.element.removeEventListener(eventName, events[eventName]);
-		});
+	render() {
+		return false;
 	}
 
 	getContent() {
@@ -142,14 +139,13 @@ class Block {
 				const oldProps = { ...target };
 				target[prop] = value;
 				const newProps = { ...target };
-				this.eventBus.emit(Block.EVENTS.FLOW_CDU, oldProps, newProps);
+				this.eventBus.emit(Block.EVENTS.FLOW_CDU, newProps, oldProps);
 				return true;
 			},
 			deleteProperty: () => {
 				throw new Error(this.MESSAGE_ACCESS_ERROR);
 			},
 		};
-
 		return new Proxy(props, handler);
 	}
 }
