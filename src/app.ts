@@ -13,10 +13,8 @@ const router = new Router({
 	root: '/'
 });
 
-const list: object[] = Object.values(pages);
-
 // eslint-disable-next-line @typescript-eslint/ban-types
-list.forEach((page: { path: string, render: Function }): void => {
+pages.forEach((page: { path: string, render: Function }): void => {
 	const { render, path } = page;
 	router.add(path, () => {
 		root.innerHTML = '';
@@ -27,5 +25,5 @@ list.forEach((page: { path: string, render: Function }): void => {
 // TODO: Временная заглушка для разводящей страницы;
 router.add('', (): void => {
 	root.innerHTML = '';
-	root.appendChild(SpreadPage({ list }));
+	root.appendChild(SpreadPage({ list: pages }));
 });

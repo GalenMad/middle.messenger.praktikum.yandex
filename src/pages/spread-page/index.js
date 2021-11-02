@@ -5,7 +5,7 @@ class Page extends Block {
 	constructor(props = {}) {
 		super('div', props);
 	}
-	
+
 	render() {
 		return compileTemplate(this.props);
 	}
