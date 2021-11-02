@@ -11,19 +11,10 @@ class Input extends Block {
 		return this.element.value;
 	}
 
-	get validators() {
-		return this._meta.props.validators || {};
-	}
-
-	get validity() {
-		const validity = {};
+	get triggeredValidator() {
 		const value = this.value;
-
-		Object.keys(this.validators).map(validatorName => {
-			validity[validatorName] = this.validators[validatorName](value);
-		});
-
-		return validity;
+		const validators = this.props.validators || {};
+		return Object.keys(validators).find(name => !validators[name](value));
 	}
 }
 
