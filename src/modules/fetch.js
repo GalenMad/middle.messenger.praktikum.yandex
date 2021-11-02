@@ -1,22 +1,32 @@
-import { queryStringify } from '../utils';
+const stringifyQuery = (data) => {
+	if (!data || typeof data !== 'object') {
+		return '';
+	}
+	return Object.entries(data).reduceRight((prev, curr) => `${curr[0]}=${curr[1].toString()}${prev ? `&${prev}` : ''}`, null);
+};
 
 const METHODS = {
 	GET: 'GET',
 	POST: 'POST',
 	PUT: 'PUT',
 	PATCH: 'PATCH',
-	DELETE: 'DELETE'
+	DELETE: 'DELETE',
 };
+
 class HTTPTransport {
 	get = (url, options = {}) => {
-		this.request(url, { ...options, method: METHODS.GET }, options.timeout);
+		const { data = {} } = options;
+		this.request(`${url}?${stringifyQuery(data) || ''}`, { ...options, method: METHODS.GET }, options.timeout);
 	};
+
 	put = (url, options = {}) => {
 		this.request(url, { ...options, method: METHODS.PUT }, options.timeout);
 	};
+
 	post = (url, options = {}) => {
 		this.request(url, { ...options, method: METHODS.POST }, options.timeout);
 	};
+
 	delete = (url, options = {}) => {
 		this.request(url, { ...options, method: METHODS.DELETE }, options.timeout);
 	};
@@ -24,7 +34,7 @@ class HTTPTransport {
 	request = (url, options, timeout = 10000) => {
 		const { method, headers = {}, data } = options;
 		if (method === METHODS.GET && data) {
-			url += `?${queryStringify(data)}`;
+			url += `?${stringifyQuery(data)}`;
 		}
 		return new Promise((resolve, reject) => {
 			const xhr = new XMLHttpRequest();
@@ -51,4 +61,4 @@ class HTTPTransport {
 	};
 }
 
-export default new HTTPTransport;
+export default new HTTPTransport();

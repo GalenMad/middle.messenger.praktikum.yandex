@@ -1,145 +1,94 @@
 import Block from '../../modules/block';
 import Input from '../input';
-import EventBus from '../../modules/event-bus';
-import compile from '../../utils/compile';
 import compileTemplate from './template.pug';
 import './styles.scss';
 
-const parseValidatorsFromDefinition = (validators) => {
-	if (!validators) {
-		return {};
-	}
-	const result = {};
-	Object.keys(validators).map(validatorName => {
-		const validator = validators[validatorName];
-		const { argument, func } = validator;
-		if (validator.hasOwnProperty('argument')) {
-			const expandFunction = func(argument);
-			result[validatorName] = expandFunction;
-		} else {
-			const expandFunction = func();
-			result[validatorName] = expandFunction;
-		}
-		return validator;
-	});
-	return result;
+const parseValidatorsFromDefinition = (validators = {}) => {
+  const result = {};
+  Object.keys(validators).forEach((validatorName) => {
+    const validator = validators[validatorName];
+    const { argument, func } = validator;
+    if (validator.argument) {
+      const expandFunction = func(argument);
+      result[validatorName] = expandFunction;
+    } else {
+      const expandFunction = func();
+      result[validatorName] = expandFunction;
+    }
+    return validator;
+  });
+  return result;
 };
 
+const createInputElement = (props) => {
+  const {
+    id, name, validators, type = 'text',
+  } = props;
+  return new Input({
+    attributes: {
+      class: 'control',
+      type,
+      id,
+      name,
+    },
+    validators: parseValidatorsFromDefinition(validators),
+  });
+};
+
+const FORM_GROUP_CLASS = 'form-group';
+const FORM_GROUP_TAG = 'label';
+const VALIDATION_SELECTOR = '.validation';
+
 class FormGroup extends Block {
-	static EVENTS = {
-		VALIDATION: 'validation',
-		VALIDATION_HIDE: 'validation:hide',
-	};
+  get value() {
+    return this.children.input.value;
+  }
 
-	// TODO:
-	// Почему-то не получается передать значения в местный _input
-	// Узнать почему
-	get input() {
-		return this._meta.input;
-	}
+  get isValid() {
+    return !this.children.input.triggeredValidator;
+  }
 
-	set input(value) {
-		this._meta.input = value;
-	}
+  get name() {
+    return this.props.name;
+  }
 
-	// TODO: 
-	// Есть подозрение, что мне не нужны все эти геттеры
-	get value() {
-		return this._meta.input.value;
-	}
+  constructor(props = {}) {
+    // Конструкция ниже нужна для того, чтобы класс, заданный снаружи, был в приоритете
+    const className = (props.attributes && props.attributes.class) || FORM_GROUP_CLASS;
+    const attributes = { ...props.attributes, class: className };
+    const input = createInputElement(props);
+    super(FORM_GROUP_TAG, { ...props, attributes }, { input });
+  }
 
-	get name() {
-		return this.props.name;
-	}
+  componentDidMount() {
+    const input = this.children.input.getContent();
+    input.addEventListener('focus', () => this._hideValidationMessage());
+    input.addEventListener('blur', () => this.checkValidity());
+  }
 
-	get validity() {
-		return this.input.validity;
-	}
+  _hideValidationMessage() {
+    const container = this.element.querySelector(VALIDATION_SELECTOR);
+    container.style.display = 'none';
+  }
 
-	get isValid() {
-		return Object.values(this.validity).every(item => item);
-	}
+  componentDidUpdate(newProps) {
+    this.children.input = createInputElement(newProps);
+  }
 
-	constructor(props = {}) {
-		// TODO: Громоздкая конструкция, хочется как-то упростить
-		if (props.hasOwnProperty('attributes')) {
-			Object.assign(props.attributes, { class: 'form-group' });
-		} else {
-			props.attributes = { class: 'form-group' };
-		}
+  checkValidity() {
+    const { validators } = this.props;
+    const validity = this.children.input.triggeredValidator;
+    if (validity) {
+      const { message, argument = null } = validators[validity];
+      const container = this.element.querySelector(VALIDATION_SELECTOR);
+      container.style.display = 'block';
+      container.textContent = typeof message === 'function' ? message(argument) : message;
+    }
+  }
 
-		const eventBus = new EventBus();
-		super('label', props);
-		this.localEventBus = () => eventBus;
-		this._registerLocalEvents(eventBus);
-	}
-
-	componentDidMount() {
-		this._createInputElement();
-	}
-
-	componentDidUpdate() {
-		this._createInputElement();
-	}
-
-	_registerLocalEvents(eventBus) {
-		eventBus.on(FormGroup.EVENTS.VALIDATION, this.checkValidity.bind(this));
-		eventBus.on(FormGroup.EVENTS.VALIDATION_HIDE, this._hideValidationMessage.bind(this));
-	}
-
-	_hideValidationMessage() {
-		const container = this.element.querySelector('.validation');
-		container.style.display = 'none';
-	}
-
-	_showValidationMessage(message) {
-		const container = this.element.querySelector('.validation');
-		container.style.display = 'block';
-		container.textContent = message;
-	}
-
-	_createInputElement() {
-		const { id, name, validators } = this.props;
-		const type = this.props.hasOwnProperty('type') ? this.props.type : 'text';
-		this.input = new Input({
-			attributes: {
-				class: 'control',
-				type,
-				id,
-				name
-			},
-			validators: parseValidatorsFromDefinition(validators),
-			events: {
-				blur: () => this.localEventBus().emit(FormGroup.EVENTS.VALIDATION),
-				focus: () => this.localEventBus().emit(FormGroup.EVENTS.VALIDATION_HIDE),
-			}
-		});
-	}
-
-	checkValidity() {
-		const { validators } = this.props;
-		const validity = Object.entries(this.validity);
-		for (let i = 0; i < validity.length; i++) {
-			const value = validity[i][1];
-			if (!value) {
-				const name = validity[i][0];
-				let { message } = validators[name];
-				if (typeof message === 'function') {
-					message = message(validators[name].argument);
-				}
-				this._showValidationMessage(message);
-				break;
-			}
-		}
-	}
-
-	render() {
-		const input = this.input;
-		return compile(compileTemplate, Object.assign({}, this.props, { input }));
-	}
+  render() {
+    return compileTemplate(this.props);
+  }
 }
 
 export default FormGroup;
-
-
-

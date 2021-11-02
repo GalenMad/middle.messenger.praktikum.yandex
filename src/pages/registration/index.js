@@ -1,19 +1,28 @@
+import Block from '../../modules/block';
 import allFields from '../../data/fields';
-import Form from './../../components/form';
-import compile from '../../utils/compile';
+import Form from '../../components/form';
 import compileTemplate from './template.pug';
 
 const fields = Object.values(allFields);
 
-const props = {
-	fields,
-	title: 'Регистрация',
-	buttonText: 'Поехали',
-	footerText: 'Уже есть аккаунт?',
-	linkText: 'Войти',
-	link: '/authorization'
+const pageProps = {
+  fields,
+  title: 'Регистрация',
+  buttonText: 'Поехали',
+  footerText: 'Уже есть аккаунт?',
+  linkText: 'Войти',
+  link: '/authorization',
 };
 
-const form = new Form(props);
+class Page extends Block {
+  constructor(props = {}) {
+    const form = new Form(props);
+    super('div', props, { form });
+  }
 
-export default (props) => compile(compileTemplate, Object.assign({ form }, props));
+  render() {
+    return compileTemplate(this.props);
+  }
+}
+
+export default (props) => new Page({ ...pageProps, ...props }).getContent();
