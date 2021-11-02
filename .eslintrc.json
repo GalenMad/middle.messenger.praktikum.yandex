@@ -4,7 +4,7 @@
         "node": true
     },
     "extends": [
-        "eslint:recommended",
+        "airbnb-base",
         "plugin:json/recommended",
         "plugin:@typescript-eslint/recommended"
     ],
@@ -20,9 +20,10 @@
         "no-self-compare": "error",
         "no-duplicate-imports": "error",
         "no-unmodified-loop-condition": "error",
+        "no-underscore-dangle": 0,
         "indent": [
             "error",
-            "tab"
+            2
         ],
         "linebreak-style": [
             "error",
