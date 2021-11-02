@@ -20,7 +20,7 @@ class Block {
   get element() {
     return this._element;
   }
-
+  // TODO: Избавиться от _meta
   constructor(tagName = 'div', props = {}, children = {}) {
     const eventBus = new EventBus();
     this._meta = { tagName, props };
