@@ -1,3 +1,15 @@
-import compile from '../../utils/compile';
+import Block from '../../modules/block';
 import compileTemplate from './template.pug';
-export default (props) => compile(compileTemplate, props);
+
+class Page extends Block {
+	constructor(props = {}) {
+		super('div', props);
+	}
+	
+	render() {
+		return compileTemplate(this.props);
+	}
+}
+
+export default (props) => new Page(props).getContent();
+

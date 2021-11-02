@@ -1,4 +1,4 @@
-import compile from '../../utils/compile';
+import Block from '../../modules/block';
 import defaultAvatar from '../../assets/images/default-avatar.svg';
 import compileTemplate from './template.pug';
 import './styles.scss';
@@ -23,5 +23,16 @@ const userData = [{
 	value: '+7 (909) 967 30 30'
 }];
 
-export default (props) => compile(compileTemplate, { ...props, userData, defaultAvatar});
+class Page extends Block {
+	constructor(props = {}) {
+		super('div', props);
+	}
+	
+	render() {
+		return compileTemplate(this.props);
+	}
+}
+
+export default (props) => new Page({ ...props, userData, defaultAvatar}).getContent();
+
 

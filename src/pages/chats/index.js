@@ -1,4 +1,4 @@
-import compile from '../../utils/compile';
+import Block from '../../modules/block';
 import avatar from '../../assets/images/default-avatar.svg';
 import compileTemplate from './template.pug';
 import './styles.scss';
@@ -25,4 +25,16 @@ for (let i = 0; i < 14; i++) {
 		}
 	});
 }
-export default (props) => compile(compileTemplate, { ...props, chats, userAvatar: avatar });
+
+class Page extends Block {
+	constructor(props = {}) {
+		super('div', props);
+	}
+
+	render() {
+		return compileTemplate(this.props);
+	}
+}
+
+export default (props) => new Page({ ...props, chats, userAvatar: avatar }).getContent();
+
