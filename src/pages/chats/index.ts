@@ -3,7 +3,7 @@ import avatar from '../../assets/images/default-avatar.svg';
 import compileTemplate from './template.pug';
 import './styles.scss';
 
-const chats = [];
+const chats: Array<any> = [];
 
 for (let i = 0; i < 14; i += 1) {
   chats.push({
@@ -36,4 +36,4 @@ class Page extends Block {
   }
 }
 
-export default (props) => new Page({ ...props, chats, userAvatar: avatar }).getContent();
+export default () => new Page({ chats, userAvatar: avatar }).getContent();

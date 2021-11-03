@@ -3,9 +3,10 @@ import Input from '../input';
 import compileTemplate from './template.pug';
 import './styles.scss';
 
-const parseValidatorsFromDefinition = (validators = {}) => {
-  const result = {};
-  Object.keys(validators).forEach((validatorName) => {
+const parseValidatorsFromDefinition = (validators: Record<string, {argument?: number, func: Function, message: string | Function}>) => {
+  const result: Record<string, Function> = {};
+  const validatorList: string[] = Object.keys(validators)
+  validatorList.forEach((validatorName) => {
     const validator = validators[validatorName];
     const { argument, func } = validator;
     if (validator.argument) {
@@ -20,10 +21,11 @@ const parseValidatorsFromDefinition = (validators = {}) => {
   return result;
 };
 
-const createInputElement = (props) => {
+const createInputElement = (props: { name: string; type?: string; id: string; attributes?: { class?: string; }; validators?: any; }) => {
   const {
     id, name, validators, type = 'text',
   } = props;
+  const inputValidators: Record<string, Function> = parseValidatorsFromDefinition(validators)
   return new Input({
     attributes: {
       class: 'control',
@@ -31,7 +33,7 @@ const createInputElement = (props) => {
       id,
       name,
     },
-    validators: parseValidatorsFromDefinition(validators),
+    validators: inputValidators,
   });
 };
 
@@ -40,6 +42,7 @@ const FORM_GROUP_TAG = 'label';
 const VALIDATION_SELECTOR = '.validation';
 
 class FormGroup extends Block {
+
   get value() {
     return this.children.input.value;
   }
@@ -52,12 +55,11 @@ class FormGroup extends Block {
     return this.props.name;
   }
 
-  constructor(props = {}) {
+  constructor(props: { name: string, type?: string, id: string, attributes?: Record<string, string>, validators?: Record<string, {argument: number, func: Function, message: string | Function}> }) {
     // Конструкция ниже нужна для того, чтобы класс, заданный снаружи, был в приоритете
     const className = (props.attributes && props.attributes.class) || FORM_GROUP_CLASS;
     const attributes = { ...props.attributes, class: className };
-    const input = createInputElement(props);
-    super(FORM_GROUP_TAG, { ...props, attributes }, { input });
+    super(FORM_GROUP_TAG, { ...props, attributes }, { input: createInputElement(props) });
   }
 
   componentDidMount() {
@@ -67,22 +69,29 @@ class FormGroup extends Block {
   }
 
   _hideValidationMessage() {
-    const container = this.element.querySelector(VALIDATION_SELECTOR);
-    container.style.display = 'none';
+    const container: HTMLElement | null = this.element.querySelector(VALIDATION_SELECTOR);
+    if (container) {
+      container.style.display = 'none';
+    }
   }
 
-  componentDidUpdate(newProps) {
+  componentDidUpdate(newProps: { name: string; type?: string | undefined; id: string; attributes?: { class?: string; }; validators?: any; }) {
     this.children.input = createInputElement(newProps);
   }
 
   checkValidity() {
-    const { validators } = this.props;
+    if (!this.props.validators) {
+      return;
+    }
+    const validators: Record<string, any>  = this.props.validators;
     const validity = this.children.input.triggeredValidator;
     if (validity) {
       const { message, argument = null } = validators[validity];
-      const container = this.element.querySelector(VALIDATION_SELECTOR);
-      container.style.display = 'block';
-      container.textContent = typeof message === 'function' ? message(argument) : message;
+      const container: HTMLElement | null = this.element.querySelector(VALIDATION_SELECTOR);
+      if (container) {
+        container.style.display = 'block';
+        container.textContent = typeof message === 'function' ? message(argument) : message;
+      }
     }
   }
 

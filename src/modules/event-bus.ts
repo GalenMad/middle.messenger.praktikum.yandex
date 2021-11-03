@@ -1,4 +1,5 @@
 class EventBus {
+  listeners: { string?: [] }
   constructor() {
     this.listeners = {};
   }

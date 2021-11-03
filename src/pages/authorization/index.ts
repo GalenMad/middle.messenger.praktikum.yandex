@@ -1,17 +1,17 @@
-import Block from '../../modules/block';
 import allFields from '../../data/fields';
 import Form from '../../components/form';
 import compileTemplate from './template.pug';
+import Block from '../../modules/block';
 
-const fields = Object.values(allFields);
+const fields = allFields.filter((field) => ['login', 'password'].includes(field.name));
 
 const pageProps = {
   fields,
-  title: 'Регистрация',
+  title: 'Авторизация',
   buttonText: 'Поехали',
-  footerText: 'Уже есть аккаунт?',
-  linkText: 'Войти',
-  link: '/authorization',
+  footerText: 'Нет аккаунта?',
+  linkText: 'Зарегестрироваться',
+  link: '/registration',
 };
 
 class Page extends Block {
@@ -25,4 +25,4 @@ class Page extends Block {
   }
 }
 
-export default (props) => new Page({ ...pageProps, ...props }).getContent();
+export default () => new Page(pageProps).getContent();

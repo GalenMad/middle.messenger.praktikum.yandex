@@ -4,6 +4,10 @@
 import EventBus from './event-bus';
 
 class Block {
+  [x: string]: any;
+  checkValidity(): void {
+    throw new Error('Method not implemented.');
+  }
   static EVENTS = {
     INIT: 'init',
     FLOW_CDM: 'flow:component-did-mount',
@@ -13,25 +17,27 @@ class Block {
 
   static MESSAGE_ACCESS_ERROR = 'Нет прав';
 
-  _element = null;
-
-  _meta = null;
+  _element: HTMLElement;
+  _meta: { tagName: string; props: {}; };
+  eventBus: EventBus;
+  props: { attributes?: { string: string }, name?: string, validators?: Record<string, Function> | Record<string, {argument: number, func: Function, message: string | Function}> };
+  children: Record<string, Block>;
 
   get element() {
     return this._element;
   }
   // TODO: Избавиться от _meta
   constructor(tagName = 'div', props = {}, children = {}) {
-    const eventBus = new EventBus();
     this._meta = { tagName, props };
     this.props = this._makePropsProxy(props);
-    this.eventBus = eventBus;
+    this.eventBus = new EventBus();
     this.children = children;
-    this._registerEvents(eventBus);
-    eventBus.emit(Block.EVENTS.INIT);
+    this._registerEvents();
+    this.eventBus.emit(Block.EVENTS.INIT);
   }
 
-  _registerEvents(eventBus) {
+  _registerEvents() {
+    const eventBus = this.eventBus;
     eventBus.on(Block.EVENTS.INIT, this.init.bind(this));
     eventBus.on(Block.EVENTS.FLOW_RENDER, this._render.bind(this));
     eventBus.on(Block.EVENTS.FLOW_CDM, this._componentDidMount.bind(this));
@@ -39,13 +45,13 @@ class Block {
   }
 
   // eslint-disable-next-line class-methods-use-this
-  _setAttributes(element, attributes = {}) {
-    Object.keys(attributes).forEach((attr) => {
+  _setAttributes(element: HTMLElement, attributes: Record<string, string> = {}) {
+    Object.keys(attributes).forEach((attr: string) => {
       element.setAttribute(attr, attributes[attr]);
     });
   }
 
-  _createDocumentElement(tagName, attributes = {}) {
+  _createDocumentElement(tagName: string, attributes = {}) {
     const element = document.createElement(tagName);
     this._setAttributes(element, attributes);
     return element;
@@ -53,8 +59,7 @@ class Block {
 
   _createResources() {
     const { tagName } = this._meta;
-    const { attributes = {} } = this.props;
-    this._element = this._createDocumentElement(tagName, attributes);
+    this._element = this._createDocumentElement(tagName, this.props.attributes);
   }
 
   init() {
@@ -66,30 +71,30 @@ class Block {
     this.componentDidMount(this.props);
   }
 
-  componentDidMount(oldProps) { return false; }
+  componentDidMount(_oldProps: any): void | boolean { return false; }
 
-  _updateResources(newProps) {
+  _updateResources(newProps: { attributes?: {} | undefined; }) {
     const { attributes = {} } = newProps;
     this._setAttributes(this.element, attributes);
   }
 
-  _componentDidUpdate(newProps, oldProps) {
+  _componentDidUpdate(newProps: any, oldProps: any) {
     this.componentDidUpdate(newProps, oldProps);
     this._updateResources(newProps);
     this.eventBus.emit(Block.EVENTS.FLOW_RENDER);
   }
 
-  componentDidUpdate(newProps, oldProps) {
+  componentDidUpdate(_newProps: any, _oldProps: any): void | boolean {
     return true;
   }
 
-  setProps = (nextProps) => {
+  setProps = (nextProps: any) => {
     if (nextProps) {
       Object.assign(this.props, nextProps);
     }
   };
 
-  stringToDocumentFragment(string) {
+  stringToDocumentFragment(string: string) {
     const template = document.createElement('template');
     template.innerHTML = string;
     return template.content;
@@ -102,14 +107,16 @@ class Block {
       const componentName = childrenToReplace.dataset.component;
       const parentBlock = childrenToReplace.parentNode;
       const child = this.children[componentName];
-      parentBlock.replaceChild(child.getContent(), childrenToReplace);
+      if (parentBlock !== null) {
+        parentBlock.replaceChild(child.getContent(), childrenToReplace);
+      }
     });
   }
 
   _render() {
     this.element.innerHTML = '';
     const block = this.render();
-    if (block) {
+    if (typeof block === 'string') {
       const fragment = this.stringToDocumentFragment(block);
       this.element.append(fragment);
     }
@@ -125,16 +132,16 @@ class Block {
     return this.element;
   }
 
-  _makePropsProxy(props) {
+  _makePropsProxy(props: {}) {
     const handler = {
-      get: (target, prop) => {
+      get: (target: any, prop: string) => {
         if (prop.indexOf('_') === 0) {
-          throw new Error(this.MESSAGE_ACCESS_ERROR);
+          throw new Error(Block.MESSAGE_ACCESS_ERROR);
         }
         const value = target[prop];
         return typeof value === 'function' ? value.bind(target) : value;
       },
-      set: (target, prop, value) => {
+      set: (target: any, prop: string, value: any) => {
         const oldProps = { ...target };
         // eslint-disable-next-line no-param-reassign
         target[prop] = value;
@@ -143,7 +150,7 @@ class Block {
         return true;
       },
       deleteProperty: () => {
-        throw new Error(this.MESSAGE_ACCESS_ERROR);
+        throw new Error(Block.MESSAGE_ACCESS_ERROR);
       },
     };
     return new Proxy(props, handler);
