@@ -21,8 +21,6 @@ class HTTPTransport {
 
   put = (url: string, options: { timeout?: number }) => {
     this.request(url, { ...options, method: METHODS.PUT }, options.timeout);
-    // { method: METHODS; data: { any?: any; }; timeout?: number | undefined; }
-    
   };
 
   post = (url: string, options: { timeout?: number }) => {

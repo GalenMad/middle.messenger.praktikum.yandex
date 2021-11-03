@@ -3,29 +3,10 @@ import Input from '../input';
 import compileTemplate from './template.pug';
 import './styles.scss';
 
-const parseValidatorsFromDefinition = (validators: Record<string, {argument?: number, func: Function, message: string | Function}>) => {
-  const result: Record<string, Function> = {};
-  const validatorList: string[] = Object.keys(validators)
-  validatorList.forEach((validatorName) => {
-    const validator = validators[validatorName];
-    const { argument, func } = validator;
-    if (validator.argument) {
-      const expandFunction = func(argument);
-      result[validatorName] = expandFunction;
-    } else {
-      const expandFunction = func();
-      result[validatorName] = expandFunction;
-    }
-    return validator;
-  });
-  return result;
-};
-
 const createInputElement = (props: { name: string; type?: string; id: string; attributes?: { class?: string; }; validators?: any; }) => {
   const {
     id, name, validators, type = 'text',
   } = props;
-  const inputValidators: Record<string, Function> = parseValidatorsFromDefinition(validators)
   return new Input({
     attributes: {
       class: 'control',
@@ -33,7 +14,7 @@ const createInputElement = (props: { name: string; type?: string; id: string; at
       id,
       name,
     },
-    validators: inputValidators,
+    validators,
   });
 };
 
@@ -75,7 +56,7 @@ class FormGroup extends Block {
     }
   }
 
-  componentDidUpdate(newProps: { name: string; type?: string | undefined; id: string; attributes?: { class?: string; }; validators?: any; }) {
+  componentDidUpdate(newProps: { name: string; type?: string; id: string; attributes?: { class?: string; }; validators?: any; }) {
     this.children.input = createInputElement(newProps);
   }
 

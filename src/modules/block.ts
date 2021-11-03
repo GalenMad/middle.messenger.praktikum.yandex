@@ -20,7 +20,7 @@ class Block {
   _element: HTMLElement;
   _meta: { tagName: string; props: {}; };
   eventBus: EventBus;
-  props: { attributes?: { string: string }, name?: string, validators?: Record<string, Function> | Record<string, {argument: number, func: Function, message: string | Function}> };
+  props: { attributes?: { string: string }, name?: string, validators?: Record<string, Function> };
   children: Record<string, Block>;
 
   get element() {
@@ -73,7 +73,7 @@ class Block {
 
   componentDidMount(_oldProps: any): void | boolean { return false; }
 
-  _updateResources(newProps: { attributes?: {} | undefined; }) {
+  _updateResources(newProps: { attributes?: {}; }) {
     const { attributes = {} } = newProps;
     this._setAttributes(this.element, attributes);
   }
