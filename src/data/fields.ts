@@ -1,6 +1,6 @@
 import {
   login, required, minLength, maxLength, alphaNum, name, firstCapital, email, phone, hasUppercase, hasDigit,
-} from '../utils/validators.js';
+} from '../utils/validators';
 
 export default [{
   label: 'Имя',
@@ -56,12 +56,12 @@ export default [{
     minLength: {
       argument: 3,
       func: minLength,
-      message: (argument) => `Минимум симоволов — ${argument}`,
+      message: (argument: number) => `Минимум симоволов — ${argument}`,
     },
     maxLength: {
       argument: 20,
       func: maxLength,
-      message: (argument) => `Максимум символов — ${argument}`,
+      message: (argument: number) => `Максимум символов — ${argument}`,
     },
     alphaNum: {
       func: alphaNum,
@@ -97,12 +97,12 @@ export default [{
     minLength: {
       argument: 8,
       func: minLength,
-      message: (argument) => `Минимум симоволов — ${argument}`,
+      message: (argument: number) => `Минимум симоволов — ${argument}`,
     },
     maxLength: {
       argument: 40,
       func: maxLength,
-      message: (argument) => `Максимум символов — ${argument}`,
+      message: (argument: number) => `Максимум символов — ${argument}`,
     },
     hasUppercase: {
       func: hasUppercase,

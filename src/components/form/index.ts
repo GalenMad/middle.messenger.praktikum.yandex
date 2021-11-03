@@ -7,17 +7,19 @@ import './styles.scss';
 const FORM_CLASS = 'form';
 const FORM_TAG = 'form';
 
-const createFormGroups = (props) => {
-  const { fields = [] } = props;
-  const formGroups = {};
-  fields.forEach((field, index) => {
-    formGroups[`form-group-${index}`] = new FormGroup(field);
-  });
-  return formGroups;
+const createFormGroups = (props: { fields?: [] }) => {
+  const formGroups: Record<string, any> = {};
+  if (props.fields) {
+    props.fields.forEach((field, index: number) => {
+      const prop: string = `form-group-${index}`;
+      formGroups[prop] = new FormGroup(field);
+    });
+    return formGroups;
+  }
 };
 
 class Form extends Block {
-  constructor(props = {}) {
+  constructor(props: { attributes?: { class?: string }, fields?: []; }) {
     // Конструкция ниже нужна для того, чтобы класс, заданный снаружи, был в приоритете
     const className = (props.attributes && props.attributes.class) || FORM_CLASS;
     const attributes = { ...props.attributes, class: className };

@@ -1,13 +1,14 @@
 class EventBus {
+  listeners: Record<string, Function[]>
   constructor() {
     this.listeners = {};
   }
 
-  _checkExistListener(event, callback) {
+  _checkExistListener(event: string, callback: Function): boolean {
     return this.listeners[event].some((handler) => handler === callback);
   }
 
-  on(event, callback) {
+  on(event: string, callback: Function): void {
     if (!this.listeners[event]) {
       this.listeners[event] = [];
     }
@@ -16,7 +17,7 @@ class EventBus {
     }
   }
 
-  off(event, callback) {
+  off(event: string, callback: Function): void {
     if (!this.listeners[event]) {
       throw new Error(`Нет события: ${event}`);
     }
@@ -24,12 +25,12 @@ class EventBus {
     this.listeners[event] = this.listeners[event].filter((listener) => listener !== callback);
   }
 
-  emit(event, ...args) {
+  emit(event: string, ...args: any): void {
     if (!this.listeners[event]) {
       throw new Error(`Нет события: ${event}`);
     }
 
-    this.listeners[event].forEach((handler) => handler(...args));
+    this.listeners[event].forEach((handler: Function) => handler(...args));
   }
 }
 

@@ -33,4 +33,4 @@ class Page extends Block {
   }
 }
 
-export default (props) => new Page({ ...props, userData, defaultAvatar }).getContent();
+export default () => new Page({ userData, defaultAvatar }).getContent();

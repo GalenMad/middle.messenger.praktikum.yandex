@@ -11,4 +11,4 @@ class Page extends Block {
   }
 }
 
-export default (props) => new Page(props).getContent();
+export default (props: Array<{path: string, name: string}>) => new Page(props).getContent();
