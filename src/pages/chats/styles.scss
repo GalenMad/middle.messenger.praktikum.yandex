@@ -13,12 +13,12 @@
 
 .chats-aside {
   padding: 16px;
-  background-color: rgb(19 176 229 / 4%);
+  background-color: $base-dark-overlay;
   position: relative;
 
   &_header {
     padding-bottom: 18px;
-    border-bottom: 2px solid rgb(255 255 255 / 70%);
+    border-bottom: 2px solid $base-grey;
     display: grid;
     grid-template-columns: 120px 1fr;
     grid-template-rows: 48px;
@@ -36,8 +36,8 @@
 }
 
 .profile-link {
-  background: #fff;
-  box-shadow: 0 4px 4px rgb(0 0 0 / 25%);
+  background-color: white;
+  box-shadow: 0 4px 4px $base-dark;
   border-radius: 4px 6px;
   box-sizing: border-box;
   padding: 5px;
@@ -68,7 +68,7 @@
   justify-content: center;
   align-items: center;
   text-align: center;
-  background: #fff;
+  background-color: white;
   opacity: 80%;
   border-radius: 5px;
   outline: 0;

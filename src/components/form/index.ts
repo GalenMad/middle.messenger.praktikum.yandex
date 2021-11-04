@@ -30,10 +30,10 @@ class Form extends Block {
     this.element.addEventListener('submit', (evt) => {
       evt.preventDefault();
       const children = Object.values(this.children);
-      const isValid = children.map((element) => element.isValid).every((status) => status);
+      const isValid = children.every((element) => element.isValid);
       children.forEach((element) => element.checkValidity());
       if (isValid) {
-        const formData = children.map((element) => [element.name, element.value]);
+        const formData = children.map(({ name, value }) => [name, value]);
         // eslint-disable-next-line no-console
         console.log(formData.reduceRight((prev, curr) => `${curr.join(': ')}\n${prev}`, ''));
       }
