@@ -4,7 +4,7 @@ import compileTemplate from './template.pug';
 import './styles.scss';
 
 const FORM_GROUP_CLASS = 'form-group';
-const INPUT_CLASS = 'form-group';
+const INPUT_CLASS = 'control';
 const INPUT_BASE_TYPE = 'text';
 const FORM_GROUP_TAG = 'label';
 const VALIDATION_SELECTOR = '.validation';
@@ -16,7 +16,7 @@ class FormGroup extends Block {
   }
 
   get isValid() {
-    return !this.children.input.triggeredValidator;
+    return !this.props.validators.some(validator => !validator(this.value));
   }
 
   get name() {
@@ -38,7 +38,7 @@ class FormGroup extends Block {
   _hideValidationMessage() {
     const container: HTMLElement | null = this.element.querySelector(VALIDATION_SELECTOR);
     if (container) {
-      container.style.display = 'none';
+      container.textContent = '';
     }
   }
 
@@ -72,17 +72,18 @@ class FormGroup extends Block {
   };
 
   checkValidity() {
-    if (!this.props.validators) {
+    const validators: Array<Function> | undefined = this.props.validators;
+    if (!validators) {
       return;
     }
-    const validators: Record<string, any> = this.props.validators;
-    const validity = this.children.input.triggeredValidator;
-    if (validity) {
-      const { message, argument = null } = validators[validity];
-      const container: HTMLElement | null = this.element.querySelector(VALIDATION_SELECTOR);
-      if (container) {
-        container.style.display = 'block';
-        container.textContent = typeof message === 'function' ? message(argument) : message;
+
+    const value = this.value;
+    const container: HTMLElement | null = this.element.querySelector(VALIDATION_SELECTOR);
+    for (let i: number = 0; i < validators.length; i += 1) {
+      const message = validators[i](value);
+      if (message && container) {
+        container.textContent = message;
+        break;
       }
     }
   }
