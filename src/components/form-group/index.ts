@@ -3,22 +3,9 @@ import Input from '../input';
 import compileTemplate from './template.pug';
 import './styles.scss';
 
-const createInputElement = (props: { name: string; type?: string; id: string; attributes?: { class?: string; }; validators?: any; }) => {
-  const {
-    id, name, validators, type = 'text',
-  } = props;
-  return new Input({
-    attributes: {
-      class: 'control',
-      type,
-      id,
-      name,
-    },
-    validators,
-  });
-};
-
 const FORM_GROUP_CLASS = 'form-group';
+const INPUT_CLASS = 'form-group';
+const INPUT_BASE_TYPE = 'text';
 const FORM_GROUP_TAG = 'label';
 const VALIDATION_SELECTOR = '.validation';
 
@@ -40,16 +27,14 @@ class FormGroup extends Block {
     // Конструкция ниже нужна для того, чтобы класс, заданный снаружи, был в приоритете
     const className = (props.attributes && props.attributes.class) || FORM_GROUP_CLASS;
     const attributes = { ...props.attributes, class: className };
-    const input = createInputElement(props);
-    super(FORM_GROUP_TAG, { ...props, attributes }, { input });
+    super(FORM_GROUP_TAG, { ...props, attributes });
   }
 
   componentDidMount() {
-    const input = this.children.input.getContent();
-    input.addEventListener('focus', () => this._hideValidationMessage());
-    input.addEventListener('blur', () => this.checkValidity());
+    this.createInputElement();
   }
 
+  //- TODO: Вынести логику с сообщением в шаблон
   _hideValidationMessage() {
     const container: HTMLElement | null = this.element.querySelector(VALIDATION_SELECTOR);
     if (container) {
@@ -57,9 +42,34 @@ class FormGroup extends Block {
     }
   }
 
-  componentDidUpdate(newProps: { name: string; type?: string; id: string; attributes?: { class?: string; }; validators?: any; }) {
-    this.children.input = createInputElement(newProps);
-  }
+
+  createInputElement() {
+    const { id, name, validators, type = INPUT_BASE_TYPE } = this.props;
+
+    const attributes = {
+      class: INPUT_CLASS,
+      type,
+      id,
+      name,
+    };
+
+    const events = [{
+      type: 'focus',
+      cb: () => this._hideValidationMessage()
+    },
+    {
+      type: 'blur',
+      cb: () => this.checkValidity()
+    }];
+
+    const input = new Input({
+      validators,
+      attributes,
+      events
+    });
+
+    this.children.input = input
+  };
 
   checkValidity() {
     if (!this.props.validators) {

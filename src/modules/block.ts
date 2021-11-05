@@ -26,7 +26,7 @@ class Block {
   get element() {
     return this._element;
   }
-  // TODO: Избавиться от _meta
+
   constructor(tagName = 'div', props = {}, children = {}) {
     this._meta = { tagName, props };
     this.props = this._makePropsProxy(props);
@@ -69,6 +69,7 @@ class Block {
 
   _componentDidMount() {
     this.componentDidMount(this.props);
+    this.replaceChildren();
   }
 
   componentDidMount(_oldProps: any): void | boolean { return false; }
@@ -79,6 +80,7 @@ class Block {
   }
 
   _componentDidUpdate(newProps: any, oldProps: any) {
+    this._removeEvents(oldProps);
     this.componentDidUpdate(newProps, oldProps);
     this._updateResources(newProps);
     this.eventBus.emit(Block.EVENTS.FLOW_RENDER);
@@ -120,7 +122,7 @@ class Block {
       const fragment = this.stringToDocumentFragment(block);
       this.element.append(fragment);
     }
-    this.replaceChildren();
+    this._addEvents(this.props);
     this.eventBus.emit(Block.EVENTS.FLOW_CDM);
   }
 
@@ -130,6 +132,22 @@ class Block {
 
   getContent() {
     return this.element;
+  }
+
+  _addEvents(props) {
+    const { events = [] } = props;
+    for (const { type, selector, cb } of events) {
+      const element = selector ? this._element.querySelector(selector) || this._element : this._element;
+      element.addEventListener(type, cb);
+    }
+  }
+
+  _removeEvents(props) {
+    const { events = [] } = props;
+    for (const { type, selector, cb } of events) {
+      const element = selector ? this._element.querySelector(selector) || this._element : this._element;
+      element.removeEventListener(type, cb);
+    }
   }
 
   _makePropsProxy(props: {}) {

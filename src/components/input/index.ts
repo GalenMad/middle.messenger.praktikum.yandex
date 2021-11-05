@@ -1,5 +1,6 @@
 import Block from '../../modules/block';
 
+// TODO: Рефактор валидаторов
 const parseValidatorsFromDefinition = (validators: Record<string, { argument?: number, func: Function, message: string | Function }>) => {
   const result: Record<string, Function> = {};
   const validatorList: string[] = Object.keys(validators)

@@ -7,37 +7,46 @@ import './styles.scss';
 const FORM_CLASS = 'form';
 const FORM_TAG = 'form';
 
-const createFormGroups = (props: { fields?: [] }) => {
-  const formGroups: Record<string, any> = {};
-  if (props.fields) {
-    props.fields.forEach((field, index: number) => {
-      const prop: string = `form-group-${index}`;
-      formGroups[prop] = new FormGroup(field);
-    });
-    return formGroups;
-  }
-};
-
 class Form extends Block {
+
+  get isValid() {
+    return this.formGroups.every((element) => element.isValid);
+  }
+
+  get formGroups() {
+    return Object.values(this.children);
+  }
+
+  get data() {
+    const data = this.formGroups.map(({ name, value }) => [name, value]);
+    return data.reduceRight((prev, curr) => `${curr.join(': ')}\n${prev}`, '');
+  }
+
   constructor(props: { attributes?: { class?: string }, fields?: []; }) {
     // Конструкция ниже нужна для того, чтобы класс, заданный снаружи, был в приоритете
     const className = (props.attributes && props.attributes.class) || FORM_CLASS;
     const attributes = { ...props.attributes, class: className };
-    const formGroups = createFormGroups(props);
-    super(FORM_TAG, { ...props, attributes }, formGroups);
+    super(FORM_TAG, { ...props, attributes });
+  }
 
-    // Объявление в конструкторе не очень красиво, зато просто и не дублируется
-    this.element.addEventListener('submit', (evt) => {
-      evt.preventDefault();
-      const children = Object.values(this.children);
-      const isValid = children.every((element) => element.isValid);
-      children.forEach((element) => element.checkValidity());
-      if (isValid) {
-        const formData = children.map(({ name, value }) => [name, value]);
-        // eslint-disable-next-line no-console
-        console.log(formData.reduceRight((prev, curr) => `${curr.join(': ')}\n${prev}`, ''));
-      }
-    });
+  checkValidity() {
+    this.formGroups.forEach((element) => element.checkValidity());
+  }
+
+  createFormGroups() {
+    const formGroups: Record<string, Block> = {};
+    const { fields = [] } = this.props;
+    if (fields) {
+      fields.forEach((field, index: number) => {
+        const prop = `form-group-${index}`;
+        formGroups[prop] = new FormGroup(field);
+      });
+      this.children = formGroups;
+    }
+  };
+
+  componentDidMount() {
+    this.createFormGroups();
   }
 
   render() {

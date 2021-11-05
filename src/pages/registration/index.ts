@@ -5,8 +5,21 @@ import compileTemplate from './template.pug';
 
 const fields = Object.values(allFields);
 
+const events = [{
+  cb: (evt: Event) => {
+    evt.stopPropagation();
+    evt.preventDefault();
+    form.checkValidity();
+    if (form.isValid) {
+      console.log(form.data);
+    }
+  },
+  type: 'submit'
+}];
+
 const pageProps = {
   fields,
+  events,
   title: 'Регистрация',
   buttonText: 'Поехали',
   footerText: 'Уже есть аккаунт?',
@@ -14,9 +27,10 @@ const pageProps = {
   link: '/authorization',
 };
 
+const form = new Form(pageProps);
+
 class Page extends Block {
   constructor(props = {}) {
-    const form = new Form(props);
     super('div', props, { form });
   }
 
