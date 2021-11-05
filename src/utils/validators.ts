@@ -36,17 +36,91 @@ const req = (value: string | boolean | Date) => {
   return Boolean(String(value).length);
 };
 
-export const minLength = (length: number): Function => (value: string): boolean => value.length >= length;
-export const maxLength = (length: number): Function => (value: string): boolean => value.length <= length;
-export const phone = (): Function => (value: string): boolean => testRegExp(REG_EXP.PHONE, value);
-export const email = (): Function => (value: string): boolean => testRegExp(REG_EXP.EMAIL, value);
-export const name = (): Function => (value: string): boolean => testRegExp(REG_EXP.NAME, value);
-export const firstCapital = (): Function => (value: string): boolean => testRegExp(REG_EXP.FIRST_UPPERCASE, value);
-export const alpha = (): Function => (value: string): boolean => testRegExp(REG_EXP.ALPHA, value);
-export const alphaNum = (): Function => (value: string): boolean => testRegExp(REG_EXP.ALPHA_NUM, value);
-export const notInteger = (): Function => (value: string): boolean => !Number(value);
-export const login = (): Function => (value: string): boolean => testRegExp(REG_EXP.LOGIN, value) && notInteger()(value);
-export const hasUppercase = (): Function => (value: string): boolean => testRegExp(REG_EXP.HAS_UPPERCASE, value);
-export const hasLowercase = (): Function => (value: string): boolean => testRegExp(REG_EXP.HAS_LOWERCASE, value);
-export const hasDigit = (): Function => (value: string): boolean => testRegExp(REG_EXP.HAS_DIGIT, value);
-export const required = (): Function => (value: string): boolean => req((value).trim());
+const DECL_CASES = [2, 0, 1, 1, 1, 2];  
+const LENGTH_TITLES = ['символа', 'символов', 'символов'];
+
+const declOfNum = (number: number) => LENGTH_TITLES[ (number%100>4 && number%100<20)? 2 : DECL_CASES[(number%10<5)?number%10:5] ];
+
+export const minLength = (length: number) => {
+  const validator = (value: string | []): boolean => value.length >= length;
+  const message = `Не менее ${length} ${declOfNum(length)}`;
+  return (value: string) => validator(value) ? false : message;
+}
+
+export const maxLength = (length: number) => {
+  const validator = (value: string | []): boolean => value.length <= length;
+  const message = `Не более ${length} ${declOfNum(length)}`;
+  return (value: string) => validator(value) ? false : message;
+}
+
+export const phone = () => {
+  const validator = (value: string): boolean => testRegExp(REG_EXP.PHONE, value);
+  const message = `Неверный формат телефона`;
+  return (value: string) => validator(value) ? false : message;
+}
+
+export const email = () => {
+  const validator = (value: string): boolean => testRegExp(REG_EXP.EMAIL, value);
+  const message = `Неверный формат электронной почты`;
+  return (value: string) => validator(value) ? false : message;
+}
+
+export const name = () => {
+  const validator = (value: string): boolean => testRegExp(REG_EXP.NAME, value);
+  const message = `Только буквы`;
+  return (value: string) => validator(value) ? false : message;
+}
+
+export const firstCapital = () => {
+  const validator = (value: string): boolean => testRegExp(REG_EXP.FIRST_UPPERCASE, value);
+  const message = `Первая буква должна быть заглавной`;
+  return (value: string) => validator(value) ? false : message;
+}
+
+export const alpha = () => {
+  const validator = (value: string): boolean => testRegExp(REG_EXP.ALPHA, value);
+  const message = `Только латиница`;
+  return (value: string) => validator(value) ? false : message;
+}
+
+export const alphaNum = () => {
+  const validator = (value: string): boolean => testRegExp(REG_EXP.ALPHA, value);
+  const message = `Только латиница и цифры`;
+  return (value: string) => validator(value) ? false : message;
+}
+
+export const notInteger = () => {
+  const validator = (value: string): boolean => !Number(value);
+  const message = `Значение не должно быть числом`;
+  return (value: string) => validator(value) ? false : message;
+}
+
+export const login = () => {
+  const validator = (value: string): boolean => testRegExp(REG_EXP.LOGIN, value);
+  const message = `Только буквы, цифры, дефисы и подчеркивания`;
+  return (value: string) => validator(value) ? false : message;
+}
+
+export const hasUppercase = () => {
+  const validator = (value: string): boolean => testRegExp(REG_EXP.HAS_UPPERCASE, value);
+  const message = `Должна быть буква в верхнем регистре`;
+  return (value: string) => validator(value) ? false : message;
+}
+
+export const hasLowercase = () => {
+  const validator = (value: string): boolean => testRegExp(REG_EXP.HAS_LOWERCASE, value);
+  const message = `Должна быть буква в нижнем регистре`;
+  return (value: string) => validator(value) ? false : message;
+}
+
+export const hasDigit = () => {
+  const validator = (value: string): boolean => testRegExp(REG_EXP.HAS_LOWERCASE, value);
+  const message = `Должна быть хотя бы одна цифра`;
+  return (value: string) => validator(value) ? false : message;
+}
+
+export const required = () => {
+  const validator = (value: string): boolean => req(value.trim());
+  const message = `Обязательное поле`;
+  return (value: string) => validator(value) ? false : message;
+}
