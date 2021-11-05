@@ -44,7 +44,7 @@ class FormGroup extends Block {
 
 
   createInputElement() {
-    const { id, name, validators, type = INPUT_BASE_TYPE } = this.props;
+    const { id, name, type = INPUT_BASE_TYPE } = this.props;
 
     const attributes = {
       class: INPUT_CLASS,
@@ -63,7 +63,6 @@ class FormGroup extends Block {
     }];
 
     const input = new Input({
-      validators,
       attributes,
       events
     });
