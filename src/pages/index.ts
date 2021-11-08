@@ -6,10 +6,10 @@ import ChatsPage from './chats';
 
 const errorPages = {
 	'404': {
-		errorCode: '404', title: 'Ошибка', message: 'Не туда попали?', linkText: 'Вернуться к чатам', linkAddress: '/',
+		errorCode: '404', message: 'Не туда попали?', linkText: 'Вернуться к чатам', linkAddress: '/',
 	},
 	'500': {
-		errorCode: '500', title: 'Ошибка', message: 'Ага, уже бежим', linkText: 'Вернуться к чатам', linkAddress: '/',
+		errorCode: '500', message: 'Ага, уже бежим', linkText: 'Вернуться к чатам', linkAddress: '/',
 	},
 };
 
@@ -31,7 +31,7 @@ export default [{
 {
 	name: 'Профиль пользователя',
 	block: UserSettings,
-	path: 'profile',
+	path: '/profile',
 },
 {
 	name: 'Ошибка 404',
