@@ -12,4 +12,4 @@ class Page extends Block {
   }
 }
 
-export default (props: {errorCode: string, title: string, message: string, linkText: string, linkAddress: string}) => new Page(props).getContent();
+export default Page;

@@ -25,7 +25,7 @@ const userData = [{
 
 class Page extends Block {
   constructor(props = {}) {
-    super('div', props);
+    super('div', {...props, defaultAvatar, userData});
   }
 
   render() {
@@ -33,4 +33,4 @@ class Page extends Block {
   }
 }
 
-export default () => new Page({ userData, defaultAvatar }).getContent();
+export default Page;

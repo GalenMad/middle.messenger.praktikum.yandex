@@ -24,14 +24,14 @@ const pageProps = {
   buttonText: 'Поехали',
   footerText: 'Нет аккаунта?',
   linkText: 'Зарегестрироваться',
-  link: '/registration',
+  link: '/sign-up',
 };
 
 const form = new Form(pageProps);
 
 class Page extends Block {
   constructor(props = {}) {
-    super('div', props, { form });
+    super('div', {...props, ...pageProps}, { form });
   }
 
   render() {
@@ -39,4 +39,4 @@ class Page extends Block {
   }
 }
 
-export default () => new Page(pageProps).getContent();
+export default Page;

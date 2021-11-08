@@ -1,83 +1,59 @@
+import Route from './route';
+
 class Router {
-  routes = [];
+  constructor(rootQuery) {
+    if (Router.__instance) {
+      return Router.__instance;
+    }
 
-  mode = null;
+    this.routes = [];
+    this.history = window.history;
+    this._currentRoute = null;
+    this._rootQuery = rootQuery;
 
-  root = '/';
-
-  constructor(options) {
-    this.mode = window.history.pushState ? 'history' : 'hash';
-    if (options.mode) this.mode = options.mode;
-    if (options.root) this.root = options.root;
-    this.listen();
+    Router.__instance = this;
   }
 
-  add = (path, cb) => {
-    this.routes.push({ path, cb });
+  use(pathname, block, props) {
+    const route = new Route(pathname, block, { rootQuery: this._rootQuery, ...props });
+    this.routes.push(route);
     return this;
-  };
+  }
 
-  remove = (path) => {
-    for (let i = 0; i < this.routes.length; i += 1) {
-      if (this.routes[i].path === path) {
-        this.routes.slice(i, 1);
-        return this;
-      }
-    }
+  start() {
+    window.onpopstate = (event => this._onRoute(event.currentTarget.location.pathname)).bind(this);
+    this._onRoute(window.location.pathname);
     return this;
-  };
+  }
 
-  flush = () => {
-    this.routes = [];
-    return this;
-  };
-
-  clearSlashes = (path) => path
-    .toString()
-    .replace(/\/$/, '')
-    .replace(/^\//, '');
-
-  getFragment = () => {
-    let fragment = '';
-    if (this.mode === 'history') {
-      fragment = this.clearSlashes(decodeURI(window.location.pathname + window.location.search));
-      fragment = fragment.replace(/\?(.*)$/, '');
-      fragment = this.root !== '/' ? fragment.replace(this.root, '') : fragment;
+  _onRoute(pathname) {
+    const route = this.getRoute(pathname);
+    if (route) {
+      this._currentRoute = route;
+      route.render();
     } else {
-      const match = window.location.href.match(/(.*)$/);
-      fragment = match ? match[1] : '';
+      const errorPage = this.getRoute('/error-404');
+      this._currentRoute = errorPage;
+      errorPage.render();
     }
-    return this.clearSlashes(fragment);
-  };
+  }
 
-  navigate = (path = '') => {
-    if (this.mode === 'history') {
-      window.history.pushState(null, null, this.root + this.clearSlashes(path));
-    } else {
-      window.location.href = `${window.location.href.replace(/(.*)$/, '')}#${path}`;
-    }
-    return this;
-  };
+  go(pathname) {
+    this.history.pushState({}, "", pathname);
+    this._onRoute(pathname);
+  }
 
-  listen = () => {
-    clearInterval(this.interval);
-    this.interval = setInterval(this.interval, 50);
-  };
+  back(number = 1) {
+    this.history.back(number);
+  }
 
-  interval = () => {
-    if (this.current === this.getFragment()) return;
-    this.current = this.getFragment();
+  forward(number = 1) {
+    this.history.forward(number);
+  }
 
-    this.routes.some((route) => {
-      const match = this.current.match(route.path);
-      if (match) {
-        match.shift();
-        route.cb.apply({}, match);
-        return match;
-      }
-      return false;
-    });
-  };
+  getRoute(pathname) {
+    return this.routes.find(route => route.match(pathname));
+  }
 }
 
 export default Router;

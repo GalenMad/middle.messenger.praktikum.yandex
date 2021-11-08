@@ -3,47 +3,46 @@ import Registration from './registration';
 import UserSettings from './profile';
 import ErrorPage from './error-page';
 import ChatsPage from './chats';
-import SpreadPage from './spread-page';
 
 const errorPages = {
-	404: {
+	'404': {
 		errorCode: '404', title: 'Ошибка', message: 'Не туда попали?', linkText: 'Вернуться к чатам', linkAddress: '/',
 	},
-	500: {
+	'500': {
 		errorCode: '500', title: 'Ошибка', message: 'Ага, уже бежим', linkText: 'Вернуться к чатам', linkAddress: '/',
 	},
 };
 
-// TODO: Временная заглушка для разводящей страницы;
-export { SpreadPage };
-
 export default [{
 	name: 'Авторизация',
-	render: Authorization,
-	path: 'authorization',
+	block: Authorization,
+	path: '/sign-in',
 },
 {
 	name: 'Регистрация',
-	render: Registration,
-	path: 'registration',
+	block: Registration,
+	path: '/sign-up',
 },
 {
 	name: 'Чаты',
-	render: ChatsPage,
-	path: 'chats',
+	block: ChatsPage,
+	path: '/',
 },
 {
 	name: 'Профиль пользователя',
-	render: UserSettings,
+	block: UserSettings,
 	path: 'profile',
 },
 {
 	name: 'Ошибка 404',
-	render: () => ErrorPage({ ...errorPages['404'] }),
-	path: '404',
+	block: ErrorPage,
+	path: '/error-404',
+  props: errorPages['404']
 },
 {
 	name: 'Ошибка 500',
-	render: () => ErrorPage({ ...errorPages['500'] }),
-	path: '500',
+	block: ErrorPage,
+	path: '/error-500',
+  props: errorPages['500']
 }];
+

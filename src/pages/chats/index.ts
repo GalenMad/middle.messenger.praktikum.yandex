@@ -28,7 +28,7 @@ for (let i = 0; i < 14; i += 1) {
 
 class Page extends Block {
   constructor(props = {}) {
-    super('div', props);
+    super('div', { ...props, chats, userAvatar: avatar });
   }
 
   render() {
@@ -36,4 +36,4 @@ class Page extends Block {
   }
 }
 
-export default () => new Page({ chats, userAvatar: avatar }).getContent();
+export default Page;
