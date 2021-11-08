@@ -1,5 +1,7 @@
 import Route from './route';
 
+const ERROR_ADDRESS = '/error-404';
+
 class Router {
   constructor(rootQuery) {
     if (Router.__instance) {
@@ -32,7 +34,7 @@ class Router {
       this._currentRoute = route;
       route.render();
     } else {
-      const errorPage = this.getRoute('/error-404');
+      const errorPage = this.getRoute(ERROR_ADDRESS);
       this._currentRoute = errorPage;
       errorPage.render();
     }
