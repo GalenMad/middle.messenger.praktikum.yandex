@@ -2,7 +2,7 @@ import Route from './route';
 
 const ERROR_ADDRESS = '/error-404';
 
-class Router {
+export default class Router {
   constructor(rootQuery) {
     if (Router.__instance) {
       return Router.__instance;
@@ -23,13 +23,31 @@ class Router {
   }
 
   start() {
-    window.onpopstate = (event => this._onRoute(event.currentTarget.location.pathname)).bind(this);
+
+    document.querySelector(this._rootQuery).addEventListener('click', (evt) => {
+      const link = evt.path.find(elem => elem.tagName === 'A' && elem.href)
+      if (link) {
+        const pathname = link.getAttribute('href');
+        this.go(pathname);
+        evt.preventDefault();
+      }
+    });
+
+    window.addEventListener('popstate', (evt) => {
+      console.log('popstate');
+      this._onRoute(evt.currentTarget.location.pathname);
+    })
     this._onRoute(window.location.pathname);
     return this;
   }
 
   _onRoute(pathname) {
     const route = this.getRoute(pathname);
+
+    if (this._currentRoute && this._currentRoute !== route) {
+        this._currentRoute.leave();
+    }
+
     if (route) {
       this._currentRoute = route;
       route.render();
@@ -41,7 +59,7 @@ class Router {
   }
 
   go(pathname) {
-    this.history.pushState({}, "", pathname);
+    this.history.pushState({a:2}, "", pathname);
     this._onRoute(pathname);
   }
 
@@ -57,5 +75,3 @@ class Router {
     return this.routes.find(route => route.match(pathname));
   }
 }
-
-export default Router;
