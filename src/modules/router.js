@@ -23,7 +23,6 @@ export default class Router {
   }
 
   start() {
-
     document.querySelector(this._rootQuery).addEventListener('click', (evt) => {
       const link = evt.path.find(elem => elem.tagName === 'A' && elem.href)
       if (link) {
@@ -36,7 +35,8 @@ export default class Router {
     window.addEventListener('popstate', (evt) => {
       console.log('popstate');
       this._onRoute(evt.currentTarget.location.pathname);
-    })
+    });
+    
     this._onRoute(window.location.pathname);
     return this;
   }
