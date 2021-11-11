@@ -1,11 +1,16 @@
 import Route from './route';
+import Store from './store';
 
 const ERROR_ADDRESS = '/error-404';
+const AUTH_ADDRESS = '/sign-in';
+
+let routerInstance: Router | null = null;
 
 export default class Router {
-  constructor(rootQuery) {
-    if (Router.__instance) {
-      return Router.__instance;
+  constructor(rootQuery: string) {
+    
+    if (routerInstance) {
+      return routerInstance;
     }
 
     this.routes = [];
@@ -13,17 +18,25 @@ export default class Router {
     this._currentRoute = null;
     this._rootQuery = rootQuery;
 
-    Router.__instance = this;
+    routerInstance = this;
   }
 
-  use(pathname, block, props) {
-    const route = new Route(pathname, block, { rootQuery: this._rootQuery, ...props });
+  use(pathname, block, props, isPrivate = false) {
+    const route = new Route(pathname, block, { rootQuery: this._rootQuery, ...props }, isPrivate);
     this.routes.push(route);
     return this;
   }
 
   start() {
-    document.querySelector(this._rootQuery).addEventListener('click', (evt) => {
+    const root = document.querySelector(this._rootQuery);
+
+    if (!root) {
+      throw new Error('Неверный селектор root-элемента')
+    }
+    
+    root.innerHTML = '';
+    
+    root.addEventListener('click', (evt) => {
       const link = evt.path.find(elem => elem.tagName === 'A' && elem.href)
       if (link) {
         const pathname = link.getAttribute('href');
@@ -33,10 +46,9 @@ export default class Router {
     });
 
     window.addEventListener('popstate', (evt) => {
-      console.log('popstate');
       this._onRoute(evt.currentTarget.location.pathname);
     });
-    
+
     this._onRoute(window.location.pathname);
     return this;
   }
@@ -45,21 +57,27 @@ export default class Router {
     const route = this.getRoute(pathname);
 
     if (this._currentRoute && this._currentRoute !== route) {
-        this._currentRoute.leave();
+      this._currentRoute.leave();
+    } 
+
+    if (this._currentRoute === route) {
+      return;
     }
 
-    if (route) {
+    // TODO: Узнать что уместнее — редирект или рендер
+    if (!route) {
+      this.go(ERROR_ADDRESS);
+    } else if (route.isPrivate && !Store.isAuthorized) {
+      // TODO: Узнать насколько ок роутеру определять авторизованность
+      this.go(AUTH_ADDRESS);
+    } else {
       this._currentRoute = route;
       route.render();
-    } else {
-      const errorPage = this.getRoute(ERROR_ADDRESS);
-      this._currentRoute = errorPage;
-      errorPage.render();
-    }
+    } 
   }
 
   go(pathname) {
-    this.history.pushState({a:2}, "", pathname);
+    this.history.pushState({ a: 2 }, "", pathname);
     this._onRoute(pathname);
   }
 

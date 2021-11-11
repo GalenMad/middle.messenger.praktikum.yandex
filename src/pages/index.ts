@@ -27,11 +27,13 @@ export default [{
 	name: 'Чаты',
 	block: ChatsPage,
 	path: '/',
+  isPrivate: true
 },
 {
 	name: 'Профиль пользователя',
 	block: UserSettings,
 	path: '/profile',
+  isPrivate: true
 },
 {
 	name: 'Ошибка 404',

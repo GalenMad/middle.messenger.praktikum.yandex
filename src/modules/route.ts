@@ -5,11 +5,12 @@ function render(query, block) {
 }
 
 export default class Route {
-  constructor(pathname, view, props) {
+  constructor(pathname, view, props, isPrivate) {
     this._pathname = pathname;
     this._blockClass = view;
     this._block = null;
     this._props = props;
+    this.isPrivate = isPrivate;
   }
 
   navigate(pathname) {
