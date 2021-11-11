@@ -1,4 +1,4 @@
-import HTTP from './fetch';
+import HTTP from '../fetch';
 import BaseAPI from './base.api';
 
 const authAPIInstance = new HTTP('/chats');
@@ -7,6 +7,7 @@ export class LoginAPI extends BaseAPI {
   create() {
 
   }
+  
   request() {
     return authAPIInstance;
   }

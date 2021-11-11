@@ -1,4 +1,4 @@
-import HTTP from './fetch';
+import HTTP from '../fetch';
 import BaseAPI from './base.api';
 
 const chatsAPIInstance = new HTTP('/chats');
