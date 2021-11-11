@@ -13,40 +13,50 @@ enum METHODS {
   DELETE = 'DELETE',
 };
 
+const BASE_HOST = 'https://ya-praktikum.tech/api/v2';
+
 class HTTPTransport {
-  get = (url: string, options: { data: Record<string, any>, timeout?: number }) => {
-    const { data = {} } = options;
-    this.request(`${url}?${stringifyQuery(data) || ''}`, { ...options, method: METHODS.GET }, options.timeout);
+  private _host: string;
+  private _hand: string;
+
+  constructor(hand = '', host = BASE_HOST) {
+    this._host = host;
+    this._hand = hand
+  }
+
+  get = (url: string, options: { timeout?: number, data?: {} } = {}) => {
+    const path = options.data ? `${url}?${stringifyQuery(options.data)}` : url;
+    this.request(path, { ...options, method: METHODS.GET }, options.timeout);
   };
 
-  put = (url: string, options: { timeout?: number }) => {
+  put = (url: string, options: { timeout?: number, data?: {} } = {}) => {
     this.request(url, { ...options, method: METHODS.PUT }, options.timeout);
   };
 
-  post = (url: string, options: { timeout?: number }) => {
+  post = (url: string, options: { timeout?: number, data?: {} } = {}) => {
     this.request(url, { ...options, method: METHODS.POST }, options.timeout);
   };
 
-  delete = (url: string, options: { timeout?: number }) => {
+  delete = (url: string, options: { timeout?: number, data?: {} } = {}) => {
     this.request(url, { ...options, method: METHODS.DELETE }, options.timeout);
   };
 
-  request = (url: string, options: {method?: METHODS | string, headers?: Record<string, string>, data?: Record<string, any>}, timeout = 10000) => {
+  request = (url: string, options: { method?: METHODS | string, headers?: Record<string, string>, data?: {} }, timeout = 10000) => {
     const { method = METHODS.GET, headers = {}, data } = options;
-    if (method === METHODS.GET && data) {
-      url += `?${stringifyQuery(data)}`;
-    }
+    // TODO: Разобраться с передачей неслужебных опций как data
     return new Promise((resolve, reject) => {
       const xhr = new XMLHttpRequest();
-      xhr.open(method, url);
+      const path = method === METHODS.GET && data ? `${url}?${stringifyQuery(data)}` : url;
+
+      xhr.open(method, this._host + this._hand + path);
 
       if (headers) {
         for (const header in headers) {
           xhr.setRequestHeader(header, headers[header]);
         }
       }
-      xhr.timeout = timeout;
 
+      xhr.timeout = timeout;
       xhr.onload = () => resolve(xhr);
       xhr.onabort = reject;
       xhr.onerror = reject;
@@ -61,4 +71,4 @@ class HTTPTransport {
   };
 }
 
-export default new HTTPTransport();
+export default HTTPTransport;
