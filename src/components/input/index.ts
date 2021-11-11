@@ -1,5 +1,7 @@
 import Block from '../../modules/block';
 
+
+// TODO: явно лишний компонент
 class Input extends Block {
   constructor(props: { attributes?: Record<string, string>; }) {
     const autocomplete = (props.attributes && props.attributes.name) || '';
