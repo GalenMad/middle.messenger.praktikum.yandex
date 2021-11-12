@@ -3,11 +3,17 @@ import Store from './store';
 
 const ERROR_ADDRESS = '/error-404';
 const AUTH_ADDRESS = '/sign-in';
+const ROOT = '#app';
 
 let routerInstance: Router | null = null;
 
 export default class Router {
-  constructor(rootQuery: string) {
+  routes: any[];
+  history: History;
+  _currentRoute: any;
+  _rootQuery: string;
+
+  constructor(rootQuery: string = ROOT) {
     
     if (routerInstance) {
       return routerInstance;
@@ -21,7 +27,7 @@ export default class Router {
     routerInstance = this;
   }
 
-  use(pathname, block, props, isPrivate = false) {
+  use(pathname: string, block: unknown, props: {}, isPrivate = false) {
     const route = new Route(pathname, block, { rootQuery: this._rootQuery, ...props }, isPrivate);
     this.routes.push(route);
     return this;
@@ -37,7 +43,7 @@ export default class Router {
     root.innerHTML = '';
     
     root.addEventListener('click', (evt) => {
-      const link = evt.path.find(elem => elem.tagName === 'A' && elem.href)
+      const link = evt.path.find((elem: HTMLElement) => elem.tagName === 'A' && elem.href)
       if (link) {
         const pathname = link.getAttribute('href');
         this.go(pathname);
@@ -46,14 +52,19 @@ export default class Router {
     });
 
     window.addEventListener('popstate', (evt) => {
-      this._onRoute(evt.currentTarget.location.pathname);
+      if (evt.currentTarget) {
+        this._onRoute(evt.currentTarget.location.pathname);
+      } else {
+        throw new Error('Не обнаружен evt.currentTarget');
+      }
     });
 
     this._onRoute(window.location.pathname);
     return this;
   }
 
-  _onRoute(pathname) {
+  _onRoute(pathname: string) {
+    // TODO: Прикрутить механику редиректов по условию
     const route = this.getRoute(pathname);
 
     if (this._currentRoute && this._currentRoute !== route) {
@@ -76,20 +87,20 @@ export default class Router {
     } 
   }
 
-  go(pathname) {
-    this.history.pushState({ a: 2 }, "", pathname);
+  go(pathname: string) {
+    this.history.pushState({ a: 2 }, '', pathname);
     this._onRoute(pathname);
   }
 
-  back(number = 1) {
-    this.history.back(number);
+  back() {
+    this.history.back();
   }
 
-  forward(number = 1) {
-    this.history.forward(number);
+  forward() {
+    this.history.forward();
   }
 
-  getRoute(pathname) {
+  getRoute(pathname: string) {
     return this.routes.find(route => route.match(pathname));
   }
 }
