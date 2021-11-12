@@ -3,6 +3,23 @@
 
 import EventBus from './event-bus';
 
+interface props {
+  name?: string,
+  type?: string,
+  id?: string,
+  events?: Array<{
+    type: string,
+    cb: Function
+  }>,
+  attributes?: Record<string, string>,
+  validators?: Record<string, {
+    argument: number,
+    func: Function,
+    message: string | Function
+  }>,
+  fields?: Array<{}>
+}
+
 class Block {
   [x: string]: any;
   checkValidity(): void {
@@ -20,14 +37,13 @@ class Block {
   _element: HTMLElement;
   _meta: { tagName: string; props: {}; };
   eventBus: EventBus;
-  props: { attributes?: { string: string }, name?: string, validators?: Record<string, Function> };
   children: Record<string, Block>;
 
   get element() {
     return this._element;
   }
 
-  constructor(tagName = 'div', props = {}, children = {}) {
+  constructor(tagName = 'div', props: props = {}, children = {}) {
     this._meta = { tagName, props };
     this.props = this._makePropsProxy(props);
     this.eventBus = new EventBus();
@@ -116,9 +132,9 @@ class Block {
   }
 
   _render() {
-    this.element.innerHTML = '';
     const block = this.render();
     if (typeof block === 'string') {
+      this.element.innerHTML = '';
       const fragment = this.stringToDocumentFragment(block);
       this.element.append(fragment);
     }

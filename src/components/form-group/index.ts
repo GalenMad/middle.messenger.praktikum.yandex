@@ -23,7 +23,7 @@ class FormGroup extends Block {
     return this.props.name;
   }
 
-  constructor(props: { name: string, type?: string, id: string, attributes?: Record<string, string>, validators?: Record<string, { argument: number, func: Function, message: string | Function }> }) {
+  constructor(props) {
     // Конструкция ниже нужна для того, чтобы класс, заданный снаружи, был в приоритете
     const className = (props.attributes && props.attributes.class) || FORM_GROUP_CLASS;
     const attributes = { ...props.attributes, class: className };
@@ -64,7 +64,7 @@ class FormGroup extends Block {
 
     const input = new Input({
       attributes,
-      events
+      events,
     });
 
     this.children.input = input
