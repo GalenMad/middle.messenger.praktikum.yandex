@@ -26,29 +26,30 @@ class HTTPTransport {
 
   get = (url: string, options: { timeout?: number, data?: {} } = {}) => {
     const path = options.data ? `${url}?${stringifyQuery(options.data)}` : url;
-    this.request(path, { ...options, method: METHODS.GET }, options.timeout);
+    return this.request(path, { ...options, method: METHODS.GET }, options.timeout);
   };
 
   put = (url: string, options: { timeout?: number, data?: {} } = {}) => {
-    this.request(url, { ...options, method: METHODS.PUT }, options.timeout);
+    return this.request(url, { ...options, method: METHODS.PUT }, options.timeout);
   };
 
   post = (url: string, options: { timeout?: number, data?: {} } = {}) => {
-    this.request(url, { ...options, method: METHODS.POST }, options.timeout);
+    return this.request(url, { ...options, method: METHODS.POST }, options.timeout);
   };
 
   delete = (url: string, options: { timeout?: number, data?: {} } = {}) => {
-    this.request(url, { ...options, method: METHODS.DELETE }, options.timeout);
+    return this.request(url, { ...options, method: METHODS.DELETE }, options.timeout);
   };
 
   request = (url: string, options: { method?: METHODS | string, headers?: Record<string, string>, data?: {} }, timeout = 10000) => {
     const { method = METHODS.GET, headers = {}, data } = options;
-    // TODO: Разобраться с передачей неслужебных опций как data
+
     return new Promise((resolve, reject) => {
       const xhr = new XMLHttpRequest();
       const path = method === METHODS.GET && data ? `${url}?${stringifyQuery(data)}` : url;
 
       xhr.open(method, this._host + this._hand + path);
+      xhr.timeout = timeout;
 
       if (headers) {
         for (const header in headers) {
@@ -56,11 +57,16 @@ class HTTPTransport {
         }
       }
 
-      xhr.timeout = timeout;
-      xhr.onload = () => resolve(xhr);
-      xhr.onabort = reject;
-      xhr.onerror = reject;
-      xhr.ontimeout = reject;
+      const getResponse = (
+        error = false,
+        status: number | string = xhr.status,
+        data: {} | null = JSON.parse(xhr.responseText)
+      ) => ({ error, status, data });
+
+      xhr.onload = () => resolve(getResponse(!(xhr.status >= 200 && xhr.status < 300)))
+      xhr.onabort = () => reject(getResponse(true, 'abort', null));
+      xhr.onerror = () => reject(getResponse(true, 'unknown', null));
+      xhr.ontimeout = () => reject(getResponse(true, 'timeout', null));
 
       if (method === METHODS.GET || !data) {
         xhr.send();
