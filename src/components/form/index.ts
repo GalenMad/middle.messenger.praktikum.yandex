@@ -18,8 +18,9 @@ class Form extends Block {
   }
 
   get data() {
-    const data = this.formGroups.map(({ name, value }) => [name, value]);
-    return data.reduceRight((prev, curr) => `${curr.join(': ')}\n${prev}`, '');
+    const data = {};
+    this.formGroups.forEach(({ name, value }) => data[name] = value);
+    return data;
   }
 
   constructor(props: { attributes?: { class?: string }, fields?: []; }) {

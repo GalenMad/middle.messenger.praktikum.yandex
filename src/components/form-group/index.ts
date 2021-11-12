@@ -16,7 +16,7 @@ class FormGroup extends Block {
   }
 
   get isValid() {
-    return !this.props.validators.some(validator => !validator(this.value));
+    return !this.props.validators || !this.props.validators.some(validator => validator(this.value));
   }
 
   get name() {
