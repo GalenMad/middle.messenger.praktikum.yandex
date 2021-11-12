@@ -1,7 +1,9 @@
 import allFields from '../../data/fields';
-import Form from '../../components/form';
 import compileTemplate from './template.pug';
+import Form from '../../components/form';
 import Block from '../../modules/block';
+import AuthController from '../../modules/controllers/auth.controller';
+const authController = new AuthController();
 
 const fields = allFields.filter((field) => ['login', 'password'].includes(field.name));
 const events = [{
@@ -10,7 +12,7 @@ const events = [{
     evt.preventDefault();
     form.checkValidity();
     if (form.isValid) {
-      console.log(form.data);
+      authController.login(form.data);
     }
   },
   selector: 'form',

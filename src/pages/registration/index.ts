@@ -2,6 +2,8 @@ import Block from '../../modules/block';
 import allFields from '../../data/fields';
 import Form from '../../components/form';
 import compileTemplate from './template.pug';
+import AuthController from '../../modules/controllers/auth.controller';
+const authController = new AuthController();
 
 const fields = Object.values(allFields);
 
@@ -11,9 +13,10 @@ const events = [{
     evt.preventDefault();
     form.checkValidity();
     if (form.isValid) {
-      console.log(form.data);
+      authController.registration(form.data);
     }
   },
+  selector: 'form',
   type: 'submit'
 }];
 
