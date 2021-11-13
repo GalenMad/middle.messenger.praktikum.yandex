@@ -28,8 +28,13 @@ interface requestOptions {
   timeout?: number, 
   data?: Record<string, string | number | unknown>,
   method?: METHODS | string,
-  headers?: Record<string, string>,
-  credentials?: boolean
+  headers?: Record<string, string>
+}
+
+interface response {
+  error: boolean,
+  status: number | string,
+  data: {} | string | null
 }
 
 class HTTPTransport {
@@ -58,11 +63,10 @@ class HTTPTransport {
     return this.request(url, { ...options, method: METHODS.DELETE });
   };
 
-  request = (url: string, options: requestOptions) => {
+  request = (url: string, options: requestOptions): Promise<response> => {
     const {
       method = METHODS.GET,
       headers = {},
-      credentials = false,
       data = null,
       timeout = 10000
     } = options;
@@ -86,7 +90,7 @@ class HTTPTransport {
         error = false,
         status: number | string = xhr.status,
         data: {} | null = getJSONFromString(xhr.responseText)
-      ) => ({ error, status, data });
+      ): response => ({ error, status, data });
 
       xhr.onload = () => resolve(getResponse(!(xhr.status >= 200 && xhr.status < 300)))
       xhr.onabort = () => resolve(getResponse(true, 'abort', null));

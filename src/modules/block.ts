@@ -3,6 +3,7 @@
 
 import EventBus from './event-bus';
 
+//TODO: Сделать тип более глобальным
 interface props {
   name?: string,
   type?: string,
@@ -150,7 +151,7 @@ class Block {
     return this.element;
   }
 
-  _addEvents(props) {
+  _addEvents(props: { events: [] }) {
     const { events = [] } = props;
     for (const { type, selector, cb } of events) {
       const element = selector ? this._element.querySelector(selector) || this._element : this._element;
@@ -158,7 +159,7 @@ class Block {
     }
   }
 
-  _removeEvents(props) {
+  _removeEvents(props: { events: [] }) {
     const { events = [] } = props;
     for (const { type, selector, cb } of events) {
       const element = selector ? this._element.querySelector(selector) || this._element : this._element;
