@@ -13,7 +13,7 @@ export default class AuthController extends BaseController {
   async getUserInfo() {
     const response = await userInfoAPI.request();
     if (response.error) {
-      this.throwError('loginAPI', response);
+      this.throwError('userInfoAPI', response);
     }
   }
 
