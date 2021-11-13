@@ -1,9 +1,18 @@
-const stringifyQuery = (data: Record<string, any>) => {
+const stringifyQuery = (data: Record<string, string | number | unknown>) => {
   if (!data || typeof data !== 'object') {
     return '';
   }
   return Object.entries(data).reduceRight((prev: any, curr: any): string => `${curr[0]}=${curr[1].toString()}${prev ? `&${prev}` : ''}`, null);
 };
+
+const getJSONFromString = (string: string) => {
+  try {
+    let json = JSON.parse(string);
+    return json;
+  } catch (e) {
+    return string;
+  }
+}
 
 enum METHODS {
   GET = 'GET',
@@ -13,52 +22,83 @@ enum METHODS {
   DELETE = 'DELETE',
 };
 
+const BASE_HOST = 'https://ya-praktikum.tech/api/v2';
+
+interface requestOptions {
+  timeout?: number,
+  data?: Record<string, string | number | unknown>,
+  method?: METHODS | string,
+  headers?: Record<string, string>
+}
+
+interface response {
+  error: boolean,
+  status: number | string,
+  data: { reason?: string } | string | null
+}
+
 class HTTPTransport {
-  get = (url: string, options: { data: Record<string, any>, timeout?: number }) => {
-    const { data = {} } = options;
-    this.request(`${url}?${stringifyQuery(data) || ''}`, { ...options, method: METHODS.GET }, options.timeout);
+  private _host: string;
+  private _hand: string;
+
+  constructor(hand = '', host = BASE_HOST) {
+    this._host = host;
+    this._hand = hand
+  }
+
+  get = (url: string, options: requestOptions = {}) => {
+    const path = options.data ? `${url}?${stringifyQuery(options.data)}` : url;
+    return this.request(path, { ...options, method: METHODS.GET });
   };
 
-  put = (url: string, options: { timeout?: number }) => {
-    this.request(url, { ...options, method: METHODS.PUT }, options.timeout);
+  put = (url: string, options: requestOptions = {}) => {
+    return this.request(url, { ...options, method: METHODS.PUT });
   };
 
-  post = (url: string, options: { timeout?: number }) => {
-    this.request(url, { ...options, method: METHODS.POST }, options.timeout);
+  post = (url: string, options: requestOptions = {}) => {
+    return this.request(url, { ...options, method: METHODS.POST });
   };
 
-  delete = (url: string, options: { timeout?: number }) => {
-    this.request(url, { ...options, method: METHODS.DELETE }, options.timeout);
+  delete = (url: string, options: requestOptions = {}) => {
+    return this.request(url, { ...options, method: METHODS.DELETE });
   };
 
-  request = (url: string, options: {method?: METHODS | string, headers?: Record<string, string>, data?: Record<string, any>}, timeout = 10000) => {
-    const { method = METHODS.GET, headers = {}, data } = options;
-    if (method === METHODS.GET && data) {
-      url += `?${stringifyQuery(data)}`;
-    }
-    return new Promise((resolve, reject) => {
+  request = (url: string, options: requestOptions): Promise<response> => {
+    const {
+      method = METHODS.GET,
+      headers = {},
+      data = null,
+      timeout = 10000
+    } = options;
+
+    return new Promise((resolve) => {
       const xhr = new XMLHttpRequest();
-      xhr.open(method, url);
+      const path = method === METHODS.GET && data ? `${url}?${stringifyQuery(data)}` : url;
+      const requestBody = method !== METHODS.GET && data ? JSON.stringify(data) : null;
+
+      xhr.open(method, this._host + this._hand + path);
+      xhr.timeout = timeout;
+      xhr.withCredentials = true;
 
       if (headers) {
         for (const header in headers) {
           xhr.setRequestHeader(header, headers[header]);
         }
       }
-      xhr.timeout = timeout;
 
-      xhr.onload = () => resolve(xhr);
-      xhr.onabort = reject;
-      xhr.onerror = reject;
-      xhr.ontimeout = reject;
+      const getResponse = (
+        error = false,
+        status: number | string = xhr.status,
+        data: {} | null = getJSONFromString(xhr.responseText)
+      ): response => ({ error, status, data });
 
-      if (method === METHODS.GET || !data) {
-        xhr.send();
-      } else {
-        xhr.send(data);
-      }
+      xhr.onload = () => resolve(getResponse(!(xhr.status >= 200 && xhr.status < 300)))
+      xhr.onabort = () => resolve(getResponse(true, 'abort', null));
+      xhr.onerror = () => resolve(getResponse(true, 'unknown', null));
+      xhr.ontimeout = () => resolve(getResponse(true, 'timeout', null));
+      xhr.send(requestBody);
     });
   };
 }
 
-export default new HTTPTransport();
+export default HTTPTransport;

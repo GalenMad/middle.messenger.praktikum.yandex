@@ -3,46 +3,49 @@
 
 import EventBus from './event-bus';
 
+//TODO: Сделать тип более глобальным
+interface props {
+  name?: string,
+  type?: string,
+  id?: string,
+  events?: Array<{
+    type: string,
+    cb: Function
+  }>,
+  attributes?: Record<string, string>,
+  validators?: Record<string, {
+    argument: number,
+    func: Function,
+    message: string | Function
+  }>,
+  fields?: Array<{}>
+}
+
 class Block {
-  [x: string]: any;
   checkValidity(): void {
     throw new Error('Method not implemented.');
   }
-  static EVENTS = {
-    INIT: 'init',
-    FLOW_CDM: 'flow:component-did-mount',
-    FLOW_CDU: 'flow:component-did-update',
-    FLOW_RENDER: 'flow:render',
-  };
 
   static MESSAGE_ACCESS_ERROR = 'Нет прав';
 
   _element: HTMLElement;
-  _meta: { tagName: string; props: {}; };
+  _meta: { tagName: string; props?: {}; };
   eventBus: EventBus;
-  props: { attributes?: { string: string }, name?: string, validators?: Record<string, Function> };
   children: Record<string, Block>;
+  props: { events: [], attributes: Record<string, string | number> }
 
   get element() {
     return this._element;
   }
-  // TODO: Избавиться от _meta
-  constructor(tagName = 'div', props = {}, children = {}) {
+
+  constructor(tagName = 'div', props: props = {}, children = {}) {
     this._meta = { tagName, props };
     this.props = this._makePropsProxy(props);
     this.eventBus = new EventBus();
     this.children = children;
-    this._registerEvents();
-    this.eventBus.emit(Block.EVENTS.INIT);
+    this.init();
   }
 
-  _registerEvents() {
-    const eventBus = this.eventBus;
-    eventBus.on(Block.EVENTS.INIT, this.init.bind(this));
-    eventBus.on(Block.EVENTS.FLOW_RENDER, this._render.bind(this));
-    eventBus.on(Block.EVENTS.FLOW_CDM, this._componentDidMount.bind(this));
-    eventBus.on(Block.EVENTS.FLOW_CDU, this._componentDidUpdate.bind(this));
-  }
 
   // eslint-disable-next-line class-methods-use-this
   _setAttributes(element: HTMLElement, attributes: Record<string, string> = {}) {
@@ -64,11 +67,13 @@ class Block {
 
   init() {
     this._createResources();
-    this.eventBus.emit(Block.EVENTS.FLOW_RENDER);
+    this._render();
   }
 
+  // TODO: CDM должен срабатывать один раз
   _componentDidMount() {
     this.componentDidMount(this.props);
+    this.replaceChildren();
   }
 
   componentDidMount(_oldProps: any): void | boolean { return false; }
@@ -79,9 +84,10 @@ class Block {
   }
 
   _componentDidUpdate(newProps: any, oldProps: any) {
+    this._removeEvents(oldProps);
     this.componentDidUpdate(newProps, oldProps);
     this._updateResources(newProps);
-    this.eventBus.emit(Block.EVENTS.FLOW_RENDER);
+    this._render();
   }
 
   componentDidUpdate(_newProps: any, _oldProps: any): void | boolean {
@@ -114,14 +120,14 @@ class Block {
   }
 
   _render() {
-    this.element.innerHTML = '';
     const block = this.render();
     if (typeof block === 'string') {
+      this.element.innerHTML = '';
       const fragment = this.stringToDocumentFragment(block);
       this.element.append(fragment);
     }
-    this.replaceChildren();
-    this.eventBus.emit(Block.EVENTS.FLOW_CDM);
+    this._addEvents(this.props);
+    this._componentDidMount();
   }
 
   render() {
@@ -130,6 +136,22 @@ class Block {
 
   getContent() {
     return this.element;
+  }
+
+  _addEvents(props: { events: [] }) {
+    const { events = [] } = props;
+    for (const { type, selector, cb } of events) {
+      const element = selector ? this._element.querySelector(selector) || this._element : this._element;
+      element.addEventListener(type, cb);
+    }
+  }
+
+  _removeEvents(props: { events: [] }) {
+    const { events = [] } = props;
+    for (const { type, selector, cb } of events) {
+      const element = selector ? this._element.querySelector(selector) || this._element : this._element;
+      element.removeEventListener(type, cb);
+    }
   }
 
   _makePropsProxy(props: {}) {
@@ -146,7 +168,7 @@ class Block {
         // eslint-disable-next-line no-param-reassign
         target[prop] = value;
         const newProps = { ...target };
-        this.eventBus.emit(Block.EVENTS.FLOW_CDU, newProps, oldProps);
+        this._componentDidUpdate(newProps, oldProps)
         return true;
       },
       deleteProperty: () => {
@@ -154,6 +176,14 @@ class Block {
       },
     };
     return new Proxy(props, handler);
+  }
+
+  show() {
+    this.getContent().style.display = '';
+  }
+
+  hide() {
+    this.getContent().style.display = 'none';
   }
 }
 

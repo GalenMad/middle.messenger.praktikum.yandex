@@ -3,22 +3,9 @@ import Input from '../input';
 import compileTemplate from './template.pug';
 import './styles.scss';
 
-const createInputElement = (props: { name: string; type?: string; id: string; attributes?: { class?: string; }; validators?: any; }) => {
-  const {
-    id, name, validators, type = 'text',
-  } = props;
-  return new Input({
-    attributes: {
-      class: 'control',
-      type,
-      id,
-      name,
-    },
-    validators,
-  });
-};
-
 const FORM_GROUP_CLASS = 'form-group';
+const INPUT_CLASS = 'control';
+const INPUT_BASE_TYPE = 'text';
 const FORM_GROUP_TAG = 'label';
 const VALIDATION_SELECTOR = '.validation';
 
@@ -29,49 +16,73 @@ class FormGroup extends Block {
   }
 
   get isValid() {
-    return !this.children.input.triggeredValidator;
+    return !this.props.validators || !this.props.validators.some(validator => validator(this.value));
   }
 
   get name() {
     return this.props.name;
   }
 
-  constructor(props: { name: string, type?: string, id: string, attributes?: Record<string, string>, validators?: Record<string, {argument: number, func: Function, message: string | Function}> }) {
+  constructor(props) {
     // Конструкция ниже нужна для того, чтобы класс, заданный снаружи, был в приоритете
     const className = (props.attributes && props.attributes.class) || FORM_GROUP_CLASS;
     const attributes = { ...props.attributes, class: className };
-    super(FORM_GROUP_TAG, { ...props, attributes }, { input: createInputElement(props) });
+    super(FORM_GROUP_TAG, { ...props, attributes });
   }
 
   componentDidMount() {
-    const input = this.children.input.getContent();
-    input.addEventListener('focus', () => this._hideValidationMessage());
-    input.addEventListener('blur', () => this.checkValidity());
+    this.createInputElement();
   }
 
+  //- TODO: Вынести логику с сообщением в шаблон
   _hideValidationMessage() {
     const container: HTMLElement | null = this.element.querySelector(VALIDATION_SELECTOR);
     if (container) {
-      container.style.display = 'none';
+      container.textContent = '';
     }
   }
 
-  componentDidUpdate(newProps: { name: string; type?: string; id: string; attributes?: { class?: string; }; validators?: any; }) {
-    this.children.input = createInputElement(newProps);
-  }
+
+  createInputElement() {
+    const { id, name, type = INPUT_BASE_TYPE } = this.props;
+
+    const attributes = {
+      class: INPUT_CLASS,
+      type,
+      id,
+      name,
+    };
+
+    const events = [{
+      type: 'focus',
+      cb: () => this._hideValidationMessage()
+    },
+    {
+      type: 'blur',
+      cb: () => this.checkValidity()
+    }];
+
+    const input = new Input({
+      attributes,
+      events,
+    });
+
+    this.children.input = input
+  };
 
   checkValidity() {
-    if (!this.props.validators) {
+    const validators: Array<Function> | undefined = this.props.validators;
+    if (!validators) {
       return;
     }
-    const validators: Record<string, any>  = this.props.validators;
-    const validity = this.children.input.triggeredValidator;
-    if (validity) {
-      const { message, argument = null } = validators[validity];
-      const container: HTMLElement | null = this.element.querySelector(VALIDATION_SELECTOR);
-      if (container) {
-        container.style.display = 'block';
-        container.textContent = typeof message === 'function' ? message(argument) : message;
+
+    const value = this.value;
+    const container: HTMLElement | null = this.element.querySelector(VALIDATION_SELECTOR);
+    for (let i: number = 0; i < validators.length; i += 1) {
+      const message = validators[i](value);
+      if (message && container) {
+        container.textContent = message;
+        break;
       }
     }
   }

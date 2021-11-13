@@ -1,30 +1,11 @@
 import './scss/styles.scss';
-import pages, { SpreadPage } from './pages';
+import pages from './pages';
 import Router from './modules/router';
+import Store from './modules/store';
 
-const root: HTMLElement | null = document.querySelector('#app');
+// TODO: Прикрутить алиасы
+const router = new Router();
 
-if (root === null) {
-    throw new Error('Не найден root-элемент');
-}
+pages.forEach(({block, path, props = {}, options = {}}) => router.use(path, block, props, options));
 
-const router = new Router({
-    mode: 'hash',
-    root: '/',
-});
-
-// eslint-disable-next-line @typescript-eslint/ban-types
-pages.forEach((page: { path: string, render: Function }): void => {
-    const { render, path } = page;
-    router.add(path, () => {
-        root.innerHTML = '';
-        root.appendChild(render());
-    });
-});
-
-// TODO: Временная заглушка для разводящей страницы;
-router.add('', (): void => {
-    root.innerHTML = '';
-    root.appendChild(SpreadPage({ list: pages }));
-});
-
+new Store().init(router.start.bind(router));

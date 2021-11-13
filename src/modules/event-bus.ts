@@ -1,7 +1,13 @@
+let eventBusInstance: null | EventBus  = null
+
 class EventBus {
   listeners: Record<string, Function[]>
   constructor() {
+    if (eventBusInstance) {
+      return eventBusInstance;
+    }
     this.listeners = {};
+    eventBusInstance = this;
   }
 
   _checkExistListener(event: string, callback: Function): boolean {
