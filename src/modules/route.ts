@@ -6,7 +6,7 @@ function render(query, block) {
 
 export default class Route {
   constructor(pathname, view, props, options) {
-    const {isPrivate = false, isNotForAuthorized = false } = options;
+    const { isPrivate = false, isNotForAuthorized = false } = options;
     this._pathname = pathname;
     this._blockClass = view;
     this._block = null;

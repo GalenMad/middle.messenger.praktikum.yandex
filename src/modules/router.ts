@@ -6,7 +6,7 @@ enum ADDRESSES {
   AUTH = '/sign-in',
   MAIN = '/'
 }
-
+const store = new Store();
 const ROOT = '#app';
 let routerInstance: Router | null = null;
 
@@ -30,8 +30,8 @@ export default class Router {
     routerInstance = this;
   }
 
-  use(pathname: string, block: unknown, props: {}, isPrivate = false) {
-    const route = new Route(pathname, block, { rootQuery: this._rootQuery, ...props }, isPrivate);
+  use(pathname: string, block: unknown, props: {}, options: {}) {
+    const route = new Route(pathname, block, { rootQuery: this._rootQuery, ...props }, options);
     this.routes.push(route);
     return this;
   }
@@ -80,9 +80,9 @@ export default class Router {
     // TODO: Узнать что уместнее — редирект или рендер с сохранением адреса
     if (!route) {
       this.go(ADDRESSES.ERROR);
-    } else if (route.isPrivate && !Store.isAuthorized) {
+    } else if (route.isPrivate && !store.isAuthorized) {
       this.go(ADDRESSES.AUTH);
-    } else if (route.isNotForAuthorized && Store.isAuthorized) {
+    } else if (route.isNotForAuthorized && store.isAuthorized) {
       this.go(ADDRESSES.MAIN);
     } else {
       this._currentRoute = route;

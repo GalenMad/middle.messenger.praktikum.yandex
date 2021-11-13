@@ -1,9 +1,10 @@
-import { LoginAPI, UserInfoAPI, LogoutAPI } from '../api/auth.api';
+import { LoginAPI, LogoutAPI } from '../api/auth.api';
 import Router from '../router';
+import Store from '../store';
 
 const loginAPI = new LoginAPI();
-const userInfoAPI = new UserInfoAPI();
 const logoutAPI = new LogoutAPI();
+const store = new Store();
 
 const throwError = (title: string, response) => {
   const { data, status } = response;
@@ -25,12 +26,7 @@ export default class AuthController {
       throwError('loginAPI', loginResponse);
     }
 
-    const userInfoResponse = await userInfoAPI.request();
-    if (userInfoResponse.error) {
-      throwError('userInfoAPI', userInfoResponse);
-    }
-
-    console.log('User Info', userInfoResponse);
+    store.isAuthorized = true;
     this.router.go('/');
   }
 
@@ -40,12 +36,7 @@ export default class AuthController {
       throwError('loginAPI', signUpResponse);
     }
 
-    const userInfoResponse = await userInfoAPI.request();
-    if (userInfoResponse.error) {
-      throwError('userInfoAPI', userInfoResponse);
-    }
-
-    console.log('User Info', userInfoResponse);
+    store.isAuthorized = true;
     this.router.go('/');
   }
 
@@ -56,6 +47,8 @@ export default class AuthController {
     if (logoutResponse.error) {
       throwError('loginAPI', logoutResponse);
     }
+
+    store.isAuthorized = false;
     this.router.go('/sign-in');
   }
 }
