@@ -17,23 +17,33 @@ export default [{
 	name: 'Авторизация',
 	block: Authorization,
 	path: '/sign-in',
+  options: {
+    isNotForAuthorized: true
+  }
 },
 {
 	name: 'Регистрация',
 	block: Registration,
 	path: '/sign-up',
+  options: {
+    isNotForAuthorized: true
+  }
 },
 {
 	name: 'Чаты',
 	block: ChatsPage,
 	path: '/',
-  isPrivate: true
+  options: {
+    isPrivate: true
+  }
 },
 {
 	name: 'Профиль пользователя',
 	block: UserSettings,
 	path: '/profile',
-  isPrivate: true
+  options: {
+    isPrivate: true
+  }
 },
 {
 	name: 'Ошибка 404',

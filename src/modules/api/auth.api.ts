@@ -7,7 +7,7 @@ const headers = { 'content-type': 'application/json' };
 interface response {
   error: boolean,
   status: number | string,
-  data: {} | string | null
+  data: { reason?: string } | string | null
 }
 
 export class LoginAPI extends BaseAPI {

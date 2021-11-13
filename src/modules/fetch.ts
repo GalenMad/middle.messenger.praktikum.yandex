@@ -25,7 +25,7 @@ enum METHODS {
 const BASE_HOST = 'https://ya-praktikum.tech/api/v2';
 
 interface requestOptions {
-  timeout?: number, 
+  timeout?: number,
   data?: Record<string, string | number | unknown>,
   method?: METHODS | string,
   headers?: Record<string, string>
@@ -34,7 +34,7 @@ interface requestOptions {
 interface response {
   error: boolean,
   status: number | string,
-  data: {} | string | null
+  data: { reason?: string } | string | null
 }
 
 class HTTPTransport {

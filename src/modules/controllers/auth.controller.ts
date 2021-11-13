@@ -5,6 +5,10 @@ const loginAPI = new LoginAPI();
 const userInfoAPI = new UserInfoAPI();
 const logoutAPI = new LogoutAPI();
 
+const throwError = (title: string, response) => {
+  const { data, status } = response;
+  throw new Error(`\n ref: ${title} \n status: ${status} \n reson: ${data.reason || data}`);
+}
 export default class AuthController {
   router: Router;
 
@@ -12,17 +16,46 @@ export default class AuthController {
     this.router = new Router();
   }
 
+  // TODO: Найти место где инициализировать проверку авторизованности
   async login(data: Record<string, string | number>) {
-    console.log('login', await loginAPI.request(data));
-    console.log('info',  await userInfoAPI.request());
+    // TODO: Вместо этих конструкций с ошибками прикрутить модалки
+    // TODO: Единый контроллер появления модалок
+    const loginResponse = await loginAPI.request(data);
+    if (loginResponse.error) {
+      throwError('loginAPI', loginResponse);
+    }
+
+    const userInfoResponse = await userInfoAPI.request();
+    if (userInfoResponse.error) {
+      throwError('userInfoAPI', userInfoResponse);
+    }
+
+    console.log('User Info', userInfoResponse);
+    this.router.go('/');
   }
 
   async registration(data: Record<string, string | number>) {
-    console.log('registration', await loginAPI.create(data));
-    console.log('info', await userInfoAPI.request());
+    const signUpResponse = await loginAPI.create(data);
+    if (signUpResponse.error) {
+      throwError('loginAPI', signUpResponse);
+    }
+
+    const userInfoResponse = await userInfoAPI.request();
+    if (userInfoResponse.error) {
+      throwError('userInfoAPI', userInfoResponse);
+    }
+
+    console.log('User Info', userInfoResponse);
+    this.router.go('/');
   }
 
+  // TODO: Как быть, если юзер почистит куки на страницах с чатами?
+  // Его может выкинуть не сразу.
   async logout() {
-    console.log('logout', await logoutAPI.request());
+    const logoutResponse = await logoutAPI.request();
+    if (logoutResponse.error) {
+      throwError('loginAPI', logoutResponse);
+    }
+    this.router.go('/sign-in');
   }
 }
