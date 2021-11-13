@@ -73,7 +73,6 @@ class Block {
   // TODO: CDM должен срабатывать один раз
   _componentDidMount() {
     this.componentDidMount(this.props);
-    this.replaceChildren();
   }
 
   componentDidMount(_oldProps: any): void | boolean { return false; }
@@ -127,6 +126,7 @@ class Block {
       this.element.append(fragment);
     }
     this._addEvents(this.props);
+    this.replaceChildren();
     this._componentDidMount();
   }
 
@@ -176,14 +176,6 @@ class Block {
       },
     };
     return new Proxy(props, handler);
-  }
-
-  show() {
-    this.getContent().style.display = '';
-  }
-
-  hide() {
-    this.getContent().style.display = 'none';
   }
 }
 

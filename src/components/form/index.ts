@@ -46,11 +46,8 @@ class Form extends Block {
     }
   };
 
-  componentDidMount() {
-    this.createFormGroups();
-  }
-
   render() {
+    this.createFormGroups();
     return compileTemplate(this.props);
   }
 }

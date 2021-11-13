@@ -36,6 +36,7 @@ export default [{
   label: 'Электронная почта',
   id: 'email',
   name: 'email',
+  type: 'email',
   validators: [
     required(),
     email(),

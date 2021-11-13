@@ -1,18 +1,16 @@
 import Block from '../../modules/block';
-import Input from '../input';
 import compileTemplate from './template.pug';
 import './styles.scss';
 
 const FORM_GROUP_CLASS = 'form-group';
-const INPUT_CLASS = 'control';
-const INPUT_BASE_TYPE = 'text';
 const FORM_GROUP_TAG = 'label';
 const VALIDATION_SELECTOR = '.validation';
 
 class FormGroup extends Block {
 
   get value() {
-    return this.children.input.value;
+    const input = this.element.querySelector('input');
+    return input?.value;
   }
 
   get isValid() {
@@ -31,7 +29,13 @@ class FormGroup extends Block {
   }
 
   componentDidMount() {
-    this.createInputElement();
+    const input = this.element.querySelector('input');
+    input?.addEventListener('focus', () => {
+      this._hideValidationMessage();
+    });
+    input?.addEventListener('blur', () => {
+      this.checkValidity();
+    });
   }
 
   //- TODO: Вынести логику с сообщением в шаблон
@@ -41,34 +45,6 @@ class FormGroup extends Block {
       container.textContent = '';
     }
   }
-
-
-  createInputElement() {
-    const { id, name, type = INPUT_BASE_TYPE } = this.props;
-
-    const attributes = {
-      class: INPUT_CLASS,
-      type,
-      id,
-      name,
-    };
-
-    const events = [{
-      type: 'focus',
-      cb: () => this._hideValidationMessage()
-    },
-    {
-      type: 'blur',
-      cb: () => this.checkValidity()
-    }];
-
-    const input = new Input({
-      attributes,
-      events,
-    });
-
-    this.children.input = input
-  };
 
   checkValidity() {
     const validators: Array<Function> | undefined = this.props.validators;
