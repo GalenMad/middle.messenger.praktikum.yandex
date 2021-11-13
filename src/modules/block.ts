@@ -84,6 +84,7 @@ class Block {
     this.eventBus.emit(Block.EVENTS.FLOW_RENDER);
   }
 
+  // TODO: CDM должен срабатывать один раз
   _componentDidMount() {
     this.componentDidMount(this.props);
     this.replaceChildren();
