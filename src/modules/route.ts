@@ -1,10 +1,10 @@
-function render(query, block) {
-  const root = document.querySelector(query);
-  root.appendChild(block.getContent());
-  return root;
-}
-
 export default class Route {
+  _pathname: any;
+  _blockClass: any;
+  _block: null | { getContent: Function };
+  _props: any;
+  isPrivate: any;
+  isNotForAuthorized: any;
   constructor(pathname, view, props, options) {
     const { isPrivate = false, isNotForAuthorized = false } = options;
     this._pathname = pathname;
@@ -15,30 +15,28 @@ export default class Route {
     this.isNotForAuthorized = isNotForAuthorized;
   }
 
-  navigate(pathname) {
+  navigate(pathname: string) {
     if (this.match(pathname)) {
       this._pathname = pathname;
       this.render();
     }
   }
 
-  match(pathname) {
+  match(pathname: string) {
     return pathname === this._pathname;
   }
 
   leave() {
-    if (this._block) {
-      this._block.hide();
-    }
+    const root = document.querySelector(this._props.rootQuery);
+    root.innerHTML = '';
   }
 
   render() {
     if (!this._block) {
       this._block = new this._blockClass(this._props);
-      render(this._props.rootQuery, this._block);
-      return;
     }
 
-    this._block.show();
+    const root = document.querySelector(this._props.rootQuery);
+    root.appendChild(this._block.getContent());
   }
 }
