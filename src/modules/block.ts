@@ -22,23 +22,17 @@ interface props {
 }
 
 class Block {
-  [x: string]: any;
   checkValidity(): void {
     throw new Error('Method not implemented.');
   }
-  static EVENTS = {
-    INIT: 'init',
-    FLOW_CDM: 'flow:component-did-mount',
-    FLOW_CDU: 'flow:component-did-update',
-    FLOW_RENDER: 'flow:render',
-  };
 
   static MESSAGE_ACCESS_ERROR = 'Нет прав';
 
   _element: HTMLElement;
-  _meta: { tagName: string; props: {}; };
+  _meta: { tagName: string; props?: {}; };
   eventBus: EventBus;
   children: Record<string, Block>;
+  props: { events: [], attributes: Record<string, string | number> }
 
   get element() {
     return this._element;
@@ -49,17 +43,9 @@ class Block {
     this.props = this._makePropsProxy(props);
     this.eventBus = new EventBus();
     this.children = children;
-    this._registerEvents();
-    this.eventBus.emit(Block.EVENTS.INIT);
+    this.init();
   }
 
-  _registerEvents() {
-    const eventBus = this.eventBus;
-    eventBus.on(Block.EVENTS.INIT, this.init.bind(this));
-    eventBus.on(Block.EVENTS.FLOW_RENDER, this._render.bind(this));
-    eventBus.on(Block.EVENTS.FLOW_CDM, this._componentDidMount.bind(this));
-    eventBus.on(Block.EVENTS.FLOW_CDU, this._componentDidUpdate.bind(this));
-  }
 
   // eslint-disable-next-line class-methods-use-this
   _setAttributes(element: HTMLElement, attributes: Record<string, string> = {}) {
@@ -81,7 +67,7 @@ class Block {
 
   init() {
     this._createResources();
-    this.eventBus.emit(Block.EVENTS.FLOW_RENDER);
+    this._render();
   }
 
   // TODO: CDM должен срабатывать один раз
@@ -101,7 +87,7 @@ class Block {
     this._removeEvents(oldProps);
     this.componentDidUpdate(newProps, oldProps);
     this._updateResources(newProps);
-    this.eventBus.emit(Block.EVENTS.FLOW_RENDER);
+    this._render();
   }
 
   componentDidUpdate(_newProps: any, _oldProps: any): void | boolean {
@@ -141,7 +127,7 @@ class Block {
       this.element.append(fragment);
     }
     this._addEvents(this.props);
-    this.eventBus.emit(Block.EVENTS.FLOW_CDM);
+    this._componentDidMount();
   }
 
   render() {
@@ -182,7 +168,7 @@ class Block {
         // eslint-disable-next-line no-param-reassign
         target[prop] = value;
         const newProps = { ...target };
-        this.eventBus.emit(Block.EVENTS.FLOW_CDU, newProps, oldProps);
+        this._componentDidUpdate(newProps, oldProps)
         return true;
       },
       deleteProperty: () => {
