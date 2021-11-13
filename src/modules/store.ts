@@ -16,7 +16,6 @@ export default class Store {
   }
 
   setAuthorizationStatus(status: boolean) {
-    console.log(status, this);
     this.isAuthorized = status;
   }
 
