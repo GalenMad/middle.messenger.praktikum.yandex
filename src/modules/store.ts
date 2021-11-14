@@ -1,37 +1,24 @@
-import { AUTH_EVENTS } from '../data/events';
-import { UserInfoAPI } from './api/auth.api';
-import EventBus from './event-bus';
-let storeInstance: null | Store = null;
+function createStore() {
+  let isAuthorized = false;
+  let userInfo: {} | null = null;
 
-export default class Store {
-  eventBus: EventBus;
-  constructor() {
-    if (storeInstance) {
-      return storeInstance;
+  const getters = {
+    getAuthorizationStatus: () => isAuthorized,
+  }
+
+  const mutations = {
+    setAuthorizationStatus: (status: boolean) => {
+      isAuthorized = status;
+    },
+    setUserInfo: (info: {}) => {
+      userInfo = info;
     }
-
-    storeInstance = this;
-    this.eventBus = EventBus;
-    this._registerEvents();
   }
 
-  _registerEvents() {
-    const eventBus = this.eventBus;
-    eventBus.on(AUTH_EVENTS.LOGIN, () => this.isAuthorized = true);
-    eventBus.on(AUTH_EVENTS.SIGN_UP, () => this.isAuthorized = true);
-    eventBus.on(AUTH_EVENTS.LOGOUT, () => this.isAuthorized = false);
-  }
+  return Object.freeze({
+    ...mutations,
+    ...getters
+  })
+}
 
-  isAuthorized = false;
-  userInfo: {} | null = null;
-
-  // TODO: Явный костыль, надо как-то по-другому проверять авторизованность
-  async init(callback: Function) {
-    const response  = await new UserInfoAPI().request();
-    this.isAuthorized = !response.error
-    if (!response.error) {
-      this.userInfo = response.data;
-    }
-    callback();
-  }
-};
+export default createStore();

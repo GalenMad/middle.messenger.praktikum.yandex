@@ -1,5 +1,6 @@
 import Route from './route';
-import Store from './store';
+import Store from './Store';
+import AuthController from './controllers/auth.controller';
 
 function createRouter() {
 
@@ -9,10 +10,10 @@ function createRouter() {
     MAIN = '/'
   }
 
-  const store = new Store();
   const routes: Route[] = [];
   const history = window.history;
   const rootQuery = '#app';
+  const { getAuthorizationStatus } = Store;
   let currentRoute: null | Route = null;
 
   const onRoute = (pathname: string) => {
@@ -25,13 +26,15 @@ function createRouter() {
     if (currentRoute === route) {
       return;
     }
+    
+    const authorizationStatus = getAuthorizationStatus();
 
     // TODO: Узнать что уместнее — редирект или рендер с сохранением адреса
     if (!route) {
       go(ADDRESSES.ERROR);
-    } else if (route.isPrivate && !store.isAuthorized) {
+    } else if (route.isPrivate && !authorizationStatus) {
       go(ADDRESSES.AUTH);
-    } else if (route.isNotForAuthorized && store.isAuthorized) {
+    } else if (route.isNotForAuthorized && authorizationStatus) {
       go(ADDRESSES.MAIN);
     } else {
       currentRoute = route;
@@ -49,7 +52,7 @@ function createRouter() {
     return this;
   };
 
-  const start = async () => {
+  const start = async function() {
     const root = document.querySelector(rootQuery);
 
     if (!root) {
@@ -75,6 +78,7 @@ function createRouter() {
       }
     });
 
+    await new AuthController().checkAuthorization();
     onRoute(window.location.pathname);
     return this;
   };
