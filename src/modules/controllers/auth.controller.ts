@@ -15,6 +15,7 @@ export default class AuthController extends BaseController {
     if (response.error) {
       this.throwError('userInfoAPI', response);
     }
+    this.eventBus.emit(AUTH_EVENTS.USER_INFO, response.data);
   }
 
   async login(data: Record<string, string | number>) {
@@ -25,6 +26,7 @@ export default class AuthController extends BaseController {
     }
 
     this.eventBus.emit(AUTH_EVENTS.LOGIN, true);
+    this.getUserInfo();
     this.router.go('/');
   }
 
@@ -35,6 +37,7 @@ export default class AuthController extends BaseController {
     }
 
     this.eventBus.emit(AUTH_EVENTS.SIGN_UP, true);
+    this.getUserInfo();
     this.router.go('/');
   }
 

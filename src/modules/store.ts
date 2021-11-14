@@ -15,22 +15,23 @@ export default class Store {
     this._registerEvents();
   }
 
-  setAuthorizationStatus(status: boolean) {
-    this.isAuthorized = status;
-  }
-
   _registerEvents() {
     const eventBus = this.eventBus;
-    Object.values(AUTH_EVENTS).forEach((event) => {
-      eventBus.on(event, this.setAuthorizationStatus.bind(this));
-    })
+    eventBus.on(AUTH_EVENTS.LOGIN, () => this.isAuthorized = true);
+    eventBus.on(AUTH_EVENTS.SIGN_UP, () => this.isAuthorized = true);
+    eventBus.on(AUTH_EVENTS.LOGOUT, () => this.isAuthorized = false);
   }
 
   isAuthorized = false;
+  userInfo: {} | null = null;
 
   // TODO: Явный костыль, надо как-то по-другому проверять авторизованность
   async init(callback: Function) {
-    await new UserInfoAPI().request().then(res => this.isAuthorized = !res.error);
+    const response  = await new UserInfoAPI().request();
+    this.isAuthorized = !response.error
+    if (!response.error) {
+      this.userInfo = response.data;
+    }
     callback();
   }
 };
