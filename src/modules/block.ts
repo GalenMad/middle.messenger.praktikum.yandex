@@ -30,7 +30,6 @@ class Block {
 
   _element: HTMLElement;
   _meta: { tagName: string; props?: {}; };
-  eventBus: EventBus;
   children: Record<string, Block>;
   props: { events: [], attributes: Record<string, string | number> }
 
@@ -41,7 +40,6 @@ class Block {
   constructor(tagName = 'div', props: props = {}, children = {}) {
     this._meta = { tagName, props };
     this.props = this._makePropsProxy(props);
-    this.eventBus = new EventBus();
     this.children = children;
     this.init();
   }

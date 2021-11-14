@@ -11,7 +11,7 @@ export default class Store {
     }
 
     storeInstance = this;
-    this.eventBus = new EventBus();
+    this.eventBus = EventBus;
     this._registerEvents();
   }
 

@@ -10,7 +10,7 @@ export default class BaseController {
   eventBus: EventBus;
   router: Router;
   constructor() {
-    this.eventBus = new EventBus();
+    this.eventBus = EventBus;
     this.router = new Router();
   }
 

@@ -1,43 +1,36 @@
-let eventBusInstance: null | EventBus  = null
+function createEventBus() {
 
-class EventBus {
-  listeners: Record<string, Function[]>
-  constructor() {
-    if (eventBusInstance) {
-      return eventBusInstance;
+  const listeners: Record<string, Function[]> = {};
+  const _checkExistListener = (event: string, callback: Function): boolean => listeners[event].some((handler) => handler === callback);
+
+  const methods = {
+    on: (event: string, callback: Function): void => {
+      if (!listeners[event]) {
+        listeners[event] = [];
+      }
+      if (!_checkExistListener(event, callback)) {
+        listeners[event].push(callback);
+      }
+    },
+
+    off: (event: string, callback: Function): void => {
+      if (!listeners[event]) {
+        throw new Error(`Нет события: ${event}`);
+      }
+
+      listeners[event] = listeners[event].filter((listener) => listener !== callback);
+    },
+
+    emit: (event: string, ...args: unknown[]): void => {
+      if (!listeners[event]) {
+        throw new Error(`Нет события: ${event}`);
+      }
+
+      listeners[event].forEach((handler: Function) => handler(...args));
     }
-    this.listeners = {};
-    eventBusInstance = this;
   }
 
-  _checkExistListener(event: string, callback: Function): boolean {
-    return this.listeners[event].some((handler) => handler === callback);
-  }
-
-  on(event: string, callback: Function): void {
-    if (!this.listeners[event]) {
-      this.listeners[event] = [];
-    }
-    if (!this._checkExistListener(event, callback)) {
-      this.listeners[event].push(callback);
-    }
-  }
-
-  off(event: string, callback: Function): void {
-    if (!this.listeners[event]) {
-      throw new Error(`Нет события: ${event}`);
-    }
-
-    this.listeners[event] = this.listeners[event].filter((listener) => listener !== callback);
-  }
-
-  emit(event: string, ...args: any): void {
-    if (!this.listeners[event]) {
-      throw new Error(`Нет события: ${event}`);
-    }
-
-    this.listeners[event].forEach((handler: Function) => handler(...args));
-  }
+  return Object.freeze(methods)
 }
 
-export default EventBus;
+export default createEventBus();
