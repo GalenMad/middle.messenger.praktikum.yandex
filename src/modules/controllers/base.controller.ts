@@ -1,5 +1,5 @@
 import Router from '../router';
-import EventBus from '../event-bus';
+import Store from '../store';
 
 interface errorData {
   status: string | number,
@@ -7,11 +7,10 @@ interface errorData {
 }
 
 export default class BaseController {
-  eventBus: EventBus;
   router: Router;
   constructor() {
-    this.eventBus = EventBus;
     this.router = Router;
+    this.store = Store;
   }
 
   throwError(title: string, response: errorData) {

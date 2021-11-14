@@ -1,5 +1,4 @@
 import BaseController from './base.controller';
-import Store from '../Store';
 import { LoginAPI, LogoutAPI, UserInfoAPI } from '../api/auth.api';
 
 // TODO: К вопросу ниже, нужны ли эти консты здесь
@@ -7,27 +6,25 @@ const loginAPI = new LoginAPI();
 const logoutAPI = new LogoutAPI();
 const userInfoAPI = new UserInfoAPI();
 
-const { setAuthorizationStatus, setUserInfo } = Store
-
 // TODO: Может тоже сделать как синглтон?
 export default class AuthController extends BaseController {
 
   async checkAuthorization() {
     const response = await userInfoAPI.request();
-    setAuthorizationStatus(!response.error);
+    this.store.setAuthorizationStatus(!response.error);
     if (!response.error) {
-      setUserInfo(response.data);
+      this.store.setUserInfo(response.data);
     }
   }
 
   async getUserInfo() {
     const response = await userInfoAPI.request();
     if (response.error) {
-      setAuthorizationStatus(false);
+      this.store.setAuthorizationStatus(false);
       this.router.go('/sign-in');
       this.throwError('userInfoAPI', response);
     }
-    setUserInfo(response.data);
+    this.store.setUserInfo(response.data);
   }
 
   async login(data: Record<string, string | number>) {
@@ -37,7 +34,7 @@ export default class AuthController extends BaseController {
       this.throwError('loginAPI', response);
     }
 
-    setAuthorizationStatus(true);
+    this.store.setAuthorizationStatus(true);
     this.getUserInfo();
     this.router.go('/');
   }
@@ -48,7 +45,7 @@ export default class AuthController extends BaseController {
       this.throwError('loginAPI', response);
     }
 
-    setAuthorizationStatus(true);
+    this.store.setAuthorizationStatus(true);
     this.getUserInfo();
     this.router.go('/');
   }
@@ -60,7 +57,7 @@ export default class AuthController extends BaseController {
       this.throwError('loginAPI', response);
     }
 
-    setAuthorizationStatus(false);
+    this.store.setAuthorizationStatus(false);
     this.router.go('/sign-in');
   }
 }

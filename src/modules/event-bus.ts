@@ -23,7 +23,8 @@ function createEventBus() {
 
     emit: (event: string, ...args: unknown[]): void => {
       if (!listeners[event]) {
-        throw new Error(`Нет события: ${event}`);
+        // TODO: Тут была ошибка, если такого события нет. Возможно, что это важно.
+        return;
       }
 
       listeners[event].forEach((handler: Function) => handler(...args));
