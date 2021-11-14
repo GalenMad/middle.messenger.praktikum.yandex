@@ -2,7 +2,7 @@ h1(hidden) Настройки пользователя
 main.profile
     article.profile_inner
         header.profile_header
-            img.profile_avatar(src=defaultAvatar)
+            img.profile_avatar(src=avatar)
             div.profile_title
                 h2.profile_name Иван
                 p 
@@ -10,10 +10,11 @@ main.profile
                 p
                     a.link(href="/") Изменить пароль
         ul.profile_list
-            each item in userData
-                li
-                    span= item.name
-                    span= item.value
+            if userData
+                each item in userData
+                    li
+                        span= item.name
+                        span= item.value
         footer.profile_footer 
             a.link(href="/") Вернуться
             button#logout.link Выход

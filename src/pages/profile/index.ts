@@ -1,40 +1,33 @@
 import Block from '../../modules/block';
-import defaultAvatar from '../../assets/images/default-avatar.svg';
+import Store from '../../modules/store';
 import compileTemplate from './template.pug';
 import AuthController from '../../modules/controllers/auth.controller';
 import './styles.scss';
 
 const authController = new AuthController();
 
-const userData = [{
-  name: 'Почта',
-  value: 'pochta@yandex.ru',
-}, {
-  name: 'Логин',
-  value: 'ivanivanov',
-}, {
-  name: 'Имя',
-  value: 'Иван',
-}, {
-  name: 'Фамилия',
-  value: 'Иванов',
-}, {
-  name: 'Имя в чате',
-  value: 'Иван',
-}, {
-  name: 'Телефон',
-  value: '+7 (909) 967 30 30',
-}];
-
-const events = [{
-  type: 'click',
-  selector: '#logout',
-  cb: () => authController.logout()
-}]
-
 class Page extends Block {
   constructor(props = {}) {
-    super('div', {...props, defaultAvatar, userData, events});
+    const userData = Store.getUserData();
+    const avatar = Store.getUserAvatar();
+    const events = [{
+      type: 'click',
+      selector: '#logout',
+      cb: () => authController.logout()
+    }];
+
+    super('div', { ...props, userData, avatar, events });
+    Store.on(Store.EVENTS.UPDATE_INFO, this.updateUserData.bind(this))
+  }
+
+  updateUserData() {
+    console.log('update');
+    const userData = Store.getUserData();
+    const avatar = Store.getUserAvatar();
+    this.setProps({
+      userData,
+      avatar
+    })
   }
 
   render() {
