@@ -1,43 +1,56 @@
 import Route from './route';
 import Store from './store';
 
-enum ADDRESSES {
-  ERROR = '/error-404',
-  AUTH = '/sign-in',
-  MAIN = '/'
-}
-const store = new Store();
-const ROOT = '#app';
-let routerInstance: Router | null = null;
+function createRouter() {
 
-export default class Router {
-  routes: any[];
-  history: History;
-  _currentRoute: any;
-  _rootQuery: string;
+  enum ADDRESSES {
+    ERROR = '/error-404',
+    AUTH = '/sign-in',
+    MAIN = '/'
+  }
 
-  constructor(rootQuery: string = ROOT) {
+  const store = new Store();
+  const routes: Route[] = [];
+  const history = window.history;
+  const rootQuery = '#app';
+  let currentRoute: null | Route = null;
 
-    if (routerInstance) {
-      return routerInstance;
+  const onRoute = (pathname: string) => {
+    const route = getRoute(pathname);
+
+    if (currentRoute && currentRoute !== route) {
+      currentRoute.leave();
     }
 
-    this.routes = [];
-    this.history = window.history;
-    this._currentRoute = null;
-    this._rootQuery = rootQuery;
+    if (currentRoute === route) {
+      return;
+    }
 
-    routerInstance = this;
+    // TODO: Узнать что уместнее — редирект или рендер с сохранением адреса
+    if (!route) {
+      go(ADDRESSES.ERROR);
+    } else if (route.isPrivate && !store.isAuthorized) {
+      go(ADDRESSES.AUTH);
+    } else if (route.isNotForAuthorized && store.isAuthorized) {
+      go(ADDRESSES.MAIN);
+    } else {
+      currentRoute = route;
+      route.render();
+    }
   }
 
-  use(pathname: string, block: unknown, props: {}, options: {}) {
-    const route = new Route(pathname, block, { rootQuery: this._rootQuery, ...props }, options);
-    this.routes.push(route);
+  const getRoute = (pathname: string) => {
+    return routes.find(route => route.match(pathname));
+  }
+
+  const use = (pathname: string, block: unknown, props: {}, options: {}) => {
+    const route = new Route(pathname, block, { rootQuery: rootQuery, ...props }, options);
+    routes.push(route);
     return this;
-  }
+  };
 
-  start() {
-    const root = document.querySelector(this._rootQuery);
+  const start = async () => {
+    const root = document.querySelector(rootQuery);
 
     if (!root) {
       throw new Error('Неверный селектор root-элемента')
@@ -49,61 +62,40 @@ export default class Router {
       const link = evt.path.find((elem: HTMLElement) => elem.tagName === 'A' && elem.href)
       if (link) {
         const pathname = link.getAttribute('href');
-        this.go(pathname);
+        go(pathname);
         evt.preventDefault();
       }
     });
 
     window.addEventListener('popstate', (evt) => {
       if (evt.currentTarget) {
-        this._onRoute(evt.currentTarget.location.pathname);
+        onRoute(evt.currentTarget.location.pathname);
       } else {
         throw new Error('Не обнаружен evt.currentTarget');
       }
     });
 
-    this._onRoute(window.location.pathname);
+    onRoute(window.location.pathname);
     return this;
+  };
+
+  const go = (pathname: string) => {
+    history.pushState({ a: 2 }, '', pathname);
+    onRoute(pathname);
+  };
+
+  const back = () => history.back();
+  const forward = () => history.forward();
+
+  const methods = {
+    use,
+    start,
+    forward,
+    back,
+    go
   }
 
-  _onRoute(pathname: string) {
-    const route = this.getRoute(pathname);
-
-    if (this._currentRoute && this._currentRoute !== route) {
-      this._currentRoute.leave();
-    }
-
-    if (this._currentRoute === route) {
-      return;
-    }
-
-    // TODO: Узнать что уместнее — редирект или рендер с сохранением адреса
-    if (!route) {
-      this.go(ADDRESSES.ERROR);
-    } else if (route.isPrivate && !store.isAuthorized) {
-      this.go(ADDRESSES.AUTH);
-    } else if (route.isNotForAuthorized && store.isAuthorized) {
-      this.go(ADDRESSES.MAIN);
-    } else {
-      this._currentRoute = route;
-      route.render();
-    }
-  }
-
-  go(pathname: string) {
-    this.history.pushState({ a: 2 }, '', pathname);
-    this._onRoute(pathname);
-  }
-
-  back() {
-    this.history.back();
-  }
-
-  forward() {
-    this.history.forward();
-  }
-
-  getRoute(pathname: string) {
-    return this.routes.find(route => route.match(pathname));
-  }
+  return Object.freeze(methods)
 }
+
+export default createRouter();

@@ -11,7 +11,7 @@ export default class BaseController {
   router: Router;
   constructor() {
     this.eventBus = EventBus;
-    this.router = new Router();
+    this.router = Router;
   }
 
   throwError(title: string, response: errorData) {
