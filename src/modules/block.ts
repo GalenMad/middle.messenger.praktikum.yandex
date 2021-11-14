@@ -1,8 +1,6 @@
 /* eslint-disable class-methods-use-this */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
-import EventBus from './event-bus';
-
 //TODO: Сделать тип более глобальным
 interface props {
   name?: string,
