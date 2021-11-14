@@ -4,6 +4,7 @@ import compileTemplate from './template.pug';
 import AuthController from '../../modules/controllers/auth.controller';
 import './styles.scss';
 
+// TODO: Подумать что можно сделать с этими вечными объявлениями классов
 const authController = new AuthController();
 
 class Page extends Block {
@@ -21,13 +22,12 @@ class Page extends Block {
   }
 
   updateUserData() {
-    console.log('update');
     const userData = Store.getUserData();
     const avatar = Store.getUserAvatar();
     this.setProps({
       userData,
       avatar
-    })
+    });
   }
 
   render() {

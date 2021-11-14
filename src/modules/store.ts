@@ -51,8 +51,8 @@ function createStore() {
       isAuthorized = status;
     },
     setUserInfo: (info: userInfo) => {
-      EventBus.emit(EVENTS.UPDATE_INFO);
       userInfo = info;
+      EventBus.emit(EVENTS.UPDATE_INFO);
     }
   }
 
