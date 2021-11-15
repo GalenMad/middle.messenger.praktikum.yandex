@@ -17,6 +17,8 @@ export default class LoadingModalController {
   }
 
   show() {
+    this.hide();
+
     if (!this.isMounted) {
       const modalContent = this.modal.getContent();
       document.querySelector('body')?.append(modalContent);
@@ -27,9 +29,8 @@ export default class LoadingModalController {
   }
 
   hide() {
-    if (!this.isMounted) { 
-      return;
+    if (this.isMounted) { 
+      this.modal.hide();
     }
-    this.modal.hide();
   }
 }

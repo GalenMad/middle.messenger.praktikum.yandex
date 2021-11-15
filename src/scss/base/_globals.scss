@@ -46,6 +46,11 @@ button {
   cursor: pointer;
 }
 
+p {
+  margin-top: 0;
+  margin-bottom: 0.8em;
+}
+
 .visually-hidden,
 .visually-hidden-focusable:not(:focus):not(:focus-within) {
   position: absolute !important;
@@ -96,6 +101,28 @@ button {
   justify-content: center;
   align-items: center;
 
+  .modal-inner {
+    position: relative;
+    box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .15) !important;
+
+    .close-button {
+      position: absolute;
+      right: 16px;
+      top: 16px;
+      box-sizing: content-box;
+      width: 18px;
+      height: 18px;
+      padding: 0.25em 0.25em;
+      border: 0;
+      border-radius: 0.25rem;
+      opacity: 0.3;
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: center;
+      background-image: url('/src/assets/images/close-icon.svg');
+    }
+  }
+
   &.show {
     display: flex;
   }
@@ -104,7 +131,6 @@ button {
 .show-modal {
   overflow: hidden;
   position: relative;
-  padding-right: 17px;
 }
 
 .form-container {

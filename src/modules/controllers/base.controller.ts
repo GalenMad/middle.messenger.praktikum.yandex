@@ -1,6 +1,7 @@
 import Router from '../router';
 import Store from '../store';
 import LoadingModalController from './loading-modal.controller';
+import ErrorModalController from './error-modal.controller';
 
 interface errorData {
   status: string | number,
@@ -12,11 +13,13 @@ export default class BaseController {
   getAuthorizationStatus: () => boolean;
   mutations: { setAuthorizationStatus: (status: boolean) => void; setUserInfo: (info: userInfo) => void; };
   loadingModal: LoadingModalController;
+  errorModal: ErrorModalController;
   constructor() {
     this.router = Router;
     const { mutations, getAuthorizationStatus } = Store;
     this.mutations = mutations;
     this.loadingModal = new LoadingModalController();
+    this.errorModal = new ErrorModalController();
     this.getAuthorizationStatus = getAuthorizationStatus;
   }
 
@@ -26,7 +29,10 @@ export default class BaseController {
 
   throwError(title: string, response: errorData) {
     const { data, status } = response;
-    throw new Error(`\n ref: ${title} \n status: ${status} \n reson: ${data.reason || data}`);
+    const reason = data ? data.reason ? data.reason : data : 'Не придумал что сюда писать';
+    this.loadingModal.hide();
+    this.errorModal.show(status, reason);
+    throw new Error(`\n ref: ${title} \n status: ${status} \n reason: ${reason}`);
   }
 }
 
