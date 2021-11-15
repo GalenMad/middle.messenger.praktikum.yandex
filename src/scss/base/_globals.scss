@@ -41,9 +41,24 @@ button {
   outline: 0;
 }
 
-a, button {
+a,
+button {
   cursor: pointer;
 }
+
+.visually-hidden,
+.visually-hidden-focusable:not(:focus):not(:focus-within) {
+  position: absolute !important;
+  width: 1 px !important;
+  height: 1 px !important;
+  padding: 0 !important;
+  margin: -1 px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
 
 .content {
   font-family: $primary-font-family;
@@ -67,6 +82,29 @@ a, button {
     box-shadow: 0 4px 22px rgb(0 0 0 / 44%);
     padding: 56px 40px 40px;
   }
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  background-color: rgb(0 0 0 / 70%);
+  z-index: 1000;
+  justify-content: center;
+  align-items: center;
+
+  &.show {
+    display: flex;
+  }
+}
+
+.show-modal {
+  overflow: hidden;
+  position: relative;
+  padding-right: 17px;
 }
 
 .form-container {
