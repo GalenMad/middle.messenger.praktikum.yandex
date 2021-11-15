@@ -6,7 +6,7 @@ const FORM_GROUP_CLASS = 'form-group';
 const FORM_GROUP_TAG = 'label';
 const VALIDATION_SELECTOR = '.validation';
 
-class FormGroup extends Block {
+export default class FormGroup extends Block {
 
   get value() {
     const input = this.element.querySelector('input');
@@ -68,4 +68,3 @@ class FormGroup extends Block {
   }
 }
 
-export default FormGroup;
