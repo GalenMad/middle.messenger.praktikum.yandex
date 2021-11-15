@@ -6,25 +6,30 @@ const loginAPI = new LoginAPI();
 const logoutAPI = new LogoutAPI();
 const userInfoAPI = new UserInfoAPI();
 
-// TODO: Может тоже сделать как синглтон?
+// TODO: Может тоже сделать как синглтон аля ice factory?
 export default class AuthController extends BaseController {
+
+  async init() {
+    await this.checkAuthorization();
+    this.router.start(this.getAuthorizationStatus)
+  }
 
   async checkAuthorization() {
     const response = await userInfoAPI.request();
-    this.store.setAuthorizationStatus(!response.error);
+    this.mutations.setAuthorizationStatus(!response.error);
     if (!response.error) {
-      this.store.setUserInfo(response.data);
+      this.mutations.setUserInfo(response.data);
     }
   }
 
   async getUserInfo() {
     const response = await userInfoAPI.request();
     if (response.error) {
-      this.store.setAuthorizationStatus(false);
+      this.mutations.setAuthorizationStatus(false);
       this.router.go('/sign-in');
       this.throwError('userInfoAPI', response);
     }
-    this.store.setUserInfo(response.data);
+    this.mutations.setUserInfo(response.data);
   }
 
   async login(data: Record<string, string | number>) {
@@ -34,7 +39,7 @@ export default class AuthController extends BaseController {
       this.throwError('loginAPI', response);
     }
 
-    this.store.setAuthorizationStatus(true);
+    this.mutations.setAuthorizationStatus(true);
     this.getUserInfo();
     this.router.go('/');
   }
@@ -45,7 +50,7 @@ export default class AuthController extends BaseController {
       this.throwError('loginAPI', response);
     }
 
-    this.store.setAuthorizationStatus(true);
+    this.mutations.setAuthorizationStatus(true);
     this.getUserInfo();
     this.router.go('/');
   }
@@ -57,7 +62,7 @@ export default class AuthController extends BaseController {
       this.throwError('loginAPI', response);
     }
 
-    this.store.setAuthorizationStatus(false);
+    this.mutations.setAuthorizationStatus(false);
     this.router.go('/sign-in');
   }
 }

@@ -8,9 +8,13 @@ interface errorData {
 
 export default class BaseController {
   router: Router;
+  getAuthorizationStatus: () => boolean;
+  mutations: { setAuthorizationStatus: (status: boolean) => void; setUserInfo: (info: userInfo) => void; };
   constructor() {
     this.router = Router;
-    this.store = Store;
+    const { mutations, getAuthorizationStatus } = Store;
+    this.mutations = mutations;
+    this.getAuthorizationStatus = getAuthorizationStatus;
   }
 
   throwError(title: string, response: errorData) {

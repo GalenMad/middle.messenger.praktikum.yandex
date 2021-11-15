@@ -1,6 +1,4 @@
 import Route from './route';
-import Store from './store';
-import AuthController from './controllers/auth.controller';
 
 function createRouter() {
 
@@ -13,7 +11,7 @@ function createRouter() {
   const routes: Route[] = [];
   const history = window.history;
   const rootQuery = '#app';
-  const { getAuthorizationStatus } = Store;
+  let getAuthorizationStatus = () => false;
   let currentRoute: null | Route = null;
 
   const onRoute = (pathname: string) => {
@@ -52,8 +50,9 @@ function createRouter() {
     return this;
   };
 
-  const start = async function() {
+  const start = async function(authorizationStatusGetter?: () => boolean) {
     const root = document.querySelector(rootQuery);
+    getAuthorizationStatus = authorizationStatusGetter || getAuthorizationStatus;
 
     if (!root) {
       throw new Error('Неверный селектор root-элемента')
@@ -78,7 +77,6 @@ function createRouter() {
       }
     });
 
-    await new AuthController().checkAuthorization();
     onRoute(window.location.pathname);
     return this;
   };

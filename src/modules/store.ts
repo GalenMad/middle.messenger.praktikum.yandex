@@ -58,6 +58,7 @@ function createStore() {
 
   return Object.freeze({
     EVENTS,
+    mutations,
     ...eventBusMethods,
     ...mutations,
     ...getters
