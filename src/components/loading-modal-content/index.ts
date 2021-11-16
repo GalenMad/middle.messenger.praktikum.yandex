@@ -2,7 +2,7 @@ import Block from '../../modules/block';
 import compileTemplate from './template.pug';
 import './styles.scss';
 
-export default class LoadingModal extends Block {
+export default class LoadingModalContent extends Block {
   constructor() {
     const attributes = { class: 'loading-modal' }
     super('div', { attributes });
