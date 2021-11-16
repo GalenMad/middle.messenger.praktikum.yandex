@@ -24,11 +24,10 @@ export default class ErrorModalController {
     this.modalContentInstance = null
     this.modalContentClass = ErrorModalContent
     this.modalClass = ModalWrapper;
+    this.isMounted = false;
   }
 
   show(props) {
-    this.hide();
-
     if (!this.modalContentInstance && !this.modalInstance) {
       this.modalContentInstance = new this.modalContentClass(props);
       this.modalInstance = new this.modalClass({ content: this.modalContentInstance });
@@ -36,14 +35,17 @@ export default class ErrorModalController {
     } else {
       this.modalContentInstance?.setProps(props);
     }
+    
     document.querySelector('body')?.append(this.modal);
     this.modalInstance?.show();
+    this.isMounted = true;
   }
 
   hide() {
-    if (this.modalInstance && this.modal) {
+    if (this.isMounted) {
       this.modalInstance.hide();
       this.modal.remove();
+      this.isMounted = false;
     }
   }
 }

@@ -1,36 +1,34 @@
-import LoadingModal from '../../components/loading-modal';
+import LoadingModalContent from '../../components/loading-modal-content';
+import ModalWrapper from '../../components/modal-wrapper';
 
 let instance: LoadingModalController | null = null;
 
 export default class LoadingModalController {
-  modal: LoadingModal;
+  modal: HTMLElement;
   isMounted: boolean;
+  modalInstance: ModalWrapper;
   constructor() {
-
     if (instance) {
       return instance;
     }
     instance = this;
 
-    this.modal = new LoadingModal();
-    this.isMounted = false;
+    const content = new LoadingModalContent();
+    this.modalInstance = new ModalWrapper({ content, fixed: true });
+    this.modal = this.modalInstance.getContent();
   }
 
   show() {
-    this.hide();
-
-    if (!this.isMounted) {
-      const modalContent = this.modal.getContent();
-      document.querySelector('body')?.append(modalContent);
-      this.isMounted = true;
-    }
-
-    this.modal.show();
+    document.querySelector('body')?.append(this.modal);
+    this.modalInstance.show();
+    this.isMounted = true;
   }
 
   hide() {
-    if (this.isMounted) { 
-      this.modal.hide();
+    if (this.isMounted) {
+      this.modalInstance.hide();
+      this.modal.remove();
+      this.isMounted = false;
     }
   }
 }

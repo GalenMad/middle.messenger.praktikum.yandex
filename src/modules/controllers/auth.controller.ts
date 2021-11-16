@@ -19,7 +19,6 @@ export default class AuthController extends BaseController {
   async checkAuthorization() {
     const response = await userInfoAPI.request();
     this.mutations.setAuthorizationStatus(!response.error);
-    // TODO: В идеале, если здесь отдаётся пятисотая, то нужно слать на 500-page
     if (!response.error) {
       this.mutations.setUserInfo(response.data);
     }
@@ -31,17 +30,16 @@ export default class AuthController extends BaseController {
     if (response.error) {
       this.mutations.setAuthorizationStatus(false);
       this.router.go('/sign-in');
-      this.throwError('userInfoAPI', response);
+      this.throwError(response);
     }
     this.mutations.setUserInfo(response.data);
   }
 
   async login(data: Record<string, string | number>) {
     this.loadingModal.show();
-    // TODO: Единый контроллер появления модалок вместо вывода ошибок
     const response = await loginAPI.request(data);
     if (response.error) {
-      this.throwError('loginAPI', response);
+      this.throwError(response);
     }
 
     this.mutations.setAuthorizationStatus(true);
@@ -54,7 +52,7 @@ export default class AuthController extends BaseController {
     this.loadingModal.show();
     const response = await loginAPI.create(data);
     if (response.error) {
-      this.throwError('loginAPI', response);
+      this.throwError(response);
     }
 
     this.mutations.setAuthorizationStatus(true);
@@ -68,7 +66,7 @@ export default class AuthController extends BaseController {
     this.loadingModal.show();
     const response = await logoutAPI.request();
     if (response.error) {
-      this.throwError('loginAPI', response);
+      this.throwError(response);
     }
 
     this.mutations.setAuthorizationStatus(false);

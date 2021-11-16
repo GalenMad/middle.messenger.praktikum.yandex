@@ -7,7 +7,7 @@ export default class UserController extends BaseController {
   async updateUserInfo(data: Record<string, string | number>) {
     const response = await userInfoUpdateAPI.update(data);
     if (response.error) {
-      this.throwError('loginAPI', response);
+      this.throwError(response);
     }
 
     this.mutations.setUserInfo(response.data);

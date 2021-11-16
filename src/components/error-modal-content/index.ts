@@ -5,7 +5,7 @@ import './styles.scss';
 export default class ErrorModalContent extends Block {
   constructor(props = {}) {
     console.log('new class');
-    const attributes = { class: 'error-modal modal-content' };
+    const attributes = { class: 'error-modal' };
     super('div', { attributes, ...props });
   }
 

@@ -27,12 +27,13 @@ export default class BaseController {
     return new Promise(resolve => setTimeout(resolve, 2000));
   }
 
-  throwError(title: string, response: errorData) {
+  throwError(response: errorData) {
+    console.log(response);
     const { data, status } = response;
-    const reason = data ? data.reason ? data.reason : data : 'Не придумал что сюда писать';
+    const reason = data ? data.reason ? data.reason : data : 'Не придумал что сюда писать, просто посмотри в консоль';
     this.loadingModal.hide();
     this.errorModal.show({ status, reason });
-    throw new Error(`\n ref: ${title} \n status: ${status} \n reason: ${reason}`);
+    throw new Error(`\n status: ${status} \n reason: ${reason}`);
   }
 }
 
