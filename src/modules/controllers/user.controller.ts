@@ -12,6 +12,7 @@ export default class UserController extends BaseController {
     }
 
     this.mutations.setUserInfo(response.data);
+    this.successModal.show();
   }
 
   async updateUserPassword(data: Record<string, string | number>) {

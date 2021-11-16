@@ -4,6 +4,7 @@ import './styles.scss';
 
 const ESC_KEY = 'Escape';
 
+// TODO: Фикс высокой модалки
 export default class ModalWrapper extends Block {
   isOpen: boolean;
   addedClickHandler: Function;

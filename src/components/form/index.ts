@@ -51,6 +51,10 @@ class Form extends Block {
     this.formGroups.forEach((element) => element.checkValidity());
   }
 
+  hideValidation() {
+    this.formGroups.forEach((element) => element.hideValidationMessage());
+  }
+
   createFormGroups() {
     const formGroups: Record<string, Block> = {};
     const { fields = [] } = this.props;

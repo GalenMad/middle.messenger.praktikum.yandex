@@ -13,11 +13,11 @@ interface userInfo {
 }
 
 const userDataLabels = {
-  email: 'Электронная почта',
-  login: 'amvoronkov',
-  display_name: 'Имя в чате',
   first_name: 'Имя',
   second_name: 'Фамилия',
+  login: 'Логин',
+  display_name: 'Имя в чате',
+  email: 'Электронная почта',
   phone: 'Телефон'
 }
 
@@ -44,6 +44,7 @@ function createStore() {
       name: userDataLabels[label],
       value: userInfo[label]
     })),
+    getRawUserData: () => userInfo,
     getUserName: () => userInfo?.first_name
   }
 

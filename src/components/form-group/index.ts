@@ -31,7 +31,7 @@ export default class FormGroup extends Block {
   componentDidMount() {
     const input = this.element.querySelector('input');
     input?.addEventListener('focus', () => {
-      this._hideValidationMessage();
+      this.hideValidationMessage();
     });
     input?.addEventListener('blur', () => {
       this.checkValidity();
@@ -39,7 +39,7 @@ export default class FormGroup extends Block {
   }
 
   //- TODO: Вынести логику с сообщением в шаблон
-  _hideValidationMessage() {
+  hideValidationMessage() {
     const container: HTMLElement | null = this.element.querySelector(VALIDATION_SELECTOR);
     if (container) {
       container.textContent = '';

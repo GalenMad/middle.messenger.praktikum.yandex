@@ -6,7 +6,7 @@ main.profile
             div.profile_title
                 h2.profile_name= userName
                 p 
-                    button.link#change-data Изменить данные
+                    button.link#change-info Изменить данные
                 p
                     a.link#change-password Изменить пароль
         ul.profile_list
@@ -19,7 +19,7 @@ main.profile
             a.link(href="/") Вернуться
             button#logout.link Выход
     template(data-component="changePasswordModal")
-    //- template(data-component="changeInfoModal")
+    template(data-component="changeInfoModal")
     //- template(data-component="changeAvatarModal")
 
 
