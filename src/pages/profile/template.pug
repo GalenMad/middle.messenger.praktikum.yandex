@@ -1,5 +1,4 @@
 h1(hidden) Настройки пользователя
-template(data-component="changePasswordModal")
 main.profile
     article.profile_inner
         header.profile_header
@@ -19,4 +18,8 @@ main.profile
         footer.profile_footer 
             a.link(href="/") Вернуться
             button#logout.link Выход
+    template(data-component="changePasswordModal")
+    //- template(data-component="changeInfoModal")
+    //- template(data-component="changeAvatarModal")
+
 

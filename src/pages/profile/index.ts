@@ -1,20 +1,33 @@
-import Block from '../../modules/block';
 import Store from '../../modules/store';
+import Block from '../../modules/block';
+import Form from '../../components/form';
+import ModalWrapper from '../../components/modal-wrapper';
+import changePasswordFields from '../../data/change-password-fields';
 import compileTemplate from './template.pug';
 import AuthController from '../../modules/controllers/auth.controller';
-import ModalWrapper from '../../components/modal-wrapper';
-import allFields from '../../data/fields';
-import Form from '../../components/form';
+import UserController from '../../modules/controllers/user.controller';
 import './styles.scss';
 
 // TODO: Подумать что можно сделать с этими вечными объявлениями классов
 const authController = new AuthController();
-const fields = allFields.filter((field) => ['login', 'password'].includes(field.name));
+const userController = new UserController();
 
 class Page extends Block {
   constructor(props = {}) {
-    const content = new Form({ fields, buttonText: 'Отправить' })
-    const changePasswordModal = new ModalWrapper({ content });
+
+    const changePasswordFormProps = {
+      fields: changePasswordFields,
+      buttonText: 'Отправить',
+      title: 'Изменить пароль',
+      submitCallback: (data) => {
+        changePasswordModal.hide();
+        userController.updateUserPassword(data);
+      }
+    }
+
+    const changePasswordModal = new ModalWrapper({
+      content: new Form(changePasswordFormProps)
+    });
 
     const userData = Store.getUserData();
     const userName = Store.getUserName();
