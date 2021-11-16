@@ -43,7 +43,8 @@ function createStore() {
     getUserData: () => userInfo && Object.keys(userDataLabels).map(label => ({
       name: userDataLabels[label],
       value: userInfo[label]
-    }))
+    })),
+    getUserName: () => userInfo?.first_name
   }
 
   const mutations = {

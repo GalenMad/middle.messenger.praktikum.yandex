@@ -10,6 +10,6 @@ export default class UserController extends BaseController {
       this.throwError('loginAPI', response);
     }
 
-    this.store.setUserInfo(response.data);
+    this.mutations.setUserInfo(response.data);
   }
 }

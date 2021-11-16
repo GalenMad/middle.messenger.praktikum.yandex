@@ -10,6 +10,7 @@ const authController = new AuthController();
 class Page extends Block {
   constructor(props = {}) {
     const userData = Store.getUserData();
+    const userName = Store.getUserName();
     const avatar = Store.getUserAvatar();
     const events = [{
       type: 'click',
@@ -17,14 +18,16 @@ class Page extends Block {
       cb: () => authController.logout()
     }];
 
-    super('div', { ...props, userData, avatar, events });
+    super('div', { ...props, userData, userName, avatar, events });
     Store.on(Store.EVENTS.UPDATE_INFO, this.updateUserData.bind(this))
   }
 
   updateUserData() {
     const userData = Store.getUserData();
+    const userName = Store.getUserName();
     const avatar = Store.getUserAvatar();
     this.setProps({
+      userName,
       userData,
       avatar
     });
