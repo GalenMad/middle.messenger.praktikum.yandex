@@ -7,8 +7,10 @@ const ESC_KEY = 'Escape';
 // TODO: Рефактор стилей для модалок
 // TODO: Допилить дизайн и содержание модалки 
 export default class ErrorModal extends Block {
-  constructor(props, closeHandler) {
+  constructor(props) {
     const attributes = { class: 'modal error-modal' }
+    super('div', { attributes, ...props });
+
     const events = [{
       type: 'click',
       cb: (evt: Event) => {
@@ -16,19 +18,19 @@ export default class ErrorModal extends Block {
         const closeList = ['close-button', 'modal'];
         const classList: DOMTokenList = evt.target.classList;
         if (closeList.some((cls: string) => classList.contains(cls))) {
-          closeHandler();
+          this.hide();
         }
       }
     }, {
       type: 'keydown',
       cb: (evt) => {
         if (evt.key === ESC_KEY) {
-          closeHandler();
+          this.hide();
         }
       }
-
     }]
-    super('div', { attributes, ...props, events });
+
+    this.setProps({ events });
   }
 
   show() {

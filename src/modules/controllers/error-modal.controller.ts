@@ -24,7 +24,7 @@ export default class ErrorModalController {
     this.hide();
 
     if (!this.modalInstance) {
-      this.modalInstance = new this.modalClass({ status, reason }, this.hide.bind(this));
+      this.modalInstance = new this.modalClass({ status, reason });
     } else {
       this.modalInstance.setProps({ status, reason });
     }

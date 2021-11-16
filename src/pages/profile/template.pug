@@ -1,4 +1,5 @@
 h1(hidden) Настройки пользователя
+template(data-component="changePasswordModal")
 main.profile
     article.profile_inner
         header.profile_header
@@ -6,9 +7,9 @@ main.profile
             div.profile_title
                 h2.profile_name= userName
                 p 
-                    a.link(href="/") Изменить данные
+                    button.link#change-data Изменить данные
                 p
-                    a.link(href="/") Изменить пароль
+                    a.link#change-password Изменить пароль
         ul.profile_list
             if userData
                 each item in userData

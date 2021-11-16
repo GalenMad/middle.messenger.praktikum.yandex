@@ -45,7 +45,7 @@ export default class AuthController extends BaseController {
     }
 
     this.mutations.setAuthorizationStatus(true);
-    this.getUserInfo();
+    await this.getUserInfo();
     this.router.go('/');
     this.loadingModal.hide();
   }
