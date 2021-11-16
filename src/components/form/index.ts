@@ -23,11 +23,28 @@ class Form extends Block {
     return data;
   }
 
-  constructor(props: { attributes?: { class?: string }, fields?: []; }) {
+  constructor(props: { attributes?: { class?: string }, fields?: []; submitCallback: Function }) {
     // Конструкция ниже нужна для того, чтобы класс, заданный снаружи, был в приоритете
     const className = (props.attributes && props.attributes.class) || FORM_CLASS;
     const attributes = { ...props.attributes, class: className };
     super(FORM_TAG, { ...props, attributes });
+
+    const events = [{
+      cb: (evt: Event) => {
+        evt.stopPropagation();
+        evt.preventDefault();
+        this.checkValidity();
+        const submitCallback = this.props.submitCallback;
+        if (this.isValid && submitCallback) {
+          submitCallback(this.data);
+          this.element.reset();
+        }
+      },
+      selector: 'form',
+      type: 'submit'
+    }];
+
+    this.setProps({ events })
   }
 
   checkValidity() {
