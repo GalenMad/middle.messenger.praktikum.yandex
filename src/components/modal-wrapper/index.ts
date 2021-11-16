@@ -3,6 +3,22 @@ import compileTemplate from './template.pug';
 import './styles.scss';
 
 const ESC_KEY = 'Escape';
+const getClosingEvents = (here) => [{
+  type: 'click',
+  cb: ({ target }) => {
+    const closeTrigger = ['close-button', 'modal'].some((cls: string) => target?.classList.contains(cls));
+    if (closeTrigger && here.isOpen) {
+      here.hide();
+    }
+  }
+}, {
+  type: 'keydown',
+  cb: ({ key }) => {
+    if (key === ESC_KEY && here.isOpen) {
+      here.hide();
+    }
+  }
+}]
 
 export default class ModalWrapper extends Block {
   isOpen: boolean;
@@ -10,27 +26,8 @@ export default class ModalWrapper extends Block {
     const attributes = { class: 'modal' };
     super('div', { attributes, fixed }, { content });
     this.isOpen = false;
-
     if (!fixed) {
-      // TODO: Костыль, вызывается CDU ↓↓↓
-      const events = [{
-        type: 'click',
-        cb: ({ target }) => {
-          const closeTrigger = ['close-button', 'modal'].some((cls: string) => target?.classList.contains(cls));
-          if (closeTrigger) {
-            this.hide();
-          }
-        }
-      }, {
-        type: 'keydown',
-        cb: ({ key }) => {
-          if (key === ESC_KEY) {
-            this.hide();
-          }
-        }
-      }]
-      
-      this.setProps({ events })
+      this.setProps({ events: getClosingEvents(this) })
     }
   }
 

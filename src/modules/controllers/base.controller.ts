@@ -28,7 +28,6 @@ export default class BaseController {
   }
 
   throwError(response: errorData) {
-    console.log(response);
     const { data, status } = response;
     const reason = data ? data.reason ? data.reason : data : 'Не придумал что сюда писать, просто посмотри в консоль';
     this.loadingModal.hide();
