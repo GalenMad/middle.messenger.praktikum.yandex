@@ -28,6 +28,7 @@ function createRouter() {
     const authorizationStatus = getAuthorizationStatus();
 
     // TODO: Узнать что уместнее — редирект или рендер с сохранением адреса
+    // TODO: Перехват возвращения на несуществующую страницу
     if (!route) {
       go(ADDRESSES.ERROR);
     } else if (route.isPrivate && !authorizationStatus) {
@@ -82,7 +83,7 @@ function createRouter() {
   };
 
   const go = (pathname: string) => {
-    history.pushState({ a: 2 }, '', pathname);
+    history.pushState({}, '', pathname);
     onRoute(pathname);
   };
 

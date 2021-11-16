@@ -12,7 +12,6 @@ export default class ErrorModalController {
   modalContentInstance: null | ErrorModalContent;
   modalInstance: null | ModalWrapper;
   modal: null | HTMLElement;
-  isMounted: boolean;
 
   constructor() {
     if (instance) {
@@ -21,10 +20,9 @@ export default class ErrorModalController {
     instance = this;
     this.modal = null;
     this.modalInstance = null;
-    this.modalContentInstance = null
-    this.modalContentClass = ErrorModalContent
+    this.modalContentInstance = null;
+    this.modalContentClass = ErrorModalContent;
     this.modalClass = ModalWrapper;
-    this.isMounted = false;
   }
 
   show(props) {
@@ -32,20 +30,11 @@ export default class ErrorModalController {
       this.modalContentInstance = new this.modalContentClass(props);
       this.modalInstance = new this.modalClass({ content: this.modalContentInstance });
       this.modal = this.modalInstance.getContent();
+      document.querySelector('body')?.append(this.modal);
     } else {
       this.modalContentInstance?.setProps(props);
     }
     
-    document.querySelector('body')?.append(this.modal);
     this.modalInstance?.show();
-    this.isMounted = true;
-  }
-
-  hide() {
-    if (this.isMounted) {
-      this.modalInstance.hide();
-      this.modal.remove();
-      this.isMounted = false;
-    }
   }
 }
