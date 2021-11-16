@@ -2,7 +2,7 @@ import Block from '../../modules/block';
 import compileTemplate from './template.pug';
 import './styles.scss';
 
-class Page extends Block {
+export default class ErrorPage extends Block {
   constructor(props = {}) {
     super('div', props);
   }
@@ -11,5 +11,3 @@ class Page extends Block {
     return compileTemplate(this.props);
   }
 }
-
-export default Page;
