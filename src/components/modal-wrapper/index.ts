@@ -3,32 +3,41 @@ import compileTemplate from './template.pug';
 import './styles.scss';
 
 const ESC_KEY = 'Escape';
-const getClosingEvents = (here) => [{
-  type: 'click',
-  cb: ({ target }) => {
-    const closeTrigger = ['close-button', 'modal'].some((cls: string) => target?.classList.contains(cls));
-    if (closeTrigger && here.isOpen) {
-      here.hide();
-    }
-  }
-}, {
-  type: 'keydown',
-  cb: ({ key }) => {
-    if (key === ESC_KEY && here.isOpen) {
-      here.hide();
-    }
-  }
-}]
 
 export default class ModalWrapper extends Block {
   isOpen: boolean;
+  addedClickHandler: Function;
+  addedKeydownHandler: Function;
   constructor({ content, fixed = false }) {
     const attributes = { class: 'modal' };
     super('div', { attributes, fixed }, { content });
     this.isOpen = false;
-    if (!fixed) {
-      this.setProps({ events: getClosingEvents(this) })
+  }
+
+  clickHandler({ target }) {
+    console.log('fadsf');
+    const closeTrigger = ['close-button', 'modal'].some((cls: string) => target.classList.contains(cls));
+    if (closeTrigger) {
+      this.hide();
     }
+  }
+
+  keydownHandler({ key }) {
+    if (key === ESC_KEY) {
+      this.hide();
+    }
+  }
+
+  addCloseHandlers() {
+    this.addedClickHandler = this.clickHandler.bind(this);
+    this.addedKeydownHandler = this.keydownHandler.bind(this);
+    this.element.addEventListener('click', this.addedClickHandler)
+    document.addEventListener('keydown', this.addedKeydownHandler)
+  }
+
+  removeCloseHandlers() {
+    this.element.removeEventListener('click', this.addedClickHandler)
+    document.removeEventListener('keydown', this.addedKeydownHandler)
   }
 
   show() {
@@ -36,6 +45,9 @@ export default class ModalWrapper extends Block {
       this.element.classList.add('show');
       document.querySelector('body')?.classList.add('show-modal');
       this.isOpen = true;
+      if (!this.fixed) {
+        this.addCloseHandlers();
+      }
     }
   }
 
@@ -44,6 +56,9 @@ export default class ModalWrapper extends Block {
       this.element.classList.remove('show');
       document.querySelector('body')?.classList.remove('show-modal');
       this.isOpen = false;
+      if (!this.fixed) {
+        this.removeCloseHandlers();
+      }
     }
   }
 

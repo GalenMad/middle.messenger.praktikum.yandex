@@ -137,11 +137,6 @@ class Block {
   _addEvents(props: { events: [] }) {
     const { events = [] } = props;
     for (const { type, selector, cb } of events) {
-      // TODO: Добить определение глобальных и локальных событий
-      if (type === 'keydown') {
-        document.addEventListener(type, cb);
-        return;
-      }
       const element = selector ? this._element.querySelector(selector) || this._element : this._element;
       element.addEventListener(type, cb);
     }
@@ -150,10 +145,6 @@ class Block {
   _removeEvents(props: { events: [] }) {
     const { events = [] } = props;
     for (const { type, selector, cb } of events) {
-      if (type === 'keydown') {
-        document.removeEventListener(type, cb);
-        return;
-      }
       const element = selector ? this._element.querySelector(selector) || this._element : this._element;
       element.removeEventListener(type, cb);
     }
