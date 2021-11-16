@@ -31,7 +31,7 @@ export default class BaseController {
     const { data, status } = response;
     const reason = data ? data.reason ? data.reason : data : 'Не придумал что сюда писать';
     this.loadingModal.hide();
-    this.errorModal.show(status, reason);
+    this.errorModal.show({ status, reason });
     throw new Error(`\n ref: ${title} \n status: ${status} \n reason: ${reason}`);
   }
 }

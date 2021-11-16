@@ -1,4 +1,5 @@
-import ErrorModal from '../../components/error-modal';
+import ErrorModalContent from '../../components/error-modal-content';
+import ModalWrapper from '../../components/modal-wrapper';
 
 let instance: ErrorModalController | null = null;
 
@@ -6,10 +7,13 @@ let instance: ErrorModalController | null = null;
 // Сервисные сообщения, вина юзера, вина сервера, etc.
 // При пятисотых хорошо бы отправлять на 500-page
 export default class ErrorModalController {
-  modalClass: typeof ErrorModal;
-  modalInstance: null | ErrorModal;
+  modalContentClass: typeof ErrorModalContent;
+  modalClass: typeof ModalWrapper;
+  modalContentInstance: null | ErrorModalContent;
+  modalInstance: null | ModalWrapper;
   modal: null | HTMLElement;
   isMounted: boolean;
+
   constructor() {
     if (instance) {
       return instance;
@@ -17,24 +21,25 @@ export default class ErrorModalController {
     instance = this;
     this.modal = null;
     this.modalInstance = null;
-    this.modalClass = ErrorModal;
+    this.modalContentInstance = null
+    this.modalContentClass = ErrorModalContent
+    this.modalClass = ModalWrapper;
   }
 
-  show(status, reason) {
+  show(props) {
     this.hide();
 
-    if (!this.modalInstance) {
-      this.modalInstance = new this.modalClass({ status, reason });
+    if (!this.modalContentInstance && !this.modalInstance) {
+      this.modalContentInstance = new this.modalContentClass(props);
+      this.modalInstance = new this.modalClass({ content: this.modalContentInstance });
+      this.modal = this.modalInstance.getContent();
     } else {
-      this.modalInstance.setProps({ status, reason });
+      this.modalContentInstance?.setProps(props);
     }
-
-    this.modal = this.modalInstance.getContent();
     document.querySelector('body')?.append(this.modal);
-    this.modalInstance.show();
+    this.modalInstance?.show();
   }
 
-  // TODO: Хайдить, удалять из дом, а потом обновлять пропсами ↑
   hide() {
     if (this.modalInstance && this.modal) {
       this.modalInstance.hide();
