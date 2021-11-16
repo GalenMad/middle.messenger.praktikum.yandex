@@ -19,3 +19,10 @@ export class UserInfoUpdateAPI extends UserAPI {
   }
 }
 
+export class UserPasswordUpdateAPI extends UserAPI {
+  async update(data: Record<string, unknown>): Promise<response> {
+    const headers = this.headers;
+    return this.apiInstance.put('/password', { data, headers }).then(res => res);
+  }
+}
+
