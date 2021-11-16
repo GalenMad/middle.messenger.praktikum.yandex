@@ -1,8 +1,7 @@
-import allFields from '../../data/fields';
+import fields from '../../data/registration-fields';
 import FormPage from '../../components/form-page';
 import AuthController from '../../modules/controllers/auth.controller';
 
-const fields = Object.values(allFields);
 const pageProps = {
   title: 'Регистрация',
   footerText: 'Уже есть аккаунт?',

@@ -1,8 +1,7 @@
-import allFields from '../../data/fields';
+import fields from '../../data/login-fields';
 import FormPage from '../../components/form-page';
 import AuthController from '../../modules/controllers/auth.controller';
 
-const fields = allFields.filter((field) => ['login', 'password'].includes(field.name));
 const pageProps = {
   title: 'Авторизация',
   footerText: 'Нет аккаунта?',
