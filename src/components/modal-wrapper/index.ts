@@ -14,16 +14,16 @@ export default class ModalWrapper extends Block {
     this.isOpen = false;
   }
 
-  clickHandler({ target }) {
-    console.log('fadsf');
-    const closeTrigger = ['close-button', 'modal'].some((cls: string) => target.classList.contains(cls));
+  clickHandler(evt) {
+    evt.stopPropagation();
+    const closeTrigger = ['close-button', 'modal'].some((cls: string) => evt.target.classList.contains(cls));
     if (closeTrigger) {
       this.hide();
     }
   }
 
-  keydownHandler({ key }) {
-    if (key === ESC_KEY) {
+  keydownHandler(evt) {
+    if (evt.key === ESC_KEY) {
       this.hide();
     }
   }
