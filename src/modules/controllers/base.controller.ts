@@ -2,6 +2,7 @@ import Router from '../router';
 import Store from '../store';
 import LoadingModalController from './loading-modal.controller';
 import ErrorModalController from './error-modal.controller';
+import SuccessModalController from './success-modal.controller';
 
 interface errorData {
   status: string | number,
@@ -14,12 +15,14 @@ export default class BaseController {
   mutations: { setAuthorizationStatus: (status: boolean) => void; setUserInfo: (info: userInfo) => void; };
   loadingModal: LoadingModalController;
   errorModal: ErrorModalController;
+  successModal: ErrorModalController;
   constructor() {
     this.router = Router;
     const { mutations, getAuthorizationStatus } = Store;
     this.mutations = mutations;
     this.loadingModal = new LoadingModalController();
     this.errorModal = new ErrorModalController();
+    this.successModal = new SuccessModalController();
     this.getAuthorizationStatus = getAuthorizationStatus;
   }
 
