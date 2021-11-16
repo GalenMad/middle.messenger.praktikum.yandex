@@ -10,6 +10,7 @@ const pageProps = {
   link: '/sign-up',
 };
 const formProps = {
+  title: 'Авторизация',
   buttonText: 'Поехали',
 }
 const authController = new AuthController();

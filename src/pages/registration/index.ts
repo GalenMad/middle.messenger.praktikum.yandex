@@ -10,6 +10,7 @@ const pageProps = {
   link: '/sign-in',
 };
 const formProps = {
+  title: 'Регистрация',
   buttonText: 'Поехали',
 };
 const authController = new AuthController();
