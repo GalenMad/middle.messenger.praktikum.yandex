@@ -1,27 +1,7 @@
 @import './../../scss/commons/variables';
-@import './../../scss/base/globals';
 
 .form {
-  @extend .content-inner;
-
-  padding: 56px 74px 40px;
-
-  &-title {
-    font-family: $primary-font-family;
-    font-weight: 600;
-    font-size: 40px;
-    margin: 0 0 48px;
-
-    &::after {
-      content: '';
-      display: block;
-      width: 72px;
-      height: 2px;
-      background-color: white;
-      margin: auto;
-      margin-top: 40px;
-    }
-  }
+  width: 100%;
 
   &-submit {
     background-color: $base-pineapple;
@@ -38,25 +18,5 @@
     border-radius: 10px;
     box-shadow: 0 4px 4px rgb(0 0 0 / 25%);
     margin-bottom: 24px;
-  }
-
-  &-footer {
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    justify-content: flex-start;
-
-    p {
-      font-family: $secondary-font-family;
-      letter-spacing: $secondary-spacing;
-      color: white;
-      opacity: 70%;
-      font-size: 18px;
-      margin: 0 0 8px;
-    }
-
-    .link {
-      font-weight: 700;
-    }
   }
 }

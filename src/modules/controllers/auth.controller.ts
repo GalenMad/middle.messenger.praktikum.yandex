@@ -19,6 +19,7 @@ export default class AuthController extends BaseController {
   async checkAuthorization() {
     const response = await userInfoAPI.request();
     this.mutations.setAuthorizationStatus(!response.error);
+    // TODO: В идеале, если здесь отдаётся пятисотая, то нужно слать на 500-page
     if (!response.error) {
       this.mutations.setUserInfo(response.data);
     }
