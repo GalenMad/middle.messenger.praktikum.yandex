@@ -5,7 +5,7 @@ import AuthController from '../../modules/controllers/auth.controller';
 const pageProps = {
   title: 'Авторизация',
   footerText: 'Нет аккаунта?',
-  linkText: 'Зарегестрироваться',
+  linkText: 'Зарегистрироваться',
   link: '/sign-up',
 };
 const formProps = {
