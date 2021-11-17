@@ -22,6 +22,8 @@ class Form extends Block {
     return data;
   }
 
+  // TODO: Добавить общую валидацию для формы
+  
   constructor(props: { attributes?: { class?: string }, fields?: []; submitCallback: Function }) {
     // Конструкция ниже нужна для того, чтобы класс, заданный снаружи, был в приоритете
     const className = (props.attributes && props.attributes.class) || FORM_CLASS;

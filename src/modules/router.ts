@@ -29,6 +29,7 @@ function createRouter() {
 
     // TODO: Узнать что уместнее — редирект или рендер с сохранением адреса
     // TODO: Перехват возвращения на несуществующую страницу
+    // TODO: Перехват возвращения на пункт в истории браузера
     if (!route) {
       go(ADDRESSES.ERROR);
     } else if (route.isPrivate && !authorizationStatus) {

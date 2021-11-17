@@ -59,6 +59,7 @@ const createChangeInfoModal = () => {
     fields: changeInfoFields(rawData),
     buttonText: 'Отправить',
     title: 'Изменить информацию',
+    // TODO: Добавить валидацию на данные, полностью идентичные текущим
     submitCallback: (data) => {
       changeInfoModal.hide();
       userController.updateUserInfo(data);
