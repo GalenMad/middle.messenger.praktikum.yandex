@@ -2,7 +2,8 @@ h1(hidden) Настройки пользователя
 main.profile
     article.profile_inner
         header.profile_header
-            img.profile_avatar(src=avatar)
+            button.profile_avatar-holder#change-avatar
+                img.profile_avatar(src=avatar crossorigin='use-credentials')
             div.profile_title
                 h2.profile_name= userName
                 p 
@@ -20,6 +21,6 @@ main.profile
             button#logout.link Выход
     template(data-component="changePasswordModal")
     template(data-component="changeInfoModal")
-    //- template(data-component="changeAvatarModal")
+    template(data-component="changeAvatarModal")
 
 

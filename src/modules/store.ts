@@ -29,6 +29,8 @@ function createStore() {
     UPDATE_INFO: 'update:user-info'
   }
 
+  const RESOURCES_HOST = 'https://ya-praktikum.tech/api/v2/resources'
+
   const eventBusMethods = {
     on: EventBus.on,
     off: EventBus.off,
@@ -39,7 +41,7 @@ function createStore() {
     getAuthorizationStatus: () => {
       return isAuthorized
     },
-    getUserAvatar: () => userInfo && userInfo.avatar ? userInfo.avatar : defaultAvatar,
+    getUserAvatar: () => userInfo && userInfo.avatar ? RESOURCES_HOST + userInfo.avatar : defaultAvatar,
     getUserData: () => userInfo && Object.keys(userDataLabels).map(label => ({
       name: userDataLabels[label],
       value: userInfo[label]

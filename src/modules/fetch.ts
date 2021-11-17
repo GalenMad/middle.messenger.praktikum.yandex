@@ -74,7 +74,10 @@ class HTTPTransport {
     return new Promise((resolve) => {
       const xhr = new XMLHttpRequest();
       const path = method === METHODS.GET && data ? `${url}?${stringifyQuery(data)}` : url;
-      const requestBody = method !== METHODS.GET && data ? JSON.stringify(data) : null;
+      const requestBody = 
+      method !== METHODS.GET && data ? 
+      data instanceof FormData ?  data : JSON.stringify(data) 
+      : null;
 
       xhr.open(method, this._host + this._hand + path);
       xhr.timeout = timeout;

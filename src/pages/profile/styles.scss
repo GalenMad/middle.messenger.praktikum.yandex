@@ -12,10 +12,6 @@
     padding: 56px 40px 40px;
   }
 
-  .link {
-    font-size: 14px;
-  }
-
   #logout {
     color: $base-cherry;
     border-bottom-color: $base-cherry;
@@ -33,10 +29,41 @@
     width: 100%;
   }
 
-  &_avatar {
+  // TODO: Доделать стили изменения аватара
+
+  &_avatar-holder {
     margin-right: 32px;
+    border-radius: 50%;
+    overflow: hidden;
     width: 132px;
     height: 132px;
+    position: relative;
+
+    &:hover::after {
+      top: 90px;
+    }
+
+    &::after {
+      position: absolute;
+      background-color: rgb(0 0 0 / 50%);
+      background-image: url('../../assets/images/photo-card.svg');
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: 16px;
+      content: '';
+      display: block;
+      left: 0;
+      right: 0;
+      top: 132px;
+      transition: 0.2s top ease-in;
+      bottom: 0;
+    }
+  }
+
+  &_avatar {
+    width: 102%;
+    height: 102%;
+    margin: -2px;
   }
 
   &_name {

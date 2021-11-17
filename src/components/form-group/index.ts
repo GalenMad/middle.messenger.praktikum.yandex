@@ -28,17 +28,21 @@ export default class FormGroup extends Block {
     super(FORM_GROUP_TAG, { ...props, attributes });
   }
 
+  // TODO: Рефактор жизненного цикла компонента
   componentDidMount() {
     const input = this.element.querySelector('input');
-    input?.addEventListener('focus', () => {
-      this.hideValidationMessage();
-    });
-    input?.addEventListener('blur', () => {
-      this.checkValidity();
-    });
+    if (this.props.type !== 'file') {
+      input?.addEventListener('focus', () => {
+        this.hideValidationMessage();
+      });
+      input?.addEventListener('blur', () => {
+        this.checkValidity();
+      });
+    } else {
+      input?.addEventListener('input', () => console.log('Загружено:', input.value))
+    }
   }
 
-  //- TODO: Вынести логику с сообщением в шаблон
   hideValidationMessage() {
     const container: HTMLElement | null = this.element.querySelector(VALIDATION_SELECTOR);
     if (container) {

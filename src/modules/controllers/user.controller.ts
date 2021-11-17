@@ -1,8 +1,9 @@
 import BaseController from './base.controller';
-import { UserInfoUpdateAPI, UserPasswordUpdateAPI } from '../api/user.api';
+import { UserInfoUpdateAPI, UserPasswordUpdateAPI, UserAvatarUpdateAPI } from '../api/user.api';
 
 const userInfoUpdateAPI = new UserInfoUpdateAPI();
 const userPasswordUpdateAPI = new UserPasswordUpdateAPI();
+const userAvatarUpdateAPI = new UserAvatarUpdateAPI();
 
 export default class UserController extends BaseController {
   async updateUserInfo(data: Record<string, string | number>) {
@@ -21,6 +22,16 @@ export default class UserController extends BaseController {
       this.throwError(response);
     }
 
+    this.successModal.show();
+  }
+
+  async updateUserAvatar(data: FormData) {
+    const response = await userAvatarUpdateAPI.update(data);
+    if (response.error) {
+      this.throwError(response);
+    }
+    
+    this.mutations.setUserInfo(response.data);
     this.successModal.show();
   }
 }

@@ -19,6 +19,12 @@ export class UserInfoUpdateAPI extends UserAPI {
   }
 }
 
+export class UserAvatarUpdateAPI extends UserAPI {
+  async update(data: Record<string, unknown>): Promise<response> {
+    return this.apiInstance.put('/profile/avatar', { data }).then(res => res);
+  }
+}
+
 export class UserPasswordUpdateAPI extends UserAPI {
   async update(data: Record<string, unknown>): Promise<response> {
     const headers = this.headers;

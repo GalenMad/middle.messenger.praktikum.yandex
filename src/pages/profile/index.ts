@@ -4,6 +4,7 @@ import Form from '../../components/form';
 import ModalWrapper from '../../components/modal-wrapper';
 import changePasswordFields from '../../data/change-password-fields';
 import changeInfoFields from '../../data/change-info-fields';
+import changeAvatarFields from '../../data/change-avatar-fields';
 import compileTemplate from './template.pug';
 import AuthController from '../../modules/controllers/auth.controller';
 import UserController from '../../modules/controllers/user.controller';
@@ -12,6 +13,26 @@ import './styles.scss';
 // TODO: Подумать что можно сделать с этими вечными объявлениями классов
 const authController = new AuthController();
 const userController = new UserController();
+
+const createChangeAvatarModal = () => {
+  const changeAvatarFormProps = {
+    fields: changeAvatarFields,
+    buttonText: 'Отправить',
+    title: 'Изменить аватар',
+    submitCallback: () => {
+      const formData = new FormData(changeAvatarForm.element);
+      changeAvatarModal.hide();
+      userController.updateUserAvatar(formData);
+    }
+  }
+
+  const changeAvatarForm = new Form(changeAvatarFormProps);
+  const changeAvatarModal = new ModalWrapper({
+    content: changeAvatarForm
+  });
+
+  return changeAvatarModal;
+}
 
 const createChangePasswordModal = () => {
   const changePasswordFormProps = {
@@ -31,7 +52,6 @@ const createChangePasswordModal = () => {
 
   return changePasswordModal;
 }
-
 
 const createChangeInfoModal = () => {
   const rawData = Store.getRawUserData();
@@ -64,6 +84,7 @@ class Page extends Block {
   constructor(props = {}) {
     const changePasswordModal = createChangePasswordModal();
     const changeInfoModal = createChangeInfoModal();
+    const changeAvatarModal = createChangeAvatarModal();
 
     const userData = Store.getUserData();
     const userName = Store.getUserName();
@@ -81,9 +102,13 @@ class Page extends Block {
       type: 'click',
       selector: '#change-info',
       cb: () => changeInfoModal.show()
+    }, {
+      type: 'click',
+      selector: '#change-avatar',
+      cb: () => changeAvatarModal.show()
     }];
 
-    super('div', { ...props, userData, userName, avatar, events }, { changePasswordModal, changeInfoModal });
+    super('div', { ...props, userData, userName, avatar, events }, { changePasswordModal, changeInfoModal, changeAvatarModal });
     Store.on(Store.EVENTS.UPDATE_INFO, this.updateUserData.bind(this))
   }
 
