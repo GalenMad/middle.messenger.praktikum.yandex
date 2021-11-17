@@ -24,7 +24,6 @@ export default [{
   label: 'Логин',
   id: 'login',
   name: 'login',
-  value: 'amvoronkov',
   validators: [
     required(),
     login(),
@@ -48,7 +47,6 @@ export default [{
   id: 'password',
   name: 'password',
   type: 'password',
-  value: 'test@test.test1D',
   validators: [
     required(),
     minLength(8),
