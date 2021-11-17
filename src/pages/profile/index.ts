@@ -2,13 +2,13 @@ import Store from '../../modules/store';
 import Block from '../../modules/block';
 import Form from '../../components/form';
 import ModalWrapper from '../../components/modal-wrapper';
-import changePasswordFields from '../../data/change-password-fields';
-import changeInfoFields from '../../data/change-info-fields';
-import changeAvatarFields from '../../data/change-avatar-fields';
+import { fields } from '../../data';
 import compileTemplate from './template.pug';
 import AuthController from '../../modules/controllers/auth.controller';
 import UserController from '../../modules/controllers/user.controller';
 import './styles.scss';
+
+const { changePasswordFields, changeInfoFields, changeAvatarFields } = fields;
 
 // TODO: Подумать что можно сделать с этими вечными объявлениями классов
 const authController = new AuthController();
