@@ -22,23 +22,20 @@ export default class FormGroup extends Block {
   }
 
   constructor(props) {
-    const attributes = { ...props.attributes, class: FORM_GROUP_CLASS };
+    // Конструкция ниже нужна для того, чтобы класс, заданный снаружи, был в приоритете
+    const className = (props.attributes && props.attributes.class) || FORM_GROUP_CLASS;
+    const attributes = { ...props.attributes, class: className };
     super(FORM_GROUP_TAG, { ...props, attributes });
   }
 
-  // TODO: Нужен рефактор жизненного цикла компонента
   componentDidMount() {
     const input = this.element.querySelector('input');
-    if (this.props.type !== 'file') {
-      input?.addEventListener('focus', () => {
-        this.hideValidationMessage();
-      });
-      input?.addEventListener('blur', () => {
-        this.checkValidity();
-      });
-    } else {
-      input?.addEventListener('input', () => console.log('Загружено:', input.value))
-    }
+    input?.addEventListener('focus', () => {
+      this.hideValidationMessage();
+    });
+    input?.addEventListener('blur', () => {
+      this.checkValidity();
+    });
   }
 
   hideValidationMessage() {

@@ -3,7 +3,6 @@ import FormGroup from '../form-group';
 import compileTemplate from './template.pug';
 import './styles.scss';
 
-// TODO: Пробежаться по коду и вынести в константы строки
 const FORM_CLASS = 'form';
 const FORM_TAG = 'form';
 

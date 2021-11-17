@@ -3,7 +3,7 @@ import ModalWrapper from '../../components/modal-wrapper';
 
 let instance: SuccessModalController | null = null;
 
-// TODO: Указывать заголовок
+// TODO: Указывать заголовок модалки об успехе
 export default class SuccessModalController {
   modalContentClass: typeof SuccessModalContent;
   modalClass: typeof ModalWrapper;

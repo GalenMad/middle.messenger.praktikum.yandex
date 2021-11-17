@@ -6,7 +6,7 @@ const loginAPI = new LoginAPI();
 const logoutAPI = new LogoutAPI();
 const userInfoAPI = new UserInfoAPI();
 
-// TODO: Может тоже сделать как синглтон аля ice factory?
+// TODO: Может контроллеры тоже сделать как синглтон?
 export default class AuthController extends BaseController {
 
   async init() {

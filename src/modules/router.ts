@@ -51,6 +51,7 @@ function createRouter() {
     return this;
   };
 
+  // TODO: Костыль с передачей метода уточнения статуса авторизации
   const start = async function(authorizationStatusGetter?: () => boolean) {
     const root = document.querySelector(rootQuery);
     getAuthorizationStatus = authorizationStatusGetter || getAuthorizationStatus;

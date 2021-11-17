@@ -66,7 +66,6 @@ class Block {
     this._render();
   }
 
-  // TODO: CDM должен срабатывать один раз
   _componentDidMount() {
     this.componentDidMount(this.props);
   }
