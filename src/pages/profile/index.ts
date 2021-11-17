@@ -51,6 +51,7 @@ const createChangeInfoModal = () => {
 
   Store.on(Store.EVENTS.UPDATE_INFO, () => {
     const rawData = Store.getRawUserData();
+    // TODO: На этом моменте создаются новые FormGroup, пофиксить
     changeInfoForm.setProps({
       fields: changeInfoFields(rawData),
     });

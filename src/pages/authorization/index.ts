@@ -11,7 +11,7 @@ const pageProps = {
 const formProps = {
   title: 'Авторизация',
   buttonText: 'Поехали',
-}
+};
 const authController = new AuthController();
 const submitCallback = authController.login.bind(authController);
 export default class Page extends FormPage {
