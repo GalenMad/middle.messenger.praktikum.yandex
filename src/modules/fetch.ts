@@ -66,7 +66,7 @@ class HTTPTransport {
   request = (url: string, options: requestOptions): Promise<response> => {
     const {
       method = METHODS.GET,
-      headers = {},
+      headers = null,
       data = null,
       timeout = 10000
     } = options;

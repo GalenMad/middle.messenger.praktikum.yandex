@@ -17,7 +17,7 @@ export default class AuthController extends BaseController {
   }
 
   async checkAuthorization() {
-    const response = await userInfoAPI.request();
+    const response = await userInfoAPI.request(true);
     this.mutations.setAuthorizationStatus(!response.error);
     if (!response.error) {
       this.mutations.setUserInfo(response.data);

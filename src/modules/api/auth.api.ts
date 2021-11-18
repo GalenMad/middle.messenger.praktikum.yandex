@@ -31,7 +31,8 @@ export class LogoutAPI extends AuthAPI {
 }
 
 export class UserInfoAPI extends AuthAPI {
-  async request(): Promise<response> {
-    return this.apiInstance.get('/user').then(res => res);
+  async request(noCache: boolean): Promise<response> {
+    const headers = noCache ? { 'Cache-Control': 'no-cache' } : null;
+    return this.apiInstance.get('/user', { headers }).then(res => res);
   }
 }

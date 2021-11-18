@@ -12,7 +12,13 @@ function createRouter() {
   const history = window.history;
   const rootQuery = '#app';
   let getAuthorizationStatus = () => false;
-  let currentRoute: null | Route = null;
+  let currentRoute: undefined | Route = undefined;
+
+  const replaceRoute = (pathname: string) => {
+    history.replaceState({}, '', pathname);
+    currentRoute = getRoute(pathname);
+    currentRoute?.render();
+  }
 
   const onRoute = (pathname: string) => {
     const route = getRoute(pathname);
@@ -24,18 +30,18 @@ function createRouter() {
     if (currentRoute === route) {
       return;
     }
-    
+
     const authorizationStatus = getAuthorizationStatus();
 
     // TODO: Узнать что уместнее — редирект или рендер с сохранением адреса
     // TODO: Перехват возвращения на несуществующую страницу
     // TODO: Перехват возвращения на пункт в истории браузера
     if (!route) {
-      go(ADDRESSES.ERROR);
+      replaceRoute(ADDRESSES.ERROR);
     } else if (route.isPrivate && !authorizationStatus) {
-      go(ADDRESSES.AUTH);
+      replaceRoute(ADDRESSES.AUTH);
     } else if (route.isNotForAuthorized && authorizationStatus) {
-      go(ADDRESSES.MAIN);
+      replaceRoute(ADDRESSES.MAIN);
     } else {
       currentRoute = route;
       route.render();
@@ -53,7 +59,7 @@ function createRouter() {
   };
 
   // TODO: Костыль с передачей метода уточнения статуса авторизации
-  const start = async function(authorizationStatusGetter?: () => boolean) {
+  const start = async function (authorizationStatusGetter?: () => boolean) {
     const root = document.querySelector(rootQuery);
     getAuthorizationStatus = authorizationStatusGetter || getAuthorizationStatus;
 
