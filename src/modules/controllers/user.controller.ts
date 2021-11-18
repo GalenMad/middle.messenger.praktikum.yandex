@@ -26,6 +26,7 @@ export default class UserController extends BaseController {
   }
 
   async updateUserAvatar(data: FormData) {
+    // TODO: Загружать аватар под одинаковым именем
     const response = await userAvatarUpdateAPI.update(data);
     if (response.error) {
       this.throwError(response);
