@@ -8,19 +8,19 @@ main.chats
             input(type="text" name="search").search-input
             button.button#create-chat Создать чат
         section.chats-aside_tape
-        if chats
-            each chat in chats
-                article.chat-item
-                    img.chat-item_avatar(src=chat.avatar, alt=chat.title)
-                    div.chat-item_body
-                        h3.chat-item_name= chat.title
-                        if chat.last_message
-                            p.chat-item_teaser= chat.last_message.content
-                    div.chat-item_details
-                        if chat.last_message
-                            span.chat-item_time= chat.last_message.time
-                        if chat.unread_count > 0
-                            span.chat-item_message-counter= chat.unread_count
+            if chats
+                each chat in chats
+                    article.chat-item
+                        img.chat-item_avatar(src=chat.avatar, alt=chat.title)
+                        div.chat-item_body
+                            h3.chat-item_name= chat.title
+                            if chat.last_message
+                                p.chat-item_teaser= chat.last_message.content
+                        div.chat-item_details
+                            if chat.last_message
+                                span.chat-item_time= chat.last_message.time
+                            if chat.unread_count > 0
+                                span.chat-item_message-counter= chat.unread_count
     section.chat-feed
         if activeChat
             div.chat
