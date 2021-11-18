@@ -1,13 +1,13 @@
 import BaseController from './base.controller';
-import { UserInfoUpdateAPI, UserPasswordUpdateAPI, UserAvatarUpdateAPI } from '../api/user.api';
+import { UserInfoAPI, UserPasswordAPI, UserAvatarAPI } from '../api/user.api';
 
-const userInfoUpdateAPI = new UserInfoUpdateAPI();
-const userPasswordUpdateAPI = new UserPasswordUpdateAPI();
-const userAvatarUpdateAPI = new UserAvatarUpdateAPI();
+const userInfoAPI = new UserInfoAPI();
+const userPasswordAPI = new UserPasswordAPI();
+const userAvatarAPI = new UserAvatarAPI();
 
 export default class UserController extends BaseController {
   async updateUserInfo(data: Record<string, string | number>) {
-    const response = await userInfoUpdateAPI.update(data);
+    const response = await userInfoAPI.update(data);
     if (response.error) {
       this.throwError(response);
     }
@@ -17,7 +17,7 @@ export default class UserController extends BaseController {
   }
 
   async updateUserPassword(data: Record<string, string | number>) {
-    const response = await userPasswordUpdateAPI.update(data);
+    const response = await userPasswordAPI.update(data);
     if (response.error) {
       this.throwError(response);
     }
@@ -27,7 +27,7 @@ export default class UserController extends BaseController {
 
   async updateUserAvatar(data: FormData) {
     // TODO: Загружать аватар под одинаковым именем
-    const response = await userAvatarUpdateAPI.update(data);
+    const response = await userAvatarAPI.update(data);
     if (response.error) {
       this.throwError(response);
     }
