@@ -33,7 +33,6 @@ function createRouter() {
 
     const authorizationStatus = getAuthorizationStatus();
 
-    // TODO: Узнать что уместнее — редирект или рендер с сохранением адреса
     if (!route) {
       replaceRoute(ADDRESSES.ERROR);
     } else if (route.isPrivate && !authorizationStatus) {
