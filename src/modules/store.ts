@@ -66,7 +66,13 @@ function createStore() {
       name: userDataLabels[label],
       value: userInfo[label]
     })),
-    getUserChats: () => chatList,
+    getUserChats: () => {
+      return chatList?.map(item => {
+        item.avatar = item.avatar || defaultAvatar;
+        item.last_message = item.last_message || {time: '—', content: 'Пусто…'};
+        return item;
+      })
+    },
     getRawUserData: () => userInfo,
     getUserName: () => userInfo?.first_name
   }
