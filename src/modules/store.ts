@@ -12,6 +12,25 @@ interface userInfo {
   display_name: null | string,
 }
 
+interface chat {
+  "id": 123,
+  "title": "my-chat",
+  "avatar": "/123/avatar1.jpg",
+  "unread_count": 15,
+  "last_message": {
+    "user": {
+      "first_name": "Petya",
+      "second_name": "Pupkin",
+      "avatar": "/path/to/avatar.jpg",
+      "email": "my@email.com",
+      "login": "userLogin",
+      "phone": "8(911)-222-33-22"
+    },
+    "time": "2020-01-02T14:22:22.000Z",
+    "content": "this is message content"
+  }
+}
+
 const userDataLabels = {
   first_name: 'Имя',
   second_name: 'Фамилия',
@@ -24,6 +43,7 @@ const userDataLabels = {
 function createStore() {
   let isAuthorized = false;
   let userInfo: userInfo | null = null;
+  let chatList: chat[] | null = null;
 
   const EVENTS = {
     UPDATE_INFO: 'update:user-info'
@@ -46,6 +66,7 @@ function createStore() {
       name: userDataLabels[label],
       value: userInfo[label]
     })),
+    getUserChats: () => chatList,
     getRawUserData: () => userInfo,
     getUserName: () => userInfo?.first_name
   }
@@ -57,7 +78,11 @@ function createStore() {
     setUserInfo: (info: userInfo) => {
       userInfo = info;
       EventBus.emit(EVENTS.UPDATE_INFO);
-    }
+    },
+    setUserChats: (chats: chat[]) => { 
+      chatList = chats;
+      EventBus.emit(EVENTS.UPDATE_INFO);
+    },
   }
 
   return Object.freeze({

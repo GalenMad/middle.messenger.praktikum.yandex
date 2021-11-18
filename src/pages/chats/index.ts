@@ -1,45 +1,59 @@
 import Block from '../../modules/block';
 import Store from '../../modules/store';
-import avatar from '../../assets/images/default-avatar.svg';
 import compileTemplate from './template.pug';
 import './styles.scss';
+import Form from '../../components/form';
+import ModalWrapper from '../../components/modal-wrapper';
+import ChatsController from '../../modules/controllers/chats.controller';
+import { fields } from '../../data';
 
-const activeChat = {
-  "id": 123,
-  "title": "my-chat",
-  "avatar": avatar,
-  "unread_count": 15,
-  "last_message": {
-    "user": {
-      "first_name": "Petya",
-      "second_name": "Pupkin",
-      "avatar": "/path/to/avatar.jpg",
-      "email": "my@email.com",
-      "login": "userLogin",
-      "phone": "8(911)-222-33-22"
-    },
-    "time": "2020-01-02T14:22:22.000Z",
-    "content": "this is message content"
+const chatsController = new ChatsController();
+const { createChatFields } = fields
+
+const createNewChatModal = () => {
+  const formProps = {
+    fields: createChatFields,
+    buttonText: 'Назвать',
+    title: 'Назовите чат',
+    submitCallback: (data) => {
+      modal.hide();
+      chatsController.createChat(data);
+    }
   }
-};
 
-const messages: Array<any> = [];
-
-for (let i = 0; i < 10; i += 1) {
-  messages.push({
-    content: 'Привет! Смотри, тут всплыл интересный кусок лунной космической истории — НАСА в какой-то момент попросила Хассельблад адаптировать модель SWC для полетов на Луну.',
-    time: '10:49',
-    my: i % 3 === 0
+  const form = new Form(formProps);
+  const modal = new ModalWrapper({
+    content: form
   });
-};
 
-console.log(messages);
+  return modal;
+}
 
 class Page extends Block {
   constructor(props = {}) {
     const avatar = Store.getUserAvatar();
-    super('div', { ...props, avatar, messages, activeChat });
-    Store.on(Store.EVENTS.UPDATE_INFO, () => this.setProps({avatar: Store.getUserAvatar()}))
+    const chats = Store.getUserChats();
+    const createChatModal = createNewChatModal();
+    const events = [{
+      type: 'click',
+      selector: '#create-chat',
+      cb: (evt) => { 
+        evt.stopPropagation();
+        createChatModal.show()
+      }
+    }];
+    super('div', { ...props, avatar, chats, events }, { createChatModal });
+    Store.on(Store.EVENTS.UPDATE_INFO, this.updateUserData.bind(this))
+  }
+
+  updateUserData() {
+    const avatar = Store.getUserAvatar();
+    const chats = Store.getUserChats();
+    console.log(chats);
+    this.setProps({
+      avatar,
+      chats
+    });
   }
 
   render() {

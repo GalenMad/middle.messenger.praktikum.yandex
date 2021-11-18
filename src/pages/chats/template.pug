@@ -6,7 +6,7 @@ main.chats
                 img(src=avatar, alt="Вы").profile-link_avatar
                 span.profile-link_name Вы
             input(type="text" name="search").search-input
-            button.button Создать чат
+            button.button#create-chat Создать чат
         section.chats-aside_tape
         if chats
             each chat in chats
@@ -14,10 +14,13 @@ main.chats
                     img.chat-item_avatar(src=chat.avatar, alt=chat.title)
                     div.chat-item_body
                         h3.chat-item_name= chat.title
-                        p.chat-item_teaser= chat.last_message.content
+                        if chat.last_message
+                            p.chat-item_teaser= chat.last_message.content
                     div.chat-item_details
-                        span.chat-item_time= chat.last_message.time
-                        span.chat-item_message-counter= chat.unread_count
+                        if chat.last_message
+                            span.chat-item_time= chat.last_message.time
+                        if chat.unread_count > 0
+                            span.chat-item_message-counter= chat.unread_count
     section.chat-feed
         if activeChat
             div.chat
@@ -39,3 +42,4 @@ main.chats
         else
             div.chat-feed_empty
                 span.chat-feed_plug У тебя тут чё, реально одни Андреи?
+    template(data-component="createChatModal")
