@@ -23,9 +23,15 @@
     border-bottom: 2px solid $base-grey;
     display: grid;
     grid-template-columns: 120px 1fr;
-    grid-template-rows: 48px;
+    grid-template-rows: 48px 48px;
     grid-column-gap: 10px;
+    grid-row-gap: 10px;
     margin-bottom: 10px;
+
+    .button {
+      grid-column-start: 1;
+      grid-column-end: 3;
+    }
   }
 
   &_tape {
