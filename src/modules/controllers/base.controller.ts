@@ -1,5 +1,5 @@
 import Router from '../router';
-import Store from '../store';
+import { mutations, get } from '../store';
 import LoadingModalController from './loading-modal.controller';
 import ErrorModalController from './error-modal.controller';
 import SuccessModalController from './success-modal.controller';
@@ -18,8 +18,8 @@ export default class BaseController {
   successModal: ErrorModalController;
   constructor() {
     this.router = Router;
-    this.mutations = Store.mutations;
-    this.getAuthorizationStatus = () => Store.get('isAuthorized');
+    this.mutations = mutations;
+    this.getAuthorizationStatus = () => get('isAuthorized');
     this.loadingModal = new LoadingModalController();
     this.errorModal = new ErrorModalController();
     this.successModal = new SuccessModalController();

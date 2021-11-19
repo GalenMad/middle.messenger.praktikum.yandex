@@ -1,4 +1,3 @@
-import Store from '../../modules/store';
 import Block from '../../modules/block';
 import Form from '../../components/form';
 import ModalWrapper from '../../components/modal-wrapper';
