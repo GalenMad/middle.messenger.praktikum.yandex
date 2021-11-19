@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import './types.d';
 
 enum METHODS {
@@ -58,18 +59,14 @@ class HTTPTransport {
     return new Promise((resolve) => {
       const xhr = new XMLHttpRequest();
       const path = method === METHODS.GET && data ? `${url}?${stringifyQuery(data)}` : url;
-      const requestBody = method !== METHODS.GET && data
-        ? data instanceof FormData ? data : JSON.stringify(data)
-        : null;
+      const requestBody = data && data instanceof FormData ? data : JSON.stringify(data);
 
       xhr.open(method, this._host + this._hand + path);
       xhr.timeout = timeout;
       xhr.withCredentials = true;
 
       if (headers) {
-        for (const header in headers) {
-          xhr.setRequestHeader(header, headers[header]);
-        }
+        Object.keys(headers).forEach((header) => xhr.setRequestHeader(header, headers[header]));
       }
 
       const getResponse = (
