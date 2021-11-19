@@ -1,5 +1,4 @@
 import Block from '../../modules/block';
-import Store from '../../modules/store';
 import compileTemplate from './template.pug';
 import './styles.scss';
 import Form from '../../components/form';
@@ -22,38 +21,22 @@ const createNewChatModal = () => {
   }
 
   const form = new Form(formProps);
-  const modal = new ModalWrapper({
-    content: form
-  });
-
+  const modal = new ModalWrapper({ content: form });
   return modal;
 }
 
 class Page extends Block {
   constructor(props = {}) {
-    const avatar = Store.getUserAvatar();
-    const chats = Store.getUserChats();
     const createChatModal = createNewChatModal();
     const events = [{
       type: 'click',
       selector: '#create-chat',
-      cb: (evt) => { 
+      cb: (evt) => {
         evt.stopPropagation();
-        createChatModal.show()
+        createChatModal.show();
       }
     }];
-    super('div', { ...props, avatar, chats, events }, { createChatModal });
-    Store.on(Store.EVENTS.UPDATE_INFO, this.updateUserData.bind(this))
-  }
-
-  updateUserData() {
-    const avatar = Store.getUserAvatar();
-    const chats = Store.getUserChats();
-    console.log(chats);
-    this.setProps({
-      avatar,
-      chats
-    });
+    super('div', { ...props,  events }, { createChatModal }, { avatar: 'userInfo.avatar', chats: 'chatList' });
   }
 
   render() {

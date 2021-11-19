@@ -18,12 +18,11 @@ export default class BaseController {
   successModal: ErrorModalController;
   constructor() {
     this.router = Router;
-    const { mutations, getAuthorizationStatus } = Store;
-    this.mutations = mutations;
+    this.mutations = Store.mutations;
+    this.getAuthorizationStatus = () => Store.get('isAuthorized');
     this.loadingModal = new LoadingModalController();
     this.errorModal = new ErrorModalController();
     this.successModal = new SuccessModalController();
-    this.getAuthorizationStatus = getAuthorizationStatus;
   }
 
   delay() {

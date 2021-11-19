@@ -24,11 +24,11 @@ class Form extends Block {
 
   // TODO: Добавить общую валидацию для формы
   
-  constructor(props: { attributes?: { class?: string }, fields?: []; submitCallback: Function }) {
+  constructor(props: { attributes?: { class?: string }, fields?: []; submitCallback: Function }, selectors = {}) {
     // Конструкция ниже нужна для того, чтобы класс, заданный снаружи, был в приоритете
     const className = (props.attributes && props.attributes.class) || FORM_CLASS;
     const attributes = { ...props.attributes, class: className };
-    super(FORM_TAG, { ...props, attributes });
+    super(FORM_TAG, { ...props, attributes }, {}, selectors);
 
     const events = [{
       cb: (evt: Event) => {

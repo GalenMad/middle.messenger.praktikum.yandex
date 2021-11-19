@@ -1,6 +1,8 @@
 /* eslint-disable class-methods-use-this */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
+import Store from './store';
+
 //TODO: Сделать тип более глобальным
 interface props {
   name?: string,
@@ -35,9 +37,18 @@ class Block {
     return this._element;
   }
 
-  constructor(tagName = 'div', props: props = {}, children = {}) {
+  constructor(tagName = 'div', props: props = {}, children = {}, selectors = {}) {
     this._meta = { tagName, props };
-    this.props = this._makePropsProxy(props);
+    const selectorsData = {};
+    Object.keys(selectors).forEach(selectorName => {
+      const selector = selectors[selectorName];
+      const head = selector.split('.')[0];
+      selectorsData[selectorName] = Store.get(selector);
+      Store.on(`store-update:${head}`, () => {
+        this.setProps({ [selectorName]: Store.get(selector) });
+      })
+    });
+    this.props = this._makePropsProxy({ ...props, ...selectorsData });
     this.children = children;
     this.init();
   }

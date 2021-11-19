@@ -15,23 +15,20 @@ const authController = new AuthController();
 const userController = new UserController();
 
 const createChangeAvatarModal = () => {
-  const changeAvatarFormProps = {
+  const props = {
     fields: changeAvatarFields,
     buttonText: 'Отправить',
     title: 'Изменить аватар',
     submitCallback: () => {
-      const formData = new FormData(changeAvatarForm.element);
-      changeAvatarModal.hide();
+      const formData = new FormData(form.element);
+      modal.hide();
       userController.updateUserAvatar(formData);
     }
   }
 
-  const changeAvatarForm = new Form(changeAvatarFormProps);
-  const changeAvatarModal = new ModalWrapper({
-    content: changeAvatarForm
-  });
-
-  return changeAvatarModal;
+  const form = new Form(props);
+  const modal = new ModalWrapper({ content: form });
+  return modal;
 }
 
 const createChangePasswordModal = () => {
@@ -54,9 +51,8 @@ const createChangePasswordModal = () => {
 }
 
 const createChangeInfoModal = () => {
-  const rawData = Store.getRawUserData();
   const changeInfoFormProps = {
-    fields: changeInfoFields(rawData),
+    fields: changeInfoFields,
     buttonText: 'Отправить',
     title: 'Изменить информацию',
     // TODO: Добавить валидацию на данные, полностью идентичные текущим
@@ -69,15 +65,6 @@ const createChangeInfoModal = () => {
   // TODO: Прикрутить чистку валидации на закрытие модалки
   const changeInfoForm = new Form(changeInfoFormProps);
   const changeInfoModal = new ModalWrapper({ content: changeInfoForm });
-
-  Store.on(Store.EVENTS.UPDATE_INFO, () => {
-    const rawData = Store.getRawUserData();
-    // TODO: На этом моменте создаются новые FormGroup, пофиксить
-    changeInfoForm.setProps({
-      fields: changeInfoFields(rawData),
-    });
-  });
-
   return changeInfoModal;
 }
 
@@ -86,10 +73,6 @@ class Page extends Block {
     const changePasswordModal = createChangePasswordModal();
     const changeInfoModal = createChangeInfoModal();
     const changeAvatarModal = createChangeAvatarModal();
-
-    const userData = Store.getUserData();
-    const userName = Store.getUserName();
-    const avatar = Store.getUserAvatar();
 
     const events = [{
       type: 'click',
@@ -109,19 +92,7 @@ class Page extends Block {
       cb: () => changeAvatarModal.show()
     }];
 
-    super('div', { ...props, userData, userName, avatar, events }, { changePasswordModal, changeInfoModal, changeAvatarModal });
-    Store.on(Store.EVENTS.UPDATE_INFO, this.updateUserData.bind(this))
-  }
-
-  updateUserData() {
-    const userData = Store.getUserData();
-    const userName = Store.getUserName();
-    const avatar = Store.getUserAvatar();
-    this.setProps({
-      userName,
-      userData,
-      avatar
-    });
+    super('div', { ...props, events }, { changePasswordModal, changeInfoModal, changeAvatarModal }, { avatar: 'userInfo.avatar', userName: 'userInfo.first_name', userData: 'userProfile' });
   }
 
   render() {

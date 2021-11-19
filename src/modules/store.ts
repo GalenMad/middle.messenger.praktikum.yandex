@@ -1,6 +1,23 @@
 import defaultAvatar from '../assets/images/default-avatar.svg';
 import EventBus from './event-bus';
 
+const RESOURCES_HOST = 'https://ya-praktikum.tech/api/v2/resources';
+
+function makeProxy(props: {}) {
+  const handler = {
+    get: (target: any, prop: string) => {
+      const value = target[prop];
+      return typeof value === 'function' ? value.bind(target) : value;
+    },
+    set: (target: any, prop: string, value: any) => {
+      target[prop] = value;
+      EventBus.emit(`store-update:${prop}`, value)
+      return true;
+    },
+  };
+  return new Proxy(props, handler);
+}
+
 interface userInfo {
   id: number
   email: string
@@ -41,15 +58,14 @@ const userDataLabels = {
 }
 
 function createStore() {
-  let isAuthorized = false;
-  let userInfo: userInfo | null = null;
-  let chatList: chat[] | null = null;
 
-  const EVENTS = {
-    UPDATE_INFO: 'update:user-info'
-  }
+  const store = makeProxy({
+    isAuthorized: false,
+    userData: {},
+    userProfile: {},
+    chatList: {},
+  });
 
-  const RESOURCES_HOST = 'https://ya-praktikum.tech/api/v2/resources'
 
   const eventBusMethods = {
     on: EventBus.on,
@@ -57,46 +73,48 @@ function createStore() {
     emit: EventBus.emit,
   }
 
-  const getters = {
-    getAuthorizationStatus: () => {
-      return isAuthorized
-    },
-    getUserAvatar: () => userInfo && userInfo.avatar ? RESOURCES_HOST + userInfo.avatar : defaultAvatar,
-    getUserData: () => userInfo && Object.keys(userDataLabels).map(label => ({
+  const get = (path: string) => {
+    const arr = path.split('.');
+    let exist = store;
+    if (!arr.length) return undefined;
+
+    for (let i = 0; i < arr.length; i++) {
+      const propertyName = arr[i];
+      if (exist.hasOwnProperty(propertyName)) {
+        exist = exist[propertyName];
+      } else {
+        return null;
+      }
+    }
+
+    return exist;
+  }
+
+  const updateUserProfile = (info) => {
+    return Object.keys(userDataLabels).map(label => ({
       name: userDataLabels[label],
-      value: userInfo[label]
-    })),
-    getUserChats: () => {
-      return chatList?.map(item => {
-        item.avatar = item.avatar || defaultAvatar;
-        item.last_message = item.last_message || { time: '—', content: 'Пусто…' };
-        return [item, item, item, item];
-      }).flat();
-    },
-    getRawUserData: () => userInfo,
-    getUserName: () => userInfo?.first_name
+      value: info[label]
+    }))
   }
 
   const mutations = {
     setAuthorizationStatus: (status: boolean) => {
-      isAuthorized = status;
+      store.isAuthorized = status;
     },
     setUserInfo: (info: userInfo) => {
-      userInfo = info;
-      EventBus.emit(EVENTS.UPDATE_INFO);
+      info.avatar = info.avatar ? RESOURCES_HOST + info.avatar : defaultAvatar;
+      store.userInfo = info;
+      store.userProfile = updateUserProfile(info);
     },
     setUserChats: (chats: chat[]) => {
-      chatList = chats;
-      EventBus.emit(EVENTS.UPDATE_INFO);
+      store.chatList = chats;
     },
   }
 
   return Object.freeze({
-    EVENTS,
     mutations,
+    get,
     ...eventBusMethods,
-    ...mutations,
-    ...getters
   })
 }
 
