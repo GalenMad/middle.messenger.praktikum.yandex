@@ -1,23 +1,24 @@
 .loading-modal {
-    width: 160px;
-    height: 100px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    @keyframes spinner-border {
-        to {
-            transform: rotate(360deg);
-        }
-    }
+  width: 160px;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-    .spinner-border {
-        display: inline-block;
-        width: 44px;
-        height: 44px;
-        vertical-align: -0.125em;
-        border: 0.25em solid white;
-        border-right-color: transparent;
-        border-radius: 50%;
-        animation: .75s linear infinite spinner-border;
+  @keyframes spinner-border {
+    to {
+      transform: rotate(360deg);
     }
+  }
+
+  .spinner-border {
+    display: inline-block;
+    width: 44px;
+    height: 44px;
+    vertical-align: -0.125em;
+    border: 0.25em solid white;
+    border-right-color: transparent;
+    border-radius: 50%;
+    animation: 0.75s linear infinite spinner-border;
+  }
 }

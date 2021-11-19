@@ -1,23 +1,23 @@
 .error-modal {
-    border-radius: 10px;
-    background-color: #2e2e38;
-    width: 400px;
-    height: 300px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 36px;
+  border-radius: 10px;
+  background-color: #2e2e38;
+  width: 400px;
+  height: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 36px;
 
-    .modal-title {
-        display: block;
-        font-size: 24px;
-        font-weight: 600;
-    }
+  .modal-title {
+    display: block;
+    font-size: 24px;
+    font-weight: 600;
+  }
 
-    .modal-subtitle {
-        display: block;
-        font-size: 24px;
-        font-weight: 900;
-    }
+  .modal-subtitle {
+    display: block;
+    font-size: 24px;
+    font-weight: 900;
+  }
 }

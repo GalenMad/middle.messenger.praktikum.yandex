@@ -10,14 +10,11 @@
         "sourceMap": true,
         "strictNullChecks": true
     },
-    "files": [
-        "src/app.ts"
-    ],
     "include": [
         "src/**/*.ts"
     ],
     "exclude": [
-        "src/**/*.spec.ts",
+        "src/**/*.d.ts",
         "node_modules",
         "dist"
     ]
