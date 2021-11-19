@@ -7,7 +7,6 @@ const FORM_CLASS = 'form';
 const FORM_TAG = 'form';
 
 class Form extends Block {
-
   get isValid() {
     return this.formGroups.every((element) => element.isValid);
   }
@@ -23,7 +22,7 @@ class Form extends Block {
   }
 
   // TODO: Добавить общую валидацию для формы
-  
+
   constructor(props: { attributes?: { class?: string }, submitCallback: Function }, selectors = {}) {
     // Конструкция ниже нужна для того, чтобы класс, заданный снаружи, был в приоритете
     const className = (props.attributes && props.attributes.class) || FORM_CLASS;
@@ -35,17 +34,17 @@ class Form extends Block {
         evt.stopPropagation();
         evt.preventDefault();
         this.checkValidity();
-        const submitCallback = this.props.submitCallback;
+        const { submitCallback } = this.props;
         if (this.isValid && submitCallback) {
           submitCallback(this.data);
           this.element.reset();
         }
       },
       selector: 'form',
-      type: 'submit'
+      type: 'submit',
     }];
 
-    this.setProps({ events })
+    this.setProps({ events });
   }
 
   checkValidity() {
@@ -66,7 +65,7 @@ class Form extends Block {
       });
       this.children = formGroups;
     }
-  };
+  }
 
   render() {
     this.createFormGroups();

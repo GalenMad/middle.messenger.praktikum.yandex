@@ -3,16 +3,20 @@ import Route from './route';
 enum ADDRESSES {
   ERROR = '/error-404',
   AUTH = '/sign-in',
-  MAIN = '/'
+  MAIN = '/',
 }
 
 const ROOT = '#app';
 
 class Router {
   routes: any[];
+
   history: History;
+
   _currentRoute: any;
+
   _rootQuery: string;
+
   getAuthorizationStatus: () => boolean;
 
   constructor(rootQuery: string = ROOT) {
@@ -29,7 +33,7 @@ class Router {
     return this;
   }
 
-  replaceRoute (pathname: string) {
+  replaceRoute(pathname: string) {
     history.replaceState({}, '', pathname);
     this._currentRoute = this.getRoute(pathname);
     this._currentRoute?.render();
@@ -41,13 +45,13 @@ class Router {
     this.getAuthorizationStatus = authorizationStatusGetter || this.getAuthorizationStatus;
 
     if (!root) {
-      throw new Error('Неверный селектор root-элемента')
+      throw new Error('Неверный селектор root-элемента');
     }
 
     root.innerHTML = '';
 
     root.addEventListener('click', (evt) => {
-      const link = evt.path.find((elem: HTMLElement) => elem.tagName === 'A' && elem.href)
+      const link = evt.path.find((elem: HTMLElement) => elem.tagName === 'A' && elem.href);
       if (link) {
         const pathname = link.getAttribute('href');
         this.go(pathname);
@@ -107,7 +111,7 @@ class Router {
   }
 
   getRoute(pathname: string) {
-    return this.routes.find(route => route.match(pathname));
+    return this.routes.find((route) => route.match(pathname));
   }
 }
 

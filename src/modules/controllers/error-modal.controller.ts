@@ -8,9 +8,13 @@ let instance: ErrorModalController | null = null;
 // При пятисотых хорошо бы отправлять на 500-page
 export default class ErrorModalController {
   modalContentClass: typeof ErrorModalContent;
+
   modalClass: typeof ModalWrapper;
+
   modalContentInstance: null | ErrorModalContent;
+
   modalInstance: null | ModalWrapper;
+
   modal: null | HTMLElement;
 
   constructor() {

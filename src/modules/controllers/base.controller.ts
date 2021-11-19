@@ -11,11 +11,17 @@ interface errorData {
 
 export default class BaseController {
   router: typeof Router;
+
   getAuthorizationStatus: () => boolean;
+
   mutations: { setAuthorizationStatus: (status: boolean) => void; setUserInfo: (info: userInfo) => void; };
+
   loadingModal: LoadingModalController;
+
   errorModal: ErrorModalController;
+
   successModal: ErrorModalController;
+
   constructor() {
     this.router = Router;
     this.mutations = mutations;
@@ -26,7 +32,7 @@ export default class BaseController {
   }
 
   delay() {
-    return new Promise(resolve => setTimeout(resolve, 2000));
+    return new Promise((resolve) => setTimeout(resolve, 2000));
   }
 
   throwError(response: errorData) {
@@ -37,4 +43,3 @@ export default class BaseController {
     throw new Error(`\n status: ${status} \n reason: ${reason}`);
   }
 }
-

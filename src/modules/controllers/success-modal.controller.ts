@@ -6,9 +6,13 @@ let instance: SuccessModalController | null = null;
 // TODO: Указывать заголовок модалки об успехе
 export default class SuccessModalController {
   modalContentClass: typeof SuccessModalContent;
+
   modalClass: typeof ModalWrapper;
+
   modalContentInstance: null | SuccessModalContent;
+
   modalInstance: null | ModalWrapper;
+
   modal: null | HTMLElement;
 
   constructor() {
@@ -27,8 +31,8 @@ export default class SuccessModalController {
       this.modalInstance = new this.modalClass({ content: this.modalContentInstance, hideCallback: this.hide.bind(this) });
       this.modal = this.modalInstance.getContent();
       document.querySelector('body')?.append(this.modal);
-    } 
-    
+    }
+
     // TODO: Узнать как избавиться от избыточных проверок для TS
     // ↓↓↓↓↓↓↓↓↓↓↓
     if (this.modal) {

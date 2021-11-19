@@ -16,6 +16,7 @@
     "exclude": [
         "src/**/*.d.ts",
         "node_modules",
-        "dist"
+        "dist",
+        "./server.js"
     ]
 }

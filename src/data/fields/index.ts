@@ -10,7 +10,7 @@ export const data = {
   createChatFields,
   changePasswordFields,
   registrationFields,
-  loginFields
-}
+  loginFields,
+};
 
 export { changeInfoFields };

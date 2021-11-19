@@ -3,7 +3,7 @@
 
 import { get, storeEvents } from './store';
 
-//TODO: Сделать тип более глобальным
+// TODO: Сделать тип более глобальным
 interface props {
   name?: string,
   type?: string,
@@ -29,9 +29,12 @@ class Block {
   static MESSAGE_ACCESS_ERROR = 'Нет прав';
 
   _element: HTMLElement;
+
   _meta: { tagName: string; props?: {}; };
+
   children: Record<string, Block>;
-  props: { events: [], attributes: Record<string, string | number> }
+
+  props: { events: [], attributes: Record<string, string | number> };
 
   get element() {
     return this._element;
@@ -40,19 +43,18 @@ class Block {
   constructor(tagName = 'div', props: props = {}, children = {}, selectors = {}) {
     this._meta = { tagName, props };
     const selectorsData = {};
-    Object.keys(selectors).forEach(selectorName => {
+    Object.keys(selectors).forEach((selectorName) => {
       const selector = selectors[selectorName];
       const head = selector.split('.')[0];
       selectorsData[selectorName] = get(selector);
       storeEvents.on(`store-update:${head}`, () => {
         this.setProps({ [selectorName]: get(selector) });
-      })
+      });
     });
     this.props = this._makePropsProxy({ ...props, ...selectorsData });
     this.children = children;
     this.init();
   }
-
 
   // eslint-disable-next-line class-methods-use-this
   _setAttributes(element: HTMLElement, attributes: Record<string, string> = {}) {
@@ -174,7 +176,7 @@ class Block {
         // eslint-disable-next-line no-param-reassign
         target[prop] = value;
         const newProps = { ...target };
-        this._componentDidUpdate(newProps, oldProps)
+        this._componentDidUpdate(newProps, oldProps);
         return true;
       },
       deleteProperty: () => {

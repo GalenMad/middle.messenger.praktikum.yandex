@@ -1,10 +1,16 @@
 export default class Route {
   _pathname: any;
+
   _blockClass: any;
+
   _block: null | { getContent: Function };
+
   _props: any;
+
   isPrivate: any;
+
   isNotForAuthorized: any;
+
   constructor(pathname, view, props, options) {
     const { isPrivate = false, isNotForAuthorized = false } = options;
     this._pathname = pathname;

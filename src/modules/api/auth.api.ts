@@ -14,25 +14,25 @@ class AuthAPI extends BaseAPI {
 
 export class LoginAPI extends AuthAPI {
   async create(data: Record<string, unknown>): Promise<response> {
-    const headers = this.headers;
-    return this.apiInstance.post('/signup', { data, headers }).then(res => res);
+    const { headers } = this;
+    return this.apiInstance.post('/signup', { data, headers }).then((res) => res);
   }
 
   async request(data: Record<string, unknown>): Promise<response> {
-    const headers = this.headers;
-    return this.apiInstance.post('/signin', { data, headers }).then(res => res);
+    const { headers } = this;
+    return this.apiInstance.post('/signin', { data, headers }).then((res) => res);
   }
 }
 
 export class LogoutAPI extends AuthAPI {
   async request(): Promise<response> {
-    return this.apiInstance.post('/logout').then(res => res);
+    return this.apiInstance.post('/logout').then((res) => res);
   }
 }
 
 export class UserInfoAPI extends AuthAPI {
   async request(noCache: boolean): Promise<response> {
     const headers = noCache ? { 'Cache-Control': 'no-cache' } : null;
-    return this.apiInstance.get('/user', { headers }).then(res => res);
+    return this.apiInstance.get('/user', { headers }).then((res) => res);
   }
 }

@@ -15,7 +15,6 @@ const authController = new AuthController();
 const submitCallback = authController.login.bind(authController);
 export default class Page extends FormPage {
   constructor() {
-    super(pageProps, formProps, submitCallback, {fields: 'loginFields'});
+    super(pageProps, formProps, submitCallback, { fields: 'loginFields' });
   }
 }
-

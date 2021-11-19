@@ -6,8 +6,11 @@ const ESC_KEY = 'Escape';
 
 export default class ModalWrapper extends Block {
   isOpen: boolean;
+
   addedClickHandler: Function;
+
   addedKeydownHandler: Function;
+
   constructor({ content, fixed = false, hideCallback = null }) {
     const attributes = { class: 'modal' };
     super('div', { attributes, fixed, hideCallback }, { content });
@@ -31,13 +34,13 @@ export default class ModalWrapper extends Block {
   addCloseHandlers() {
     this.addedClickHandler = this.clickHandler.bind(this);
     this.addedKeydownHandler = this.keydownHandler.bind(this);
-    this.element.addEventListener('click', this.addedClickHandler)
-    document.addEventListener('keydown', this.addedKeydownHandler)
+    this.element.addEventListener('click', this.addedClickHandler);
+    document.addEventListener('keydown', this.addedKeydownHandler);
   }
 
   removeCloseHandlers() {
-    this.element.removeEventListener('click', this.addedClickHandler)
-    document.removeEventListener('keydown', this.addedKeydownHandler)
+    this.element.removeEventListener('click', this.addedClickHandler);
+    document.removeEventListener('keydown', this.addedKeydownHandler);
   }
 
   show() {

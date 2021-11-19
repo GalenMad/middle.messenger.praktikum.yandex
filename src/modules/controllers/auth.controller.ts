@@ -10,7 +10,6 @@ const chatsController = new ChatsController();
 
 // TODO: Может контроллеры тоже сделать как синглтон?
 export default class AuthController extends BaseController {
-
   async init() {
     this.loadingModal.show();
     await this.checkAuthorization();

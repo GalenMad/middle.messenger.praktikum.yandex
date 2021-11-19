@@ -12,4 +12,3 @@ export default class SuccessModalContent extends Block {
     return compileTemplate(this.props);
   }
 }
-

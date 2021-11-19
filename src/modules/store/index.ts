@@ -1,4 +1,4 @@
-import './types.d'
+import './types.d';
 import defaultAvatar from '../../assets/images/default-avatar.svg';
 import EventBus from '../event-bus';
 import { data, changeInfoFields } from '../../data/fields';
@@ -12,12 +12,12 @@ const makeProxy = (props: {}) => {
     },
     set: (target: any, prop: string, value: any) => {
       target[prop] = value;
-      storeEvents.emit(`store-update:${prop}`, value)
+      storeEvents.emit(`store-update:${prop}`, value);
       return true;
     },
   };
   return new Proxy(props, handler);
-}
+};
 
 const RESOURCES_HOST = 'https://ya-praktikum.tech/api/v2/resources';
 
@@ -27,17 +27,15 @@ const store = makeProxy({
   userProfile: {},
   chatList: {},
   changeInfoFields: null,
-  ...data
+  ...data,
 });
 
-const updateUserProfile = (info: userInfo) => {
-  return Object.keys(userProfileLabels).map((label: string) => ({
-    name: userProfileLabels[label],
-    value: info[label]
-  }))
-}
+const updateUserProfile = (info: userInfo) => Object.keys(userProfileLabels).map((label: string) => ({
+  name: userProfileLabels[label],
+  value: info[label],
+}));
 
-export const storeEvents = new EventBus()
+export const storeEvents = new EventBus();
 
 export const get = (path: string) => {
   const arr = path.split('.');
@@ -54,7 +52,7 @@ export const get = (path: string) => {
   }
 
   return exist;
-}
+};
 
 export const mutations = {
   setAuthorizationStatus: (status: boolean) => {
@@ -67,10 +65,9 @@ export const mutations = {
     store.userProfile = updateUserProfile(info);
   },
   setUserChats: (chats: chat[]) => {
-    store.chatList = chats.map(chat => {
+    store.chatList = chats.map((chat) => {
       chat.avatar = chat.avatar ? RESOURCES_HOST + chat.avatar : defaultAvatar;
       return chat;
     });
   },
-}
-
+};

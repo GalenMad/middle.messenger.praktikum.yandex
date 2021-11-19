@@ -1,4 +1,6 @@
-import { login, required, minLength, maxLength, hasUppercase, hasDigit, notInteger } from './validators';
+import {
+  login, required, minLength, maxLength, hasUppercase, hasDigit, notInteger,
+} from './validators';
 
 export default [{
   label: 'Логин',
@@ -10,7 +12,7 @@ export default [{
     login(),
     minLength(3),
     maxLength(20),
-    notInteger()
+    notInteger(),
   ],
 },
 {
@@ -24,6 +26,6 @@ export default [{
     minLength(8),
     maxLength(40),
     hasUppercase(),
-    hasDigit()
+    hasDigit(),
   ],
 }];

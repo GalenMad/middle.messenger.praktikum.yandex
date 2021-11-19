@@ -7,6 +7,6 @@ export default [{
   type: 'file',
   accept: 'images/*',
   validators: [
-    required()
+    required(),
   ],
 }];

@@ -1,4 +1,6 @@
-import { login, required, minLength, maxLength } from './validators';
+import {
+  login, required, minLength, maxLength,
+} from './validators';
 
 export default [{
   label: 'Название чата',

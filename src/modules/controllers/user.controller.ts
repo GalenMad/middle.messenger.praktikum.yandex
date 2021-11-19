@@ -31,7 +31,7 @@ export default class UserController extends BaseController {
     if (response.error) {
       this.throwError(response);
     }
-    
+
     this.mutations.setUserInfo(response.data);
     this.successModal.show();
   }

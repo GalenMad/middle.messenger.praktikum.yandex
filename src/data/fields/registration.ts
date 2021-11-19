@@ -1,4 +1,6 @@
-import { login, required, minLength, maxLength, name, firstCapital, email, phone, hasUppercase, hasDigit, notInteger } from './validators';
+import {
+  login, required, minLength, maxLength, name, firstCapital, email, phone, hasUppercase, hasDigit, notInteger,
+} from './validators';
 
 export default [{
   label: 'Имя',
@@ -30,7 +32,7 @@ export default [{
     login(),
     minLength(3),
     maxLength(20),
-    notInteger()
+    notInteger(),
   ],
 },
 {
@@ -54,7 +56,7 @@ export default [{
     minLength(8),
     maxLength(40),
     hasUppercase(),
-    hasDigit()
+    hasDigit(),
   ],
 },
 {
@@ -64,6 +66,6 @@ export default [{
   type: 'tel',
   validators: [
     required(),
-    phone()
+    phone(),
   ],
 }];

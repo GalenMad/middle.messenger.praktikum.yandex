@@ -1,5 +1,5 @@
-interface userInfo { 
-  [key: string]: string | null 
+interface userInfo {
+  [key: string]: string | null
 }
 
 interface chat {

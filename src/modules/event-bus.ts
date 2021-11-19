@@ -1,5 +1,6 @@
 export default class EventBus {
-  listeners: Record<string, Function[]>
+  listeners: Record<string, Function[]>;
+
   constructor() {
     this.listeners = {};
   }
@@ -31,4 +32,4 @@ export default class EventBus {
       this.listeners[event].forEach((handler: Function) => handler(...args));
     }
   }
-};
+}
