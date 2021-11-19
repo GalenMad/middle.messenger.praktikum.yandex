@@ -1,4 +1,4 @@
-import HTTP from '../fetch';
+import HTTP from '../http';
 const defaultHeaders = { 'content-type': 'application/json' };
 
 export default class BaseAPI {
