@@ -1,13 +1,12 @@
 import BaseController from './base.controller';
 import { LoginAPI, LogoutAPI, UserInfoAPI } from '../api/auth.api';
-import { ChatsAPI } from '../api/chats.api';
+import ChatsController from './chats.controller';
 
 // TODO: К вопросу ниже, нужны ли эти консты здесь
 const loginAPI = new LoginAPI();
 const logoutAPI = new LogoutAPI();
 const userInfoAPI = new UserInfoAPI();
-
-const chatsAPI = new ChatsAPI();
+const chatsController = new ChatsController();
 
 // TODO: Может контроллеры тоже сделать как синглтон?
 export default class AuthController extends BaseController {
@@ -23,10 +22,9 @@ export default class AuthController extends BaseController {
     const response = await userInfoAPI.request(true);
     this.mutations.setAuthorizationStatus(!response.error);
     if (!response.error) {
-      this.mutations.setUserInfo(response.data);
+      await this.getUserInfo();
     }
   }
-
 
   async getUserInfo() {
     const response = await userInfoAPI.request();
@@ -36,13 +34,7 @@ export default class AuthController extends BaseController {
       this.throwError(response);
     }
     this.mutations.setUserInfo(response.data);
-
-    const nextResponse = await chatsAPI.request();
-    if (nextResponse.error) {
-      this.throwError(nextResponse);
-    }
-
-    this.mutations.setUserChats(nextResponse.data);
+    await chatsController.getChats();
   }
 
   async login(data: Record<string, string | number>) {

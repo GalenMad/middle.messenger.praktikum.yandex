@@ -107,7 +107,10 @@ function createStore() {
       store.userProfile = updateUserProfile(info);
     },
     setUserChats: (chats: chat[]) => {
-      store.chatList = chats;
+      store.chatList = chats.map(chat => {
+        chat.avatar = chat.avatar ? RESOURCES_HOST + chat.avatar : defaultAvatar;
+        return chat;
+      });
     },
   }
 
