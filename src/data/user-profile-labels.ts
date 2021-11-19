@@ -1,4 +1,6 @@
-export default {
+const labels: { 
+  [key: string]: string
+} = {
   first_name: 'Имя',
   second_name: 'Фамилия',
   login: 'Логин',
@@ -6,3 +8,5 @@ export default {
   email: 'Электронная почта',
   phone: 'Телефон'
 };
+
+export default labels;

@@ -1,41 +1,10 @@
-import defaultAvatar from '../assets/images/default-avatar.svg';
-import EventBus from './event-bus';
-import { data, changeInfoFields } from '../data/fields';
-import userProfileLabels from '../data/user-profile-labels';
+import './types.d'
+import defaultAvatar from '../../assets/images/default-avatar.svg';
+import EventBus from '../event-bus';
+import { data, changeInfoFields } from '../../data/fields';
+import userProfileLabels from '../../data/user-profile-labels';
 
-interface userInfo {
-  id: number
-  email: string
-  login: string
-  phone: string
-  first_name: string
-  second_name: string
-  avatar: null | string,
-  display_name: null | string,
-}
-
-interface chat {
-  "id": 123,
-  "title": "my-chat",
-  "avatar": "/123/avatar1.jpg",
-  "unread_count": 15,
-  "last_message": {
-    "user": {
-      "first_name": "Petya",
-      "second_name": "Pupkin",
-      "avatar": "/path/to/avatar.jpg",
-      "email": "my@email.com",
-      "login": "userLogin",
-      "phone": "8(911)-222-33-22"
-    },
-    "time": "2020-01-02T14:22:22.000Z",
-    "content": "this is message content"
-  }
-}
-
-const RESOURCES_HOST = 'https://ya-praktikum.tech/api/v2/resources';
-
-function makeProxy(props: {}) {
+const makeProxy = (props: {}) => {
   const handler = {
     get: (target: any, prop: string) => {
       const value = target[prop];
@@ -50,6 +19,8 @@ function makeProxy(props: {}) {
   return new Proxy(props, handler);
 }
 
+const RESOURCES_HOST = 'https://ya-praktikum.tech/api/v2/resources';
+
 const store = makeProxy({
   isAuthorized: false,
   userData: {},
@@ -59,8 +30,8 @@ const store = makeProxy({
   ...data
 });
 
-const updateUserProfile = (info) => {
-  return Object.keys(userProfileLabels).map(label => ({
+const updateUserProfile = (info: userInfo) => {
+  return Object.keys(userProfileLabels).map((label: string) => ({
     name: userProfileLabels[label],
     value: info[label]
   }))
