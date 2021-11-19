@@ -4,7 +4,6 @@ import './styles.scss';
 
 const ESC_KEY = 'Escape';
 
-// TODO: Фикс высокой модалки: на маленьких разрешениях она не помещается. Нужен скролл
 export default class ModalWrapper extends Block {
   isOpen: boolean;
   addedClickHandler: Function;
