@@ -24,11 +24,23 @@ export default class SuccessModalController {
 
   show() {
     if (!this.modalInstance) {
-      this.modalInstance = new this.modalClass({ content: this.modalContentInstance });
+      this.modalInstance = new this.modalClass({ content: this.modalContentInstance, hideCallback: this.hide.bind(this) });
       this.modal = this.modalInstance.getContent();
       document.querySelector('body')?.append(this.modal);
     } 
     
-    this.modalInstance?.show();
+    // TODO: Узнать как избавиться от избыточных проверок для TS
+    // ↓↓↓↓↓↓↓↓↓↓↓
+    if (this.modal) {
+      document.querySelector('body')?.append(this.modal);
+      this.modalInstance?.show();
+    }
+  }
+
+  hide() {
+    if (this.modalInstance) {
+      this.modalInstance?.hide();
+      this.modal?.remove();
+    }
   }
 }

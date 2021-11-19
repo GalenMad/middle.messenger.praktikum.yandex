@@ -26,6 +26,7 @@ export default class LoadingModalController {
 
   hide() {
     if (this.isMounted) {
+      console.log(this.modalInstance);
       this.modalInstance.hide();
       this.modal.remove();
       this.isMounted = false;

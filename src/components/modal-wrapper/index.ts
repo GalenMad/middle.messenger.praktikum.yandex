@@ -8,9 +8,9 @@ export default class ModalWrapper extends Block {
   isOpen: boolean;
   addedClickHandler: Function;
   addedKeydownHandler: Function;
-  constructor({ content, fixed = false }) {
+  constructor({ content, fixed = false, hideCallback = null }) {
     const attributes = { class: 'modal' };
-    super('div', { attributes, fixed }, { content });
+    super('div', { attributes, fixed, hideCallback }, { content });
     this.isOpen = false;
   }
 
@@ -56,6 +56,9 @@ export default class ModalWrapper extends Block {
       this.element.classList.remove('show');
       document.querySelector('body')?.classList.remove('show-modal');
       this.isOpen = false;
+      if (this.props.hideCallback) {
+        this.props.hideCallback();
+      }
       if (!this.fixed) {
         this.removeCloseHandlers();
       }

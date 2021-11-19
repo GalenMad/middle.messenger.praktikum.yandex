@@ -10,7 +10,7 @@ interface errorData {
 }
 
 export default class BaseController {
-  router: Router;
+  router: typeof Router;
   getAuthorizationStatus: () => boolean;
   mutations: { setAuthorizationStatus: (status: boolean) => void; setUserInfo: (info: userInfo) => void; };
   loadingModal: LoadingModalController;
