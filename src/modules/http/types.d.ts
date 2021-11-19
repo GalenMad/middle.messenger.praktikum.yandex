@@ -1,15 +1,7 @@
-declare enum METHODS {
-  GET = 'GET',
-  POST = 'POST',
-  PUT = 'PUT',
-  PATCH = 'PATCH',
-  DELETE = 'DELETE',
-}
-
 interface requestOptions {
   timeout?: number,
   data?: Record<string, string | number | unknown>,
-  method?: METHODS | string,
+  method?: string,
   headers?: Record<string, string>
 }
 

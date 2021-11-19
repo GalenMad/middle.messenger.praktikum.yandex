@@ -1,5 +1,13 @@
 import './types.d';
 
+enum METHODS {
+  GET = 'GET',
+  POST = 'POST',
+  PUT = 'PUT',
+  PATCH = 'PATCH',
+  DELETE = 'DELETE',
+}
+
 const stringifyQuery = (data: Record<string, string | number | unknown>) => {
   if (!data || typeof data !== 'object') {
     return '';
