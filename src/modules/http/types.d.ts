@@ -1,12 +1,12 @@
-interface requestOptions {
+interface RequestOptions {
   timeout?: number,
   data?: Record<string, string | number | unknown>,
   method?: string,
   headers?: Record<string, string>
 }
 
-interface response {
+interface RequestResponse {
   error: boolean,
-  status: number | string,
+  status: string | number,
   data: { reason?: string } | string | null
 }

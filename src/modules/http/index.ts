@@ -37,18 +37,18 @@ class HTTPTransport {
     this._hand = hand;
   }
 
-  get = (url: string, options: requestOptions = {}) => {
+  get = (url: string, options: RequestOptions = {}) => {
     const path = options.data ? `${url}?${stringifyQuery(options.data)}` : url;
     return this.request(path, { ...options, method: METHODS.GET });
   };
 
-  put = (url: string, options: requestOptions = {}) => this.request(url, { ...options, method: METHODS.PUT });
+  put = (url: string, options: RequestOptions = {}) => this.request(url, { ...options, method: METHODS.PUT });
 
-  post = (url: string, options: requestOptions = {}) => this.request(url, { ...options, method: METHODS.POST });
+  post = (url: string, options: RequestOptions = {}) => this.request(url, { ...options, method: METHODS.POST });
 
-  delete = (url: string, options: requestOptions = {}) => this.request(url, { ...options, method: METHODS.DELETE });
+  delete = (url: string, options: RequestOptions = {}) => this.request(url, { ...options, method: METHODS.DELETE });
 
-  request = (url: string, options: requestOptions): Promise<response> => {
+  request = (url: string, options: RequestOptions): Promise<RequestResponse> => {
     const {
       method = METHODS.GET,
       headers = null,
@@ -63,7 +63,7 @@ class HTTPTransport {
 
       xhr.open(method, this._host + this._hand + path);
       xhr.timeout = timeout;
-      xhr.withCredentials = true;
+      // xhr.withCredentials = true;
 
       if (headers) {
         Object.keys(headers).forEach((header) => xhr.setRequestHeader(header, headers[header]));
@@ -71,9 +71,9 @@ class HTTPTransport {
 
       const getResponse = (
         error = false,
-        status: number | string = xhr.status,
-        data: {} | null = getJSONFromString(xhr.responseText),
-      ): response => ({ error, status, data });
+        status: string | number = xhr.status,
+        responseData: {} | null = getJSONFromString(xhr.responseText),
+      ): RequestResponse => ({ error, status, data: responseData });
 
       xhr.onload = () => resolve(getResponse(!(xhr.status >= 200 && xhr.status < 300)));
       xhr.onabort = () => resolve(getResponse(true, 'abort', null));
