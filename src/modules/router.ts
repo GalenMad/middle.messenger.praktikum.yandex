@@ -1,64 +1,44 @@
 import Route from './route';
 
-function createRouter() {
+enum ADDRESSES {
+  ERROR = '/error-404',
+  AUTH = '/sign-in',
+  MAIN = '/'
+}
 
-  enum ADDRESSES {
-    ERROR = '/error-404',
-    AUTH = '/sign-in',
-    MAIN = '/'
+const ROOT = '#app';
+
+class Router {
+  routes: any[];
+  history: History;
+  _currentRoute: any;
+  _rootQuery: string;
+  getAuthorizationStatus: () => boolean;
+
+  constructor(rootQuery: string = ROOT) {
+    this.routes = [];
+    this.history = window.history;
+    this._currentRoute = null;
+    this.getAuthorizationStatus = () => false;
+    this._rootQuery = rootQuery;
   }
 
-  const routes: Route[] = [];
-  const history = window.history;
-  const rootQuery = '#app';
-  let getAuthorizationStatus = () => false;
-  let currentRoute: undefined | Route = undefined;
-
-  const replaceRoute = (pathname: string) => {
-    history.replaceState({}, '', pathname);
-    currentRoute = getRoute(pathname);
-    currentRoute?.render();
-  }
-
-  const onRoute = (pathname: string) => {
-    const route = getRoute(pathname);
-
-    if (currentRoute && currentRoute !== route) {
-      currentRoute.leave();
-    }
-
-    if (currentRoute === route) {
-      return;
-    }
-
-    const authorizationStatus = getAuthorizationStatus();
-
-    if (!route) {
-      replaceRoute(ADDRESSES.ERROR);
-    } else if (route.isPrivate && !authorizationStatus) {
-      replaceRoute(ADDRESSES.AUTH);
-    } else if (route.isNotForAuthorized && authorizationStatus) {
-      replaceRoute(ADDRESSES.MAIN);
-    } else {
-      currentRoute = route;
-      route.render();
-    }
-  }
-
-  const getRoute = (pathname: string) => {
-    return routes.find(route => route.match(pathname));
-  }
-
-  const use = (pathname: string, block: unknown, props: {}, options: {}) => {
-    const route = new Route(pathname, block, { rootQuery: rootQuery, ...props }, options);
-    routes.push(route);
+  use(pathname: string, block: unknown, props: {}, options: {}) {
+    const route = new Route(pathname, block, { rootQuery: this._rootQuery, ...props }, options);
+    this.routes.push(route);
     return this;
-  };
+  }
+
+  replaceRoute (pathname: string) {
+    history.replaceState({}, '', pathname);
+    this._currentRoute = this.getRoute(pathname);
+    this._currentRoute?.render();
+  }
 
   // TODO: Костыль с передачей метода уточнения статуса авторизации
-  const start = async function (authorizationStatusGetter?: () => boolean) {
-    const root = document.querySelector(rootQuery);
-    getAuthorizationStatus = authorizationStatusGetter || getAuthorizationStatus;
+  async start(authorizationStatusGetter?: () => boolean) {
+    const root = document.querySelector(this._rootQuery);
+    this.getAuthorizationStatus = authorizationStatusGetter || this.getAuthorizationStatus;
 
     if (!root) {
       throw new Error('Неверный селектор root-элемента')
@@ -70,40 +50,65 @@ function createRouter() {
       const link = evt.path.find((elem: HTMLElement) => elem.tagName === 'A' && elem.href)
       if (link) {
         const pathname = link.getAttribute('href');
-        go(pathname);
+        this.go(pathname);
         evt.preventDefault();
       }
     });
 
     window.addEventListener('popstate', (evt) => {
       if (evt.currentTarget) {
-        onRoute(evt.currentTarget.location.pathname);
+        this._onRoute(evt.currentTarget.location.pathname);
       } else {
         throw new Error('Не обнаружен evt.currentTarget');
       }
     });
 
-    onRoute(window.location.pathname);
+    this._onRoute(window.location.pathname);
     return this;
-  };
-
-  const go = (pathname: string) => {
-    history.pushState({}, '', pathname);
-    onRoute(pathname);
-  };
-
-  const back = () => history.back();
-  const forward = () => history.forward();
-
-  const methods = {
-    use,
-    start,
-    forward,
-    back,
-    go
   }
 
-  return Object.freeze(methods)
+  _onRoute(pathname: string) {
+    const route = this.getRoute(pathname);
+
+    if (this._currentRoute && this._currentRoute !== route) {
+      this._currentRoute.leave();
+    }
+
+    if (this._currentRoute === route) {
+      return;
+    }
+
+    const isAuthorized = this.getAuthorizationStatus();
+
+    // TODO: Узнать что уместнее — редирект или рендер с сохранением адреса
+    if (!route) {
+      this.replaceRoute(ADDRESSES.ERROR);
+    } else if (route.isPrivate && !isAuthorized) {
+      this.replaceRoute(ADDRESSES.AUTH);
+    } else if (route.isNotForAuthorized && isAuthorized) {
+      this.replaceRoute(ADDRESSES.MAIN);
+    } else {
+      this._currentRoute = route;
+      route.render();
+    }
+  }
+
+  go(pathname: string) {
+    this.history.pushState({ a: 2 }, '', pathname);
+    this._onRoute(pathname);
+  }
+
+  back() {
+    this.history.back();
+  }
+
+  forward() {
+    this.history.forward();
+  }
+
+  getRoute(pathname: string) {
+    return this.routes.find(route => route.match(pathname));
+  }
 }
 
-export default createRouter();
+export default new Router();
