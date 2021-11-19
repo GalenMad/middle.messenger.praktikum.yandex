@@ -69,9 +69,9 @@ function createStore() {
     getUserChats: () => {
       return chatList?.map(item => {
         item.avatar = item.avatar || defaultAvatar;
-        item.last_message = item.last_message || {time: '—', content: 'Пусто…'};
-        return item;
-      })
+        item.last_message = item.last_message || { time: '—', content: 'Пусто…' };
+        return [item, item, item, item];
+      }).flat();
     },
     getRawUserData: () => userInfo,
     getUserName: () => userInfo?.first_name
@@ -85,7 +85,7 @@ function createStore() {
       userInfo = info;
       EventBus.emit(EVENTS.UPDATE_INFO);
     },
-    setUserChats: (chats: chat[]) => { 
+    setUserChats: (chats: chat[]) => {
       chatList = chats;
       EventBus.emit(EVENTS.UPDATE_INFO);
     },

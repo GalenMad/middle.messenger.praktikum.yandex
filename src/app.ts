@@ -8,6 +8,13 @@ import AuthController from './modules/controllers/auth.controller';
 // TODO: Рефактор жизненного цикла компонента
 
 // TODO: Поправить именование классов по БЭМ
-pages.forEach(({block, path, props = {}, options = {}}) => Router.use(path, block, props, options));
+pages.forEach(({ block, path, props = {}, options = {} }) => Router.use(path, block, props, options));
 new AuthController().init();
+
+// Функция селектор
+// Принимает путь строкой
+// Возвращает объект Proxy TODO: Можно ли оборачивать примитивы в Proxy
+// Вешаем на event bus событие з
+// На set обновляет 
+
 
