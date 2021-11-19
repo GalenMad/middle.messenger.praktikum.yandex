@@ -1,9 +1,10 @@
-import { login, required, minLength, maxLength, name, firstCapital, email, phone, hasUppercase, hasDigit, notInteger } from '../utils/validators';
+import { login, required, minLength, maxLength, name, firstCapital, email, phone, notInteger } from './validators';
 
-export default [{
+export default (data: { [x: string]: any; }) => [{
   label: 'Имя',
   id: 'first_name',
   name: 'first_name',
+  value: data['first_name'],
   validators: [
     required(),
     name(),
@@ -14,6 +15,7 @@ export default [{
   label: 'Фамилия',
   id: 'second_name',
   name: 'second_name',
+  value: data['second_name'],
   validators: [
     required(),
     name(),
@@ -24,7 +26,7 @@ export default [{
   label: 'Логин',
   id: 'login',
   name: 'login',
-  value: 'amvoronkov',
+  value: data['login'],
   validators: [
     required(),
     login(),
@@ -34,9 +36,21 @@ export default [{
   ],
 },
 {
+  label: 'Имя в чате',
+  id: 'display_name',
+  name: 'display_name',
+  value: data['display_name'],
+  validators: [
+    required(),
+    maxLength(20),
+    notInteger()
+  ],
+},
+{
   label: 'Электронная почта',
   id: 'email',
   name: 'email',
+  value: data['email'],
   type: 'email',
   validators: [
     required(),
@@ -44,23 +58,10 @@ export default [{
   ],
 },
 {
-  label: 'Пароль',
-  id: 'password',
-  name: 'password',
-  type: 'password',
-  value: 'test@test.test1D',
-  validators: [
-    required(),
-    minLength(8),
-    maxLength(40),
-    hasUppercase(),
-    hasDigit()
-  ],
-},
-{
   label: 'Телефон',
   id: 'phone',
   name: 'phone',
+  value: data['phone'],
   type: 'tel',
   validators: [
     required(),

@@ -4,14 +4,11 @@ import './styles.scss';
 import Form from '../../components/form';
 import ModalWrapper from '../../components/modal-wrapper';
 import ChatsController from '../../modules/controllers/chats.controller';
-import { fields } from '../../data';
 
 const chatsController = new ChatsController();
-const { createChatFields } = fields
 
 const createNewChatModal = () => {
   const formProps = {
-    fields: createChatFields,
     buttonText: 'Назвать',
     title: 'Назовите чат',
     submitCallback: (data) => {
@@ -20,7 +17,7 @@ const createNewChatModal = () => {
     }
   }
 
-  const form = new Form(formProps);
+  const form = new Form(formProps, {fields: 'createChatFields'});
   const modal = new ModalWrapper({ content: form });
   return modal;
 }

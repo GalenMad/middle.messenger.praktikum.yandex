@@ -1,4 +1,4 @@
-import { login, required, minLength, maxLength, hasUppercase, hasDigit, notInteger } from '../utils/validators';
+import { login, required, minLength, maxLength, hasUppercase, hasDigit, notInteger } from './validators';
 
 export default [{
   label: 'Логин',

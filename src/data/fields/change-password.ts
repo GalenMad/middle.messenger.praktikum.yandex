@@ -1,4 +1,4 @@
-import { required, minLength, maxLength, hasUppercase, hasDigit } from '../utils/validators';
+import { required, minLength, maxLength, hasUppercase, hasDigit } from './validators';
 
 export default [{
   label: 'Старый пароль',

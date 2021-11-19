@@ -1,5 +1,7 @@
 import defaultAvatar from '../assets/images/default-avatar.svg';
 import EventBus from './event-bus';
+import { data, changeInfoFields } from '../data/fields';
+import userProfileLabels from '../data/user-profile-labels';
 
 interface userInfo {
   id: number
@@ -33,15 +35,6 @@ interface chat {
 
 const RESOURCES_HOST = 'https://ya-praktikum.tech/api/v2/resources';
 
-const userDataLabels = {
-  first_name: 'Имя',
-  second_name: 'Фамилия',
-  login: 'Логин',
-  display_name: 'Имя в чате',
-  email: 'Электронная почта',
-  phone: 'Телефон'
-}
-
 function makeProxy(props: {}) {
   const handler = {
     get: (target: any, prop: string) => {
@@ -62,11 +55,13 @@ const store = makeProxy({
   userData: {},
   userProfile: {},
   chatList: {},
+  changeInfoFields: null,
+  ...data
 });
 
 const updateUserProfile = (info) => {
-  return Object.keys(userDataLabels).map(label => ({
-    name: userDataLabels[label],
+  return Object.keys(userProfileLabels).map(label => ({
+    name: userProfileLabels[label],
     value: info[label]
   }))
 }
@@ -97,6 +92,7 @@ export const mutations = {
   setUserInfo: (info: userInfo) => {
     info.avatar = info.avatar ? RESOURCES_HOST + info.avatar : defaultAvatar;
     store.userInfo = info;
+    store.changeInfoFields = changeInfoFields(info);
     store.userProfile = updateUserProfile(info);
   },
   setUserChats: (chats: chat[]) => {
