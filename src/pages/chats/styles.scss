@@ -12,21 +12,21 @@
 }
 
 .chats-aside {
-  padding: 16px;
   background-color: $base-dark-overlay;
   position: relative;
   z-index: 109;
-  box-shadow: 2px 0px 8px rgb(0 0 0 / 15%);
+  box-shadow: -6px 5px 8px rgb(0 0 0 / 30%);
 
   &_header {
-    padding-bottom: 18px;
-    border-bottom: 2px solid $base-grey;
+    padding: 16px;
+    // border-bottom: 2px solid $base-grey;
     display: grid;
     grid-template-columns: 120px 1fr;
     grid-template-rows: 48px 48px;
     grid-column-gap: 10px;
     grid-row-gap: 10px;
-    margin-bottom: 10px;
+    box-shadow: -6px 5px 8px rgb(0 0 0 / 10%);
+    // margin-bottom: 10px;
 
     .button {
       grid-column-start: 1;
@@ -35,11 +35,11 @@
   }
 
   &_tape {
-    max-height: calc(100vh - 100px);
+    // TODO: Сделать фикс высоты
+    max-height: calc(100vh - 140px);
     overflow-y: auto;
-    margin-right: -12px;
-    padding-right: 15px;
-    padding-top: 10px;
+    padding: 16px 4px 0;
+    margin-top: 2px;
   }
 }
 
@@ -106,9 +106,15 @@
 .chat-item {
   display: flex;
   align-items: stretch;
-  padding-bottom: 16px;
-  margin-bottom: 16px;
+  padding: 16px;
   border-bottom: 1px solid $grey-filler;
+  width: 100%;
+  color: white;
+  transition: 0.2s ease-in background-color;
+
+  &:focus, &:hover {
+    background-color: $sky-blue-overlay_darker;
+  }
 
   &:last-of-type {
     border-bottom-color: transparent;
@@ -125,6 +131,9 @@
     max-height: 68px;
     flex-grow: 1;
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
   }
 
   &_name {
