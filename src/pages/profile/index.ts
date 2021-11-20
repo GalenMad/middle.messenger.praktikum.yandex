@@ -26,38 +26,35 @@ const createChangeAvatarModal = () => {
 };
 
 const createChangePasswordModal = () => {
-  const changePasswordFormProps = {
+  const props = {
     buttonText: 'Отправить',
     title: 'Изменить пароль',
     submitCallback: (data) => {
-      changePasswordModal.hide();
+      modal.hide();
       userController.updateUserPassword(data);
     },
   };
 
-  const changePasswordForm = new Form(changePasswordFormProps, { fields: 'changePasswordFields' });
-  const changePasswordModal = new ModalWrapper({
-    content: changePasswordForm,
-  });
-
-  return changePasswordModal;
+  const form = new Form(props, { fields: 'changePasswordFields' });
+  const modal = new ModalWrapper({ content: form });
+  return modal;
 };
 
 const createChangeInfoModal = () => {
-  const changeInfoFormProps = {
+  const props = {
     buttonText: 'Отправить',
     title: 'Изменить информацию',
     // TODO: Добавить валидацию на данные, полностью идентичные текущим
     submitCallback: (data) => {
-      changeInfoModal.hide();
+      modal.hide();
       userController.updateUserInfo(data);
     },
   };
 
   // TODO: Прикрутить чистку валидации на закрытие модалки
-  const changeInfoForm = new Form(changeInfoFormProps, { fields: 'changeInfoFields' });
-  const changeInfoModal = new ModalWrapper({ content: changeInfoForm });
-  return changeInfoModal;
+  const form = new Form(props, { fields: 'changeInfoFields' });
+  const modal = new ModalWrapper({ content: form });
+  return modal;
 };
 
 class Page extends Block {
