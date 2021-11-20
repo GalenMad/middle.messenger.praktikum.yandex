@@ -4,21 +4,16 @@
 import { get, storeEvents } from './store';
 
 // TODO: Сделать тип более глобальным
-interface props {
-  name?: string,
-  type?: string,
-  id?: string,
-  events?: Array<{
-    type: string,
-    cb: Function
-  }>,
-  attributes?: Record<string, string>,
-  validators?: Record<string, {
-    argument: number,
-    func: Function,
-    message: string | Function
-  }>,
-  fields?: Array<{}>
+interface Props {
+  [key: string]: unknown
+}
+
+interface Selectors {
+  [key: string]: string
+}
+
+interface ContentChildren {
+  [key: string]: string
 }
 
 class Block {
@@ -30,9 +25,12 @@ class Block {
 
   _element: HTMLElement;
 
-  _meta: { tagName: string; props?: {}; };
+  _meta: {
+    tagName: string;
+    props?: Props;
+  };
 
-  children: Record<string, Block>;
+  children: ContentChildren;
 
   props: { events: [], attributes: Record<string, string | number> };
 
@@ -40,10 +38,10 @@ class Block {
     return this._element;
   }
 
-  constructor(tagName = 'div', props: props = {}, children = {}, selectors = {}) {
+  constructor(tagName = 'div', props: Props = {}, children: ContentChildren = {}, selectors: Selectors = {}) {
     this._meta = { tagName, props };
-    const selectorsData = {};
-    Object.keys(selectors).forEach((selectorName) => {
+    const selectorsData: Selectors = {};
+    Object.keys(selectors).forEach((selectorName: string) => {
       const selector = selectors[selectorName];
       const head = selector.split('.')[0];
       selectorsData[selectorName] = get(selector);
