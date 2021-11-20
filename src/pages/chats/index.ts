@@ -22,20 +22,18 @@ const createNewChatModal = () => {
   return modal;
 };
 
+// TODO: Добавить в доку инфо про stopPropaganation
+
 class Page extends Block {
   constructor(props = {}) {
     const createChatModal = createNewChatModal();
     const events = [{
       type: 'click',
       selector: '#create-chat',
-      cb: (evt: Event) => {
-        evt.stopPropagation();
-        createChatModal.show();
-      },
+      cb: () => createChatModal.show(),
     }, {
       type: 'click',
       cb: (evt: Event) => {
-        evt.stopPropagation();
         if (evt.path.some((elem: HTMLElement) => elem.classList && elem.classList.contains('chat-item'))) {
           const chatItemId = evt.path.find((elem: HTMLElement) => elem.classList.contains('chat-item')).id;
           chatsController.setActiveChat(chatItemId);
