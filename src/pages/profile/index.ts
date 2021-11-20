@@ -11,10 +11,10 @@ const authController = new AuthController();
 const userController = new UserController();
 
 // TODO: Создать единую обёртку с логиков для форм в модалках
-const createFormModal = (fieldsSelector: string, callback: Function) => {
+const createFormModal = (title: string, fieldsSelector: string, callback: Function) => {
   const props = {
     buttonText: 'Отправить',
-    title: 'Изменить аватар',
+    title,
     submitCallback: (data: { [key: string]: unknown }) => {
       // eslint-disable-next-line @typescript-eslint/no-use-before-define
       modal.hide();
@@ -29,9 +29,9 @@ const createFormModal = (fieldsSelector: string, callback: Function) => {
 
 class Page extends Block {
   constructor(props = {}) {
-    const changePasswordModal = createFormModal('changePasswordFields', userController.updateUserPassword.bind(userController));
-    const changeInfoModal = createFormModal('changeInfoFields', userController.updateUserInfo.bind(userController));
-    const changeAvatarModal = createFormModal('changeAvatarFields', userController.updateUserAvatar.bind(userController));
+    const changePasswordModal = createFormModal('Изменить пароль', 'changePasswordFields', userController.updateUserPassword.bind(userController));
+    const changeInfoModal = createFormModal('Изменить данные', 'changeInfoFields', userController.updateUserInfo.bind(userController));
+    const changeAvatarModal = createFormModal('Изменить аватар', 'changeAvatarFields', userController.updateUserAvatar.bind(userController));
 
     const events = [{
       type: 'click',

@@ -3,6 +3,7 @@ import compileTemplate from './template.pug';
 import './styles.scss';
 import Form from '../../components/form';
 import ModalWrapper from '../../components/modal-wrapper';
+import ChatInner from './chat-inner';
 import ChatsController from '../../modules/controllers/chats.controller';
 
 const chatsController = new ChatsController();
@@ -11,7 +12,7 @@ const createNewChatModal = () => {
   const formProps = {
     buttonText: 'Назвать',
     title: 'Назовите чат',
-    submitCallback: (data) => {
+    submitCallback: (data: { [key: string]: any }) => {
       modal.hide();
       chatsController.createChat(data);
     },
@@ -24,9 +25,10 @@ const createNewChatModal = () => {
 
 // TODO: Добавить в доку инфо про stopPropaganation
 
-class Page extends Block {
+export default class Page extends Block {
   constructor(props = {}) {
     const createChatModal = createNewChatModal();
+    const chatInner = new ChatInner();
     const events = [{
       type: 'click',
       selector: '#create-chat',
@@ -41,12 +43,10 @@ class Page extends Block {
       },
     }];
     const selectors = { avatar: 'userInfo.avatar', chats: 'chatList', activeChat: 'activeChat' };
-    super('div', { ...props, events }, { createChatModal }, selectors);
+    super('div', { ...props, events }, { createChatModal, chatInner }, selectors);
   }
 
   render() {
     return compileTemplate(this.props);
   }
 }
-
-export default Page;

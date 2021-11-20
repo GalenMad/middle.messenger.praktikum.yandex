@@ -24,21 +24,7 @@ main.chats
     section.chat-feed
         if activeChat
             div.chat
-                header.chat_header
-                    article.chat_heading 
-                        img.chat_avatar(src=activeChat.avatar, alt=activeChat.title)
-                        p.chat_title= activeChat.title
-                    button.chat_options.link Добавить
-                section.chat_body
-                    if messages
-                        each message in messages
-                            article(class=message.my ? 'message' : 'message message_user')
-                                span.message_content= message.content
-                                span.message_time= message.time
-                section.chat_footer
-                    button.chat_add-attachment
-                    textarea.chat_input(placeholder="Написать сообщение…")
-                    button.chat_submit-message
+            template(data-component="chatInner")
         else
             div.chat-feed_empty
                 span.chat-feed_plug У тебя тут чё, реально одни Андреи?
