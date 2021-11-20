@@ -1,5 +1,6 @@
 import {
-  login, required, minLength, maxLength, name, firstCapital, email, phone, hasUppercase, hasDigit, notInteger,
+  login, required, minLength, maxLength, name, firstCapital,
+  email, phone, hasUppercase, hasDigit, notInteger,
 } from './validators';
 
 export default [{
