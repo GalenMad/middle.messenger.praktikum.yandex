@@ -20,10 +20,10 @@
 
   &_header {
     padding: 16px;
-    display: grid;
-    grid-template: 48px 48px / 120px 1fr;
-    grid-gap: 10px;
     box-shadow: -6px 5px 4px rgb(0 0 0 / 5%);
+    display: grid;
+    grid-template: 48px 48px / 80px 1fr;
+    grid-gap: 10px;
 
     .button {
       grid-column: 1 / 3;
@@ -43,25 +43,27 @@
   box-shadow: 0 4px 4px $base-dark;
   border-radius: 4px 6px;
   box-sizing: border-box;
-  padding: 5px;
+  padding: 4px;
   text-decoration: none;
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  height: 100%;
+  height: 48px;
 
   &_avatar {
     width: 40px;
     height: 40px;
-    margin-right: 12px;
+    margin-right: 4px;
     border-radius: 50%;
   }
 
-  &_name {
-    text-decoration: none;
-    font-weight: bold;
-    font-size: 24px;
-    color: $base-dark;
+  .icon-holder {
+    background-image: url('/src/assets/images/menu-left.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    width: 28px;
+    height: 24px;
   }
 }
 
@@ -77,6 +79,8 @@
   border-radius: 5px;
   outline: 0;
   border: 0;
+  height: 48px;
+  flex: 1;
   font-weight: 500;
   font-size: 20px;
   color: $base-dark;
