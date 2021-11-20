@@ -9,6 +9,7 @@ import AuthController from './modules/controllers/auth';
 // TODO: Рефактор жизненного цикла компонента
 
 // TODO: Поправить именование классов по БЭМ
+// TODO: На FireFox что-то пошло не так, надо поправить
 pages.forEach(({
   block, path, props = {}, options = {},
 }) => Router.use(path, block, props, options));
