@@ -14,7 +14,7 @@ const REG_EXP = {
 
 const testRegExp = (regexp: RegExp, value: string) => regexp.test(value);
 
-const req = (value: string | boolean | Date) => {
+const req = (value: string | boolean | Date | {}) => {
   if (Array.isArray(value)) return !!value.length;
 
   if (value === undefined || value === null) {
@@ -30,7 +30,7 @@ const req = (value: string | boolean | Date) => {
   }
 
   if (typeof value === 'object') {
-    return false;
+    return true;
   }
 
   return Boolean(String(value).length);
@@ -39,6 +39,7 @@ const req = (value: string | boolean | Date) => {
 const DECL_CASES = [2, 0, 1, 1, 1, 2];
 const LENGTH_TITLES = ['символа', 'символов', 'символов'];
 
+// eslint-disable-next-line max-len
 const declOfNum = (number: number) => LENGTH_TITLES[(number % 100 > 4 && number % 100 < 20) ? 2 : DECL_CASES[(number % 10 < 5) ? number % 10 : 5]];
 
 export const minLength = (length: number) => {
@@ -120,7 +121,7 @@ export const hasDigit = () => {
 };
 
 export const required = () => {
-  const validator = (value: string): boolean => req(value.trim());
+  const validator = (value: string): boolean => req(typeof value === 'string' ? value.trim() : value);
   const message = 'Обязательное поле';
   return (value: string) => (validator(value) ? false : message);
 };

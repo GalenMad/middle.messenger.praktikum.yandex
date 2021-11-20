@@ -10,58 +10,27 @@ import './styles.scss';
 const authController = new AuthController();
 const userController = new UserController();
 
-const createChangeAvatarModal = () => {
+const createFormModal = (fieldsSelector: string, callback: Function) => {
   const props = {
     buttonText: 'Отправить',
     title: 'Изменить аватар',
-    submitCallback: (data) => {
+    submitCallback: (data: { [key: string]: unknown }) => {
+      // eslint-disable-next-line @typescript-eslint/no-use-before-define
       modal.hide();
-      userController.updateUserAvatar(data);
+      callback(data);
     },
   };
 
-  const form = new Form(props, { fields: 'changeAvatarFields' });
-  const modal = new ModalWrapper({ content: form });
-  return modal;
-};
-
-const createChangePasswordModal = () => {
-  const props = {
-    buttonText: 'Отправить',
-    title: 'Изменить пароль',
-    submitCallback: (data) => {
-      modal.hide();
-      userController.updateUserPassword(data);
-    },
-  };
-
-  const form = new Form(props, { fields: 'changePasswordFields' });
-  const modal = new ModalWrapper({ content: form });
-  return modal;
-};
-
-const createChangeInfoModal = () => {
-  const props = {
-    buttonText: 'Отправить',
-    title: 'Изменить информацию',
-    // TODO: Добавить валидацию на данные, полностью идентичные текущим
-    submitCallback: (data) => {
-      modal.hide();
-      userController.updateUserInfo(data);
-    },
-  };
-
-  // TODO: Прикрутить чистку валидации на закрытие модалки
-  const form = new Form(props, { fields: 'changeInfoFields' });
+  const form = new Form(props, { fields: fieldsSelector });
   const modal = new ModalWrapper({ content: form });
   return modal;
 };
 
 class Page extends Block {
   constructor(props = {}) {
-    const changePasswordModal = createChangePasswordModal();
-    const changeInfoModal = createChangeInfoModal();
-    const changeAvatarModal = createChangeAvatarModal();
+    const changePasswordModal = createFormModal('changePasswordFields', userController.updateUserPassword.bind(userController));
+    const changeInfoModal = createFormModal('changeInfoFields', userController.updateUserInfo.bind(userController));
+    const changeAvatarModal = createFormModal('changeAvatarFields', userController.updateUserAvatar.bind(userController));
 
     const events = [{
       type: 'click',
