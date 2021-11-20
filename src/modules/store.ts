@@ -115,6 +115,7 @@ export const mutations = {
     store.changeInfoFields = changeInfoFields(info);
     store.userProfile = updateUserProfile(info);
   },
+  // TODO: При создании нового чата выводить сообщение о создании
   setUserChats: (chats: ChatItem[]) => {
     store.chatList = chats.map((chat) => {
       chat.avatar = chat.avatar ? RESOURCES_HOST + chat.avatar : defaultAvatar;

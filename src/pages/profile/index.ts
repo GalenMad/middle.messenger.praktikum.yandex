@@ -3,7 +3,7 @@ import Form from '../../components/form';
 import ModalWrapper from '../../components/modal-wrapper';
 import compileTemplate from './template.pug';
 import AuthController from '../../modules/controllers/auth.controller';
-import UserController from '../../modules/controllers/user.controller';
+import UserController from '../../modules/controllers/current-user.controller';
 import './styles.scss';
 
 // TODO: Подумать что можно сделать с этими вечными объявлениями классов
