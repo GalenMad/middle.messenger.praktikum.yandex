@@ -4,7 +4,7 @@ import EventBus from './event-bus';
 import { data, changeInfoFields } from '../data/fields';
 import userProfileLabels from '../data/user-profile-labels';
 
-interface UserData {
+interface UserInfo {
   [key: string]: string;
 }
 
@@ -42,18 +42,18 @@ interface FormField {
 }
 
 interface GlobalStore {
-  [index: string]: boolean | UserData | UserProfileItem[] | ChatItem[] | FormField[];
+  [index: string]: boolean | UserInfo | UserProfileItem[] | ChatItem[] | FormField[];
 }
 
 export const storeEvents = new EventBus();
 
 const makeProxy = (props: {}) => {
   const handler = {
-    get: (target: GlobalStore, prop: string) => {
-      const value: unknown | Function = target[prop];
+    get: (target: any, prop: string) => {
+      const value = target[prop];
       return typeof value === 'function' ? value.bind(target) : value;
     },
-    set: (target: GlobalStore, prop: string, value: any) => {
+    set: (target: any, prop: string, value: any) => {
       target[prop] = value;
       storeEvents.emit(`store-update:${prop}`, value);
       return true;
@@ -67,13 +67,13 @@ const RESOURCES_HOST = 'https://ya-praktikum.tech/api/v2/resources';
 const store: GlobalStore = makeProxy({
   isAuthorized: false,
   userData: {},
-  userProfile: [],
-  chatList: [],
+  userProfile: {},
+  chatList: {},
   changeInfoFields: null,
   ...data,
 });
 
-function updateUserProfile(info: UserData) {
+function updateUserProfile(info: UserInfo) {
   return Object.keys(userProfileLabels).map((label: string) => ({
     name: userProfileLabels[label],
     value: info[label],
@@ -82,7 +82,7 @@ function updateUserProfile(info: UserData) {
 
 export const get = (path: string) => {
   const arr = path.split('.');
-  let exist: { [index: string]: any } = store;
+  let exist: { [index: string]: any } | any = store;
   if (!arr.length) return undefined;
 
   for (let i = 0; i < arr.length; i += 1) {
@@ -101,9 +101,9 @@ export const mutations = {
   setAuthorizationStatus: (status: boolean) => {
     store.isAuthorized = status;
   },
-  setUserInfo: (info: UserData) => {
+  setUserInfo: (info: UserInfo) => {
     info.avatar = info.avatar ? RESOURCES_HOST + info.avatar : defaultAvatar;
-    store.UserData = info;
+    store.userInfo = info;
     store.changeInfoFields = changeInfoFields(info);
     store.userProfile = updateUserProfile(info);
   },
