@@ -40,6 +40,13 @@ class Block {
 
   constructor(tagName = 'div', props: Props = {}, children: ContentChildren = {}, selectors: Selectors = {}) {
     this._meta = { tagName, props };
+    const selectorsData = this._appendSelectorsData(selectors);
+    this.props = this._makePropsProxy({ ...props, ...selectorsData });
+    this.children = children;
+    this.init();
+  }
+
+  _appendSelectorsData(selectors: Selectors) {
     const selectorsData: Selectors = {};
     Object.keys(selectors).forEach((selectorName: string) => {
       const selector = selectors[selectorName];
@@ -49,9 +56,7 @@ class Block {
         this.setProps({ [selectorName]: get(selector) });
       });
     });
-    this.props = this._makePropsProxy({ ...props, ...selectorsData });
-    this.children = children;
-    this.init();
+    return selectorsData;
   }
 
   // eslint-disable-next-line class-methods-use-this
