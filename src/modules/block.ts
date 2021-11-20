@@ -1,7 +1,6 @@
 /* eslint-disable class-methods-use-this */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { get, storeEvents } from './store';
-import './types.d';
 
 interface PropsEvent {
   type: keyof ElementEventMap;
