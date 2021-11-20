@@ -15,7 +15,7 @@ class Form extends Block {
     return Object.values(this.children);
   }
 
-  get data() {
+  get data(): { [key: string]: unknown } {
     const data = {};
     this.formGroups.forEach(({ name, value }) => data[name] = value);
     return data;
@@ -23,7 +23,10 @@ class Form extends Block {
 
   // TODO: Добавить общую валидацию для формы
 
-  constructor(props: { attributes?: { class?: string }, submitCallback: Function }, selectors = {}) {
+  constructor(props: {
+    attributes?: { class?: string },
+    submitCallback: Function
+  }, selectors = {}) {
     // Конструкция ниже нужна для того, чтобы класс, заданный снаружи, был в приоритете
     const className = (props.attributes && props.attributes.class) || FORM_CLASS;
     const attributes = { ...props.attributes, class: className };
