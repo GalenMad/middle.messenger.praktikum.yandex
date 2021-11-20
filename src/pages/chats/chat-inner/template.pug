@@ -3,7 +3,9 @@ if chat
         article.chat_heading 
             img.chat_avatar(src=chat.avatar, alt=chat.title)
             p.chat_title= chat.title
-        button.chat_options.link Добавить
+        div.chat_options
+            button.link.link_red Убавить
+            button.link Добавить
     section.chat_body
         if messages
             each message in messages

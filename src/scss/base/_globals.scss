@@ -100,13 +100,18 @@ p {
   margin: auto 0 6px;
   color: $base-sky;
   font-weight: 500;
-  font-size: 18px;
+  font-size: 16px;
   line-height: 1.1;
   text-decoration: none;
   padding-bottom: 1px;
   border-bottom: 1px solid $base-sky;
   transition: 0.2s ease-in;
   width: fit-content;
+
+  &_red {
+    color: $base-cherry;
+    border-bottom: $base-cherry 1px solid;
+  }
 
   &:hover,
   &:focus {
