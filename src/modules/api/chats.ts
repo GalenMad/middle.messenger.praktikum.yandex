@@ -24,3 +24,19 @@ export class ChatsAPI extends ChatsBaseAPI {
     return this.apiInstance.delete('/', { data, headers }).then((res) => res);
   }
 }
+
+export class ChatsUsersAPI extends ChatsBaseAPI {
+  async request(id: number): Promise<RequestResponse> {
+    return this.apiInstance.get(`/${id}/users`).then((res) => res);
+  }
+
+  async update(data: { chatId: number, users: number[] }): Promise<RequestResponse> {
+    const { headers } = this;
+    return this.apiInstance.put('/users', { data, headers }).then((res) => res);
+  }
+
+  async delete(data: { chatId: number, users: number[] }): Promise<RequestResponse> {
+    const { headers } = this;
+    return this.apiInstance.delete('/users', { data, headers }).then((res) => res);
+  }
+}

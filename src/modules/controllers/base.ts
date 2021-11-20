@@ -13,6 +13,8 @@ export default class BaseController {
     setAuthorizationStatus: (status: boolean) => void;
     setUserInfo: (info: UserInfo) => void;
     setUserChats: (chats: ChatItem[]) => void;
+    setChatUsers: (id: number, users: UserInfo[]) => void;
+    setActiveChat: (id: number | string) => void;
   };
 
   loadingModal: LoadingModalController;
@@ -30,7 +32,7 @@ export default class BaseController {
     this.successModal = new SuccessModalController();
   }
 
-  throwError(response: RequestResponse) {
+  throwError(response: { data: string, status: string } | RequestResponse) {
     const { data, status } = response;
     // TODO: Кривоватая конструкция из-за требований TS
     const reason = typeof data !== 'string' ? data?.reason : data || 'Не придумал что сюда писать, просто посмотри в консоль';

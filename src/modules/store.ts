@@ -46,6 +46,7 @@ interface GlobalStore {
   activeChat: ChatItem;
   chatList: ChatItem[];
   userInfo: UserInfo;
+  chatsUsers: { [index: number]: string[] }
   userProfile: UserProfileItem[];
   changeInfoFields: FormField[];
 }
@@ -75,6 +76,7 @@ const store: GlobalStore = makeProxy({
   userProfile: {},
   chatList: {},
   activeChat: null,
+  chatsUsers: {},
   changeInfoFields: null,
   ...data,
 });
@@ -129,6 +131,11 @@ export const mutations = {
   },
   setActiveChat: (id: number | string) => {
     const newActiveChat = store.chatList.find((chat) => chat.id === Number(id));
-    store.activeChat = newActiveChat;
+    if (newActiveChat) store.activeChat = newActiveChat;
+  },
+  setChatUsers: (id: number, users: UserInfo[]) => {
+    const usersNames = users.map((user: UserInfo) => user.display_name || user.login);
+    store.chatsUsers = { ...store.chatsUsers };
+    store.chatsUsers[id] = usersNames;
   },
 };
