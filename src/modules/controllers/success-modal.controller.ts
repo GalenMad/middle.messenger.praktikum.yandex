@@ -5,11 +5,9 @@ let instance: SuccessModalController | null = null;
 
 // TODO: Указывать заголовок модалки об успехе
 export default class SuccessModalController {
-  modalContentClass: typeof SuccessModalContent;
+  ModalClass: typeof ModalWrapper;
 
-  modalClass: typeof ModalWrapper;
-
-  modalContentInstance: null | SuccessModalContent;
+  modalContentInstance: SuccessModalContent;
 
   modalInstance: null | ModalWrapper;
 
@@ -23,12 +21,15 @@ export default class SuccessModalController {
     this.modal = null;
     this.modalInstance = null;
     this.modalContentInstance = new SuccessModalContent();
-    this.modalClass = ModalWrapper;
+    this.ModalClass = ModalWrapper;
   }
 
   show() {
     if (!this.modalInstance) {
-      this.modalInstance = new this.modalClass({ content: this.modalContentInstance, hideCallback: this.hide.bind(this) });
+      this.modalInstance = new this.ModalClass({
+        content: this.modalContentInstance,
+        hideCallback: this.hide.bind(this),
+      });
       this.modal = this.modalInstance.getContent();
       document.querySelector('body')?.append(this.modal);
     }

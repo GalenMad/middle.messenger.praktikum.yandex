@@ -38,7 +38,7 @@ class HTTPTransport {
   }
 
   get = (url: string, options: RequestOptions = {}) => {
-    const path = options.data ? `${url}?${stringifyQuery(options.data)}` : url;
+    const path = options.data && !(options.data instanceof FormData) ? `${url}?${stringifyQuery(options.data)}` : url;
     return this.request(path, { ...options, method: METHODS.GET });
   };
 

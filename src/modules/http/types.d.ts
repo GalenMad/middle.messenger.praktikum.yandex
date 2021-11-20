@@ -1,6 +1,6 @@
 interface RequestOptions {
   timeout?: number,
-  data?: Record<string, string | number | unknown>,
+  data?: { [key: string]: any } | FormData,
   method?: string,
   headers?: Record<string, string>
 }
@@ -8,7 +8,7 @@ interface RequestOptions {
 interface RequestResponse {
   error: boolean,
   status: string | number,
-  data: { reason?: string } | string | null
+  data: { [key: string]: any } | string | null
 }
 
 interface QueryData { [key: string]: string }

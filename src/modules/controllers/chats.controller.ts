@@ -9,7 +9,9 @@ export default class ChatsController extends BaseController {
     if (response.error) {
       this.throwError(response);
     }
-
+    // TODO: Подумать над этим типом
+    // У меня везде предполагается объект, а тут массив
+    // Везде прикручивать проверку на массив не вариант
     this.mutations.setUserChats(response.data);
   }
 
@@ -19,7 +21,7 @@ export default class ChatsController extends BaseController {
       this.throwError(response);
     }
 
-    await this.getUserChats();
+    await this.getChats();
     this.successModal.show();
   }
 }

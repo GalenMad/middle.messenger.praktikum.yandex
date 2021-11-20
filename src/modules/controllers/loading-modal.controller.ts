@@ -29,6 +29,7 @@ export default class LoadingModalController {
 
   hide() {
     if (this.isMounted) {
+      // eslint-disable-next-line no-console
       console.log(this.modalInstance);
       this.modalInstance.hide();
       this.modal.remove();

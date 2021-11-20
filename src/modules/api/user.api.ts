@@ -15,7 +15,7 @@ export class UserInfoAPI extends UserAPI {
 }
 
 export class UserAvatarAPI extends UserAPI {
-  async update(data: QueryData): Promise<RequestResponse> {
+  async update(data: FormData): Promise<RequestResponse> {
     return this.apiInstance.put('/profile/avatar', { data }).then((res) => res);
   }
 }

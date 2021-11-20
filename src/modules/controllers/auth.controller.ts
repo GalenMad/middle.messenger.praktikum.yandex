@@ -32,11 +32,14 @@ export default class AuthController extends BaseController {
       this.router.go('/sign-in');
       this.throwError(response);
     }
-    this.mutations.setUserInfo(response.data);
-    await chatsController.getChats();
+    // TODO: Кривоватая конструкция из-за требований TS
+    if (response.data && typeof response.data !== 'string') {
+      this.mutations.setUserInfo(response.data);
+      await chatsController.getChats();
+    }
   }
 
-  async login(data: Record<string, string | number>) {
+  async login(data: QueryData) {
     this.loadingModal.show();
     const response = await loginAPI.request(data);
     if (response.error) {
@@ -49,7 +52,7 @@ export default class AuthController extends BaseController {
     this.loadingModal.hide();
   }
 
-  async registration(data: Record<string, string | number>) {
+  async registration(data: QueryData) {
     this.loadingModal.show();
     const response = await loginAPI.create(data);
     if (response.error) {

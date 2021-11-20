@@ -14,10 +14,9 @@ const createChangeAvatarModal = () => {
   const props = {
     buttonText: 'Отправить',
     title: 'Изменить аватар',
-    submitCallback: () => {
-      const formData = new FormData(form.element);
+    submitCallback: (data) => {
       modal.hide();
-      userController.updateUserAvatar(formData);
+      userController.updateUserAvatar(data);
     },
   };
 

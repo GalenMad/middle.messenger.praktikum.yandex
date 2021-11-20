@@ -1,8 +1,8 @@
-interface userInfo {
+interface UserInfo {
   [key: string]: string | null
 }
 
-interface chat {
+interface Chat {
   id: number,
   title: string,
   avatar: string,
