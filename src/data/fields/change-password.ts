@@ -1,4 +1,6 @@
-import { required, minLength, maxLength, hasUppercase, hasDigit } from '../utils/validators';
+import {
+  required, minLength, maxLength, hasUppercase, hasDigit,
+} from './validators';
 
 export default [{
   label: 'Старый пароль',
@@ -7,7 +9,7 @@ export default [{
   type: 'password',
   validators: [
     required(),
-  ]
+  ],
 }, {
   label: 'Новый пароль',
   id: 'newPassword',
@@ -18,6 +20,6 @@ export default [{
     minLength(8),
     maxLength(40),
     hasUppercase(),
-    hasDigit()
+    hasDigit(),
   ],
 }];

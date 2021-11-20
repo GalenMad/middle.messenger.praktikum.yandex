@@ -3,12 +3,14 @@ import ModalWrapper from '../../components/modal-wrapper';
 
 let instance: SuccessModalController | null = null;
 
-// TODO: Указывать заголовок
+// TODO: Указывать заголовок модалки об успехе
 export default class SuccessModalController {
-  modalContentClass: typeof SuccessModalContent;
-  modalClass: typeof ModalWrapper;
-  modalContentInstance: null | SuccessModalContent;
+  ModalClass: typeof ModalWrapper;
+
+  modalContentInstance: SuccessModalContent;
+
   modalInstance: null | ModalWrapper;
+
   modal: null | HTMLElement;
 
   constructor() {
@@ -19,16 +21,31 @@ export default class SuccessModalController {
     this.modal = null;
     this.modalInstance = null;
     this.modalContentInstance = new SuccessModalContent();
-    this.modalClass = ModalWrapper;
+    this.ModalClass = ModalWrapper;
   }
 
   show() {
     if (!this.modalInstance) {
-      this.modalInstance = new this.modalClass({ content: this.modalContentInstance });
+      this.modalInstance = new this.ModalClass({
+        content: this.modalContentInstance,
+        hideCallback: this.hide.bind(this),
+      });
       this.modal = this.modalInstance.getContent();
       document.querySelector('body')?.append(this.modal);
-    } 
-    
-    this.modalInstance?.show();
+    }
+
+    // TODO: Узнать как избавиться от избыточных проверок для TS
+    // ↓↓↓↓↓↓↓↓↓↓↓
+    if (this.modal) {
+      document.querySelector('body')?.append(this.modal);
+      this.modalInstance?.show();
+    }
+  }
+
+  hide() {
+    if (this.modalInstance) {
+      this.modalInstance?.hide();
+      this.modal?.remove();
+    }
   }
 }

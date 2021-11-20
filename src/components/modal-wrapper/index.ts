@@ -4,14 +4,16 @@ import './styles.scss';
 
 const ESC_KEY = 'Escape';
 
-// TODO: Фикс высокой модалки
 export default class ModalWrapper extends Block {
   isOpen: boolean;
+
   addedClickHandler: Function;
+
   addedKeydownHandler: Function;
-  constructor({ content, fixed = false }) {
+
+  constructor({ content, fixed = false, hideCallback = null }) {
     const attributes = { class: 'modal' };
-    super('div', { attributes, fixed }, { content });
+    super('div', { attributes, fixed, hideCallback }, { content });
     this.isOpen = false;
   }
 
@@ -32,13 +34,13 @@ export default class ModalWrapper extends Block {
   addCloseHandlers() {
     this.addedClickHandler = this.clickHandler.bind(this);
     this.addedKeydownHandler = this.keydownHandler.bind(this);
-    this.element.addEventListener('click', this.addedClickHandler)
-    document.addEventListener('keydown', this.addedKeydownHandler)
+    this.element.addEventListener('click', this.addedClickHandler);
+    document.addEventListener('keydown', this.addedKeydownHandler);
   }
 
   removeCloseHandlers() {
-    this.element.removeEventListener('click', this.addedClickHandler)
-    document.removeEventListener('keydown', this.addedKeydownHandler)
+    this.element.removeEventListener('click', this.addedClickHandler);
+    document.removeEventListener('keydown', this.addedKeydownHandler);
   }
 
   show() {
@@ -57,6 +59,9 @@ export default class ModalWrapper extends Block {
       this.element.classList.remove('show');
       document.querySelector('body')?.classList.remove('show-modal');
       this.isOpen = false;
+      if (this.props.hideCallback) {
+        this.props.hideCallback();
+      }
       if (!this.fixed) {
         this.removeCloseHandlers();
       }

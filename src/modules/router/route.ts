@@ -1,11 +1,21 @@
 export default class Route {
   _pathname: any;
+
   _blockClass: any;
-  _block: null | { getContent: Function };
+
+  _block: null | {
+    getContent: Function,
+    show: Function,
+    hide: Function
+  };
+
   _props: any;
+
   isPrivate: any;
+
   isNotForAuthorized: any;
-  constructor(pathname, view, props, options) {
+
+  constructor(pathname: string, view, props, options) {
     const { isPrivate = false, isNotForAuthorized = false } = options;
     this._pathname = pathname;
     this._blockClass = view;
@@ -36,7 +46,8 @@ export default class Route {
       this._block = new this._blockClass(this._props);
     }
 
+    this._block?.show();
     const root = document.querySelector(this._props.rootQuery);
-    root.appendChild(this._block.getContent());
+    root.appendChild(this._block?.getContent());
   }
 }

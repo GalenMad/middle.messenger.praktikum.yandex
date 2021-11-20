@@ -1,4 +1,4 @@
-import { required } from '../utils/validators';
+import { required } from './validators';
 
 export default [{
   label: 'Выбрать файл',
@@ -7,6 +7,6 @@ export default [{
   type: 'file',
   accept: 'images/*',
   validators: [
-    required()
+    required(),
   ],
 }];

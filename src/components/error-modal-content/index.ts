@@ -12,4 +12,3 @@ export default class ErrorModalContent extends Block {
     return compileTemplate(this.props);
   }
 }
-

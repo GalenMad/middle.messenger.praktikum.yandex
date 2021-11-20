@@ -4,7 +4,7 @@ import './styles.scss';
 
 export default class LoadingModalContent extends Block {
   constructor() {
-    const attributes = { class: 'loading-modal' }
+    const attributes = { class: 'loading-modal' };
     super('div', { attributes });
   }
 

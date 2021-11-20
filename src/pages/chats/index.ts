@@ -1,34 +1,45 @@
 import Block from '../../modules/block';
-import avatar from '../../assets/images/default-avatar.svg';
 import compileTemplate from './template.pug';
 import './styles.scss';
+import Form from '../../components/form';
+import ModalWrapper from '../../components/modal-wrapper';
+import ChatsController from '../../modules/controllers/chats.controller';
 
-const chats: Array<any> = [];
+const chatsController = new ChatsController();
 
-for (let i = 0; i < 14; i += 1) {
-  chats.push({
-    id: 123,
-    title: 'Андрей',
-    avatar,
-    unread_count: i + 2 * i + 1,
-    last_message: {
-      user: {
-        first_name: 'Petya',
-        second_name: 'Pupkin',
-        avatar,
-        email: 'my@email.com',
-        login: 'userLogin',
-        phone: '8(911)-222-33-22',
-      },
-      time: '10:20',
-      content: 'И Human Interface Guidelines и Material Design рекомендуют не выпендриваться…',
+const createNewChatModal = () => {
+  const formProps = {
+    buttonText: 'Назвать',
+    title: 'Назовите чат',
+    submitCallback: (data) => {
+      modal.hide();
+      chatsController.createChat(data);
     },
-  });
-}
+  };
+
+  const form = new Form(formProps, { fields: 'createChatFields' });
+  const modal = new ModalWrapper({ content: form });
+  return modal;
+};
 
 class Page extends Block {
   constructor(props = {}) {
-    super('div', { ...props, chats, userAvatar: avatar });
+    const createChatModal = createNewChatModal();
+    const events = [{
+      type: 'click',
+      cb: (evt: Event) => {
+        evt.stopPropagation();
+        if (evt.target.id === 'create-chat') {
+          evt.stopPropagation();
+          createChatModal.show();
+        } else if (evt.path.some((elem: HTMLElement) => elem.classList && elem.classList.contains('chat-item'))) {
+          const chatItemId = evt.path.find((elem: HTMLElement) => elem.classList.contains('chat-item')).id;
+          chatsController.setActiveChat(chatItemId)
+        }
+      },
+    }];
+    const selectors = { avatar: 'userInfo.avatar', chats: 'chatList', activeChat: 'activeChat' };
+    super('div', { ...props, events }, { createChatModal }, selectors);
   }
 
   render() {

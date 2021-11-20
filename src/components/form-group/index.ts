@@ -7,14 +7,16 @@ const FORM_GROUP_TAG = 'label';
 const VALIDATION_SELECTOR = '.validation';
 
 export default class FormGroup extends Block {
-
   get value() {
     const input = this.element.querySelector('input');
-    return input?.value;
+    if (input) {
+      return input.type === 'file' ? input.files && input.files[0] : input.value;
+    }
   }
 
   get isValid() {
-    return !this.props.validators || !this.props.validators.some(validator => validator(this.value));
+    return !this.props.validators ||
+      !this.props.validators.some((validator) => validator(this.value));
   }
 
   get name() {
@@ -22,13 +24,12 @@ export default class FormGroup extends Block {
   }
 
   constructor(props) {
-    // Конструкция ниже нужна для того, чтобы класс, заданный снаружи, был в приоритете
-    const className = (props.attributes && props.attributes.class) || FORM_GROUP_CLASS;
-    const attributes = { ...props.attributes, class: className };
+    const attributes = { ...props.attributes, class: FORM_GROUP_CLASS };
     super(FORM_GROUP_TAG, { ...props, attributes });
   }
 
-  // TODO: Рефактор жизненного цикла компонента
+  // TODO: Нужен рефактор жизненного цикла компонента
+  // TODO: Добить дизайн и логику работы file инпута
   componentDidMount() {
     const input = this.element.querySelector('input');
     if (this.props.type !== 'file') {
@@ -39,7 +40,7 @@ export default class FormGroup extends Block {
         this.checkValidity();
       });
     } else {
-      input?.addEventListener('input', () => console.log('Загружено:', input.value))
+      input?.addEventListener('input', () => console.info('Загружено:', input.value));
     }
   }
 
@@ -51,12 +52,12 @@ export default class FormGroup extends Block {
   }
 
   checkValidity() {
-    const validators: Array<Function> | undefined = this.props.validators;
+    const { validators } = this.props;
     if (!validators) {
       return;
     }
 
-    const value = this.value;
+    const { value } = this;
     const container: HTMLElement | null = this.element.querySelector(VALIDATION_SELECTOR);
     for (let i: number = 0; i < validators.length; i += 1) {
       const message = validators[i](value);
@@ -71,4 +72,3 @@ export default class FormGroup extends Block {
     return compileTemplate(this.props);
   }
 }
-

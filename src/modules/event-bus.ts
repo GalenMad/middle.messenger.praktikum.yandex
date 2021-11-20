@@ -1,37 +1,35 @@
-function createEventBus() {
+export default class EventBus {
+  listeners: Record<string, Function[]>;
 
-  const listeners: Record<string, Function[]> = {};
-  const _checkExistListener = (event: string, callback: Function): boolean => listeners[event].some((handler) => handler === callback);
+  constructor() {
+    this.listeners = {};
+  }
 
-  const methods = {
-    on: (event: string, callback: Function): void => {
-      if (!listeners[event]) {
-        listeners[event] = [];
-      }
-      if (!_checkExistListener(event, callback)) {
-        listeners[event].push(callback);
-      }
-    },
+  _checkExistListener(event: string, callback: Function): boolean {
+    return this.listeners[event].some((handler) => handler === callback);
+  }
 
-    off: (event: string, callback: Function): void => {
-      if (!listeners[event]) {
-        throw new Error(`Нет события: ${event}`);
-      }
-
-      listeners[event] = listeners[event].filter((listener) => listener !== callback);
-    },
-
-    emit: (event: string, ...args: unknown[]): void => {
-      if (!listeners[event]) {
-        // TODO: Тут была ошибка, если такого события нет. Возможно, что это важно.
-        return;
-      }
-
-      listeners[event].forEach((handler: Function) => handler(...args));
+  on(event: string, callback: Function): void {
+    if (!this.listeners[event]) {
+      this.listeners[event] = [];
+    }
+    if (!this._checkExistListener(event, callback)) {
+      this.listeners[event].push(callback);
     }
   }
 
-  return Object.freeze(methods)
-}
+  off(event: string, callback: Function): void {
+    if (!this.listeners[event]) {
+      throw new Error(`Нет события: ${event}`);
+    }
 
-export default createEventBus();
+    this.listeners[event] = this.listeners[event].filter((listener) => listener !== callback);
+  }
+
+  emit(event: string, ...args: any): void {
+    if (this.listeners[event]) {
+      // TODO: Тут была ошибка, если такого события нет. Возможно, что это было важно.
+      this.listeners[event].forEach((handler: Function) => handler(...args));
+    }
+  }
+}

@@ -1,16 +1,26 @@
 import ErrorModalContent from '../../components/error-modal-content';
 import ModalWrapper from '../../components/modal-wrapper';
 
+interface ErrorModalContentProps {
+  status: number | string;
+  reason: string | null;
+}
+
 let instance: ErrorModalController | null = null;
 
 // TODO: Допилить и расширить логику появления модалок
+// Объединить информационные модалки
 // Сервисные сообщения, вина юзера, вина сервера, etc.
 // При пятисотых хорошо бы отправлять на 500-page
 export default class ErrorModalController {
-  modalContentClass: typeof ErrorModalContent;
-  modalClass: typeof ModalWrapper;
+  ModalContentClass: typeof ErrorModalContent;
+
+  ModalClass: typeof ModalWrapper;
+
   modalContentInstance: null | ErrorModalContent;
+
   modalInstance: null | ModalWrapper;
+
   modal: null | HTMLElement;
 
   constructor() {
@@ -21,20 +31,31 @@ export default class ErrorModalController {
     this.modal = null;
     this.modalInstance = null;
     this.modalContentInstance = null;
-    this.modalContentClass = ErrorModalContent;
-    this.modalClass = ModalWrapper;
+    this.ModalContentClass = ErrorModalContent;
+    this.ModalClass = ModalWrapper;
   }
 
-  show(props) {
-    if (!this.modalContentInstance && !this.modalInstance) {
-      this.modalContentInstance = new this.modalContentClass(props);
-      this.modalInstance = new this.modalClass({ content: this.modalContentInstance });
-      this.modal = this.modalInstance.getContent();
+  show(props: ErrorModalContentProps) {
+    if (this.modalContentInstance && this.modal) {
+      this.modalContentInstance.setProps(props);
       document.querySelector('body')?.append(this.modal);
     } else {
-      this.modalContentInstance?.setProps(props);
+      this.modalContentInstance = new this.ModalContentClass(props);
+      this.modalInstance = new this.ModalClass({
+        content: this.modalContentInstance,
+        hideCallback: this.hide.bind(this),
+      });
+      this.modal = this.modalInstance.getContent();
+      document.querySelector('body')?.append(this.modal);
     }
-    
+
     this.modalInstance?.show();
+  }
+
+  hide() {
+    if (this.modalInstance) {
+      this.modalInstance.hide();
+      this.modal?.remove();
+    }
   }
 }

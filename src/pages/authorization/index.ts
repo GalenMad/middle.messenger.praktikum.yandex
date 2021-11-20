@@ -1,11 +1,10 @@
-import fields from '../../data/login-fields';
 import FormPage from '../../components/form-page';
 import AuthController from '../../modules/controllers/auth.controller';
 
 const pageProps = {
   title: 'Авторизация',
   footerText: 'Нет аккаунта?',
-  linkText: 'Зарегестрироваться',
+  linkText: 'Зарегистрироваться',
   link: '/sign-up',
 };
 const formProps = {
@@ -16,7 +15,6 @@ const authController = new AuthController();
 const submitCallback = authController.login.bind(authController);
 export default class Page extends FormPage {
   constructor() {
-    super(pageProps, formProps, fields, submitCallback);
+    super(pageProps, formProps, submitCallback, { fields: 'loginFields' });
   }
 }
-

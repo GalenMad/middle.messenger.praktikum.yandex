@@ -1,10 +1,6 @@
-import Store from '../../modules/store';
 import Block from '../../modules/block';
 import Form from '../../components/form';
 import ModalWrapper from '../../components/modal-wrapper';
-import changePasswordFields from '../../data/change-password-fields';
-import changeInfoFields from '../../data/change-info-fields';
-import changeAvatarFields from '../../data/change-avatar-fields';
 import compileTemplate from './template.pug';
 import AuthController from '../../modules/controllers/auth.controller';
 import UserController from '../../modules/controllers/user.controller';
@@ -14,113 +10,47 @@ import './styles.scss';
 const authController = new AuthController();
 const userController = new UserController();
 
-const createChangeAvatarModal = () => {
-  const changeAvatarFormProps = {
-    fields: changeAvatarFields,
+const createFormModal = (fieldsSelector: string, callback: Function) => {
+  const props = {
     buttonText: 'Отправить',
     title: 'Изменить аватар',
-    submitCallback: () => {
-      const formData = new FormData(changeAvatarForm.element);
-      changeAvatarModal.hide();
-      userController.updateUserAvatar(formData);
-    }
-  }
+    submitCallback: (data: { [key: string]: unknown }) => {
+      // eslint-disable-next-line @typescript-eslint/no-use-before-define
+      modal.hide();
+      callback(data);
+    },
+  };
 
-  const changeAvatarForm = new Form(changeAvatarFormProps);
-  const changeAvatarModal = new ModalWrapper({
-    content: changeAvatarForm
-  });
-
-  return changeAvatarModal;
-}
-
-const createChangePasswordModal = () => {
-  const changePasswordFormProps = {
-    fields: changePasswordFields,
-    buttonText: 'Отправить',
-    title: 'Изменить пароль',
-    submitCallback: (data) => {
-      changePasswordModal.hide();
-      userController.updateUserPassword(data);
-    }
-  }
-
-  const changePasswordForm = new Form(changePasswordFormProps);
-  const changePasswordModal = new ModalWrapper({
-    content: changePasswordForm
-  });
-
-  return changePasswordModal;
-}
-
-const createChangeInfoModal = () => {
-  const rawData = Store.getRawUserData();
-  const changeInfoFormProps = {
-    fields: changeInfoFields(rawData),
-    buttonText: 'Отправить',
-    title: 'Изменить информацию',
-    submitCallback: (data) => {
-      changeInfoModal.hide();
-      userController.updateUserInfo(data);
-    }
-  }
-
-  // TODO: Прикрутить чистку валидации на закрытие модалки
-  const changeInfoForm = new Form(changeInfoFormProps);
-  const changeInfoModal = new ModalWrapper({ content: changeInfoForm });
-
-  Store.on(Store.EVENTS.UPDATE_INFO, () => {
-    const rawData = Store.getRawUserData();
-    // TODO: На этом моменте создаются новые FormGroup, пофиксить
-    changeInfoForm.setProps({
-      fields: changeInfoFields(rawData),
-    });
-  });
-
-  return changeInfoModal;
-}
+  const form = new Form(props, { fields: fieldsSelector });
+  const modal = new ModalWrapper({ content: form });
+  return modal;
+};
 
 class Page extends Block {
   constructor(props = {}) {
-    const changePasswordModal = createChangePasswordModal();
-    const changeInfoModal = createChangeInfoModal();
-    const changeAvatarModal = createChangeAvatarModal();
-
-    const userData = Store.getUserData();
-    const userName = Store.getUserName();
-    const avatar = Store.getUserAvatar();
+    const changePasswordModal = createFormModal('changePasswordFields', userController.updateUserPassword.bind(userController));
+    const changeInfoModal = createFormModal('changeInfoFields', userController.updateUserInfo.bind(userController));
+    const changeAvatarModal = createFormModal('changeAvatarFields', userController.updateUserAvatar.bind(userController));
 
     const events = [{
       type: 'click',
       selector: '#logout',
-      cb: () => authController.logout()
+      cb: () => authController.logout(),
     }, {
       type: 'click',
       selector: '#change-password',
-      cb: () => changePasswordModal.show()
+      cb: () => changePasswordModal.show(),
     }, {
       type: 'click',
       selector: '#change-info',
-      cb: () => changeInfoModal.show()
+      cb: () => changeInfoModal.show(),
     }, {
       type: 'click',
       selector: '#change-avatar',
-      cb: () => changeAvatarModal.show()
+      cb: () => changeAvatarModal.show(),
     }];
 
-    super('div', { ...props, userData, userName, avatar, events }, { changePasswordModal, changeInfoModal, changeAvatarModal });
-    Store.on(Store.EVENTS.UPDATE_INFO, this.updateUserData.bind(this))
-  }
-
-  updateUserData() {
-    const userData = Store.getUserData();
-    const userName = Store.getUserName();
-    const avatar = Store.getUserAvatar();
-    this.setProps({
-      userName,
-      userData,
-      avatar
-    });
+    super('div', { ...props, events }, { changePasswordModal, changeInfoModal, changeAvatarModal }, { avatar: 'userInfo.avatar', userName: 'userInfo.first_name', userData: 'userProfile' });
   }
 
   render() {

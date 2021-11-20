@@ -1,72 +1,133 @@
+/* eslint-disable no-param-reassign */
 import defaultAvatar from '../assets/images/default-avatar.svg';
 import EventBus from './event-bus';
+import { data, changeInfoFields } from '../data/fields';
+import userProfileLabels from '../data/user-profile-labels';
 
-interface userInfo {
-  id: number
-  email: string
-  login: string
-  phone: string
-  first_name: string
-  second_name: string
-  avatar: null | string,
-  display_name: null | string,
+interface UserInfo {
+  [key: string]: string;
 }
 
-const userDataLabels = {
-  first_name: 'Имя',
-  second_name: 'Фамилия',
-  login: 'Логин',
-  display_name: 'Имя в чате',
-  email: 'Электронная почта',
-  phone: 'Телефон'
+interface UserProfileItem {
+  name: string;
+  value: string | number;
 }
 
-function createStore() {
-  let isAuthorized = false;
-  let userInfo: userInfo | null = null;
-
-  const EVENTS = {
-    UPDATE_INFO: 'update:user-info'
-  }
-
-  const RESOURCES_HOST = 'https://ya-praktikum.tech/api/v2/resources'
-
-  const eventBusMethods = {
-    on: EventBus.on,
-    off: EventBus.off,
-    emit: EventBus.emit,
-  }
-
-  const getters = {
-    getAuthorizationStatus: () => {
-      return isAuthorized
+interface ChatItem {
+  id: number,
+  title: string,
+  avatar: string,
+  unread_count: number,
+  last_message: {
+    user: {
+      first_name: string,
+      second_name: string,
+      avatar: string,
+      emai: string,
+      login: string,
+      phone: string
     },
-    getUserAvatar: () => userInfo && userInfo.avatar ? RESOURCES_HOST + userInfo.avatar : defaultAvatar,
-    getUserData: () => userInfo && Object.keys(userDataLabels).map(label => ({
-      name: userDataLabels[label],
-      value: userInfo[label]
-    })),
-    getRawUserData: () => userInfo,
-    getUserName: () => userInfo?.first_name
+    time: string,
+    content: string
   }
+}
 
-  const mutations = {
-    setAuthorizationStatus: (status: boolean) => {
-      isAuthorized = status;
+interface FormField {
+  label: string;
+  id: string | number;
+  name: string;
+  type: string;
+  value: string | number;
+  validators: Function[];
+}
+
+interface GlobalStore {
+  isAuthorized: boolean;
+  activeChat: ChatItem;
+  chatList: ChatItem[];
+  userInfo: UserInfo;
+  userProfile: UserProfileItem[];
+  changeInfoFields: FormField[];
+}
+
+export const storeEvents = new EventBus();
+
+const makeProxy = (props: {}) => {
+  const handler = {
+    get: (target: any, prop: string) => {
+      const value = target[prop];
+      return typeof value === 'function' ? value.bind(target) : value;
     },
-    setUserInfo: (info: userInfo) => {
-      userInfo = info;
-      EventBus.emit(EVENTS.UPDATE_INFO);
+    set: (target: any, prop: string, value: any) => {
+      target[prop] = value;
+      storeEvents.emit(`store-update:${prop}`, value);
+      return true;
+    },
+  };
+  return new Proxy(props, handler);
+};
+
+const RESOURCES_HOST = 'https://ya-praktikum.tech/api/v2/resources';
+
+const store: GlobalStore = makeProxy({
+  isAuthorized: false,
+  userInfo: {},
+  userProfile: {},
+  chatList: {},
+  activeChat: null,
+  changeInfoFields: null,
+  ...data,
+});
+
+window.store = store;
+
+function updateUserProfile(info: UserInfo) {
+  return Object.keys(userProfileLabels).map((label: string) => ({
+    name: userProfileLabels[label],
+    value: info[label],
+  }));
+}
+
+export const get = (path: string) => {
+  const arr = path.split('.');
+  let exist: { [index: string]: any } | any = store;
+  if (!arr.length) return undefined;
+
+  for (let i = 0; i < arr.length; i += 1) {
+    const propertyName = arr[i];
+    if (exist[propertyName]) {
+      exist = exist[propertyName];
+    } else {
+      return null;
     }
   }
 
-  return Object.freeze({
-    EVENTS,
-    mutations,
-    ...eventBusMethods,
-    ...mutations,
-    ...getters
-  })
-}
+  return exist;
+};
 
-export default createStore();
+export const mutations = {
+  setAuthorizationStatus: (status: boolean) => {
+    store.isAuthorized = status;
+  },
+  setUserInfo: (info: UserInfo) => {
+    info.avatar = info.avatar ? RESOURCES_HOST + info.avatar : defaultAvatar;
+    store.userInfo = info;
+    store.changeInfoFields = changeInfoFields(info);
+    store.userProfile = updateUserProfile(info);
+  },
+  setUserChats: (chats: ChatItem[]) => {
+    store.chatList = chats.map((chat) => {
+      chat.avatar = chat.avatar ? RESOURCES_HOST + chat.avatar : defaultAvatar;
+      return chat;
+    });
+
+    if (store.activeChat) {
+      const { id } = store.activeChat;
+      mutations.setActiveChat(id);
+    }
+  },
+  setActiveChat: (id: number | string) => {
+    const newActiveChat = store.chatList.find((chat) => chat.id === Number(id));
+    store.activeChat = newActiveChat;
+  },
+};

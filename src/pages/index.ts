@@ -10,41 +10,40 @@ export default [{
   block: Authorization,
   path: '/sign-in',
   options: {
-    isNotForAuthorized: true
-  }
+    isNotForAuthorized: true,
+  },
 },
 {
   name: 'Регистрация',
   block: Registration,
   path: '/sign-up',
   options: {
-    isNotForAuthorized: true
-  }
+    isNotForAuthorized: true,
+  },
 },
 {
   name: 'Чаты',
   block: ChatsPage,
   path: '/',
   options: {
-    isPrivate: true
-  }
+    isPrivate: true,
+  },
 },
 {
   name: 'Профиль пользователя',
   block: UserSettings,
   path: '/profile',
   options: {
-    isPrivate: true
-  }
+    isPrivate: true,
+  },
 },
 {
   name: 'Ошибка 404',
   block: Error404,
-  path: '/error-404'
+  path: '/error-404',
 },
 {
   name: 'Ошибка 500',
   block: Error500,
-  path: '/error-500'
+  path: '/error-500',
 }];
-

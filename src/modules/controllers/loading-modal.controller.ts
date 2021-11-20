@@ -5,8 +5,11 @@ let instance: LoadingModalController | null = null;
 
 export default class LoadingModalController {
   modal: HTMLElement;
+
   isMounted: boolean;
+
   modalInstance: ModalWrapper;
+
   constructor() {
     if (instance) {
       return instance;
