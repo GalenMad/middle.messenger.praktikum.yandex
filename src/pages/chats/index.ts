@@ -27,14 +27,18 @@ class Page extends Block {
     const createChatModal = createNewChatModal();
     const events = [{
       type: 'click',
+      selector: '#create-chat',
       cb: (evt: Event) => {
         evt.stopPropagation();
-        if (evt.target.id === 'create-chat') {
-          evt.stopPropagation();
-          createChatModal.show();
-        } else if (evt.path.some((elem: HTMLElement) => elem.classList && elem.classList.contains('chat-item'))) {
+        createChatModal.show();
+      },
+    }, {
+      type: 'click',
+      cb: (evt: Event) => {
+        evt.stopPropagation();
+        if (evt.path.some((elem: HTMLElement) => elem.classList && elem.classList.contains('chat-item'))) {
           const chatItemId = evt.path.find((elem: HTMLElement) => elem.classList.contains('chat-item')).id;
-          chatsController.setActiveChat(chatItemId)
+          chatsController.setActiveChat(chatItemId);
         }
       },
     }];

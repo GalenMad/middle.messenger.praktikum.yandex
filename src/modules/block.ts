@@ -3,8 +3,8 @@
 import { get, storeEvents } from './store';
 
 interface PropsEvent {
-  type: keyof ElementEventMap;
-  selector: string;
+  type: keyof ElementEventMap | string;
+  selector?: string;
   cb: (this: Element, ev: Event) => any;
 }
 
