@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-globals */
 import Route from './route';
 
 enum ADDRESSES {

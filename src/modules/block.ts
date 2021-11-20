@@ -195,6 +195,14 @@ class Block {
     };
     return new Proxy(props, handler);
   }
+
+  hide() {
+    this.element.style.display = 'none';
+  }
+
+  show() {
+    this.element.style.display = '';
+  }
 }
 
 export default Block;
