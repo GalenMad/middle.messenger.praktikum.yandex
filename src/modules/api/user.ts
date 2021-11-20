@@ -26,3 +26,10 @@ export class UserPasswordAPI extends UserAPI {
     return this.apiInstance.put('/password', { data, headers }).then((res) => res);
   }
 }
+
+export class UserSearchAPI extends UserAPI {
+  async request(data: QueryData): Promise<RequestResponse> {
+    const { headers } = this;
+    return this.apiInstance.put('/search', { data, headers }).then((res) => res);
+  }
+}
