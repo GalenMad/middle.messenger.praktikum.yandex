@@ -12,7 +12,7 @@ export default class BaseController {
   mutations: {
     setAuthorizationStatus: (status: boolean) => void;
     setUserInfo: (info: UserInfo) => void;
-    setUserChats: (chats: Chat[]) => void;
+    setUserChats: (chats: ChatItem[]) => void;
   };
 
   loadingModal: LoadingModalController;

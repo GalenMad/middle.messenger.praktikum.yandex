@@ -2,7 +2,7 @@ interface UserInfo {
   [key: string]: string | null
 }
 
-interface Chat {
+interface ChatItem {
   id: number,
   title: string,
   avatar: string,
