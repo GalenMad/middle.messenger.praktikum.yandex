@@ -2,7 +2,7 @@ import {
   login, required, minLength, maxLength, name, firstCapital, email, phone, notInteger,
 } from './validators';
 
-export default (data: { [x: string]: any; }) => [{
+export default (data) => [{
   label: 'Имя',
   id: 'first_name',
   name: 'first_name',

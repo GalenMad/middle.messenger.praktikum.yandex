@@ -37,7 +37,8 @@ class Page extends Block {
         }
       },
     }];
-    super('div', { ...props, events }, { createChatModal }, { avatar: 'userInfo.avatar', chats: 'chatList', activeChat: 'activeChat' });
+    const selectors = { avatar: 'userInfo.avatar', chats: 'chatList', activeChat: 'activeChat' };
+    super('div', { ...props, events }, { createChatModal }, selectors);
   }
 
   render() {

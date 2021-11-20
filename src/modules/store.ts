@@ -42,7 +42,12 @@ interface FormField {
 }
 
 interface GlobalStore {
-  [index: string]: boolean | UserInfo | UserProfileItem[] | ChatItem[] | ChatItem | FormField[];
+  isAuthorized: boolean;
+  activeChat: ChatItem;
+  chatList: ChatItem[];
+  userInfo: UserInfo;
+  userProfile: UserProfileItem[];
+  changeInfoFields: FormField[];
 }
 
 export const storeEvents = new EventBus();
@@ -66,7 +71,7 @@ const RESOURCES_HOST = 'https://ya-praktikum.tech/api/v2/resources';
 
 const store: GlobalStore = makeProxy({
   isAuthorized: false,
-  userData: {},
+  userInfo: {},
   userProfile: {},
   chatList: {},
   activeChat: null,
@@ -115,6 +120,11 @@ export const mutations = {
       chat.avatar = chat.avatar ? RESOURCES_HOST + chat.avatar : defaultAvatar;
       return chat;
     });
+
+    if (store.activeChat) {
+      const { id } = store.activeChat;
+      mutations.setActiveChat(id);
+    }
   },
   setActiveChat: (id: number | string) => {
     const newActiveChat = store.chatList.find((chat) => chat.id === Number(id));
