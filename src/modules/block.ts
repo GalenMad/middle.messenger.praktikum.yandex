@@ -1,19 +1,29 @@
 /* eslint-disable class-methods-use-this */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-
 import { get, storeEvents } from './store';
+import './types.d';
 
-// TODO: Сделать тип более глобальным
+interface PropsEvent {
+  type: keyof ElementEventMap;
+  selector: string;
+  cb: (this: Element, ev: Event) => any;
+}
+
+interface PropsAttributes {
+  [key: string]: string;
+}
 interface Props {
-  [key: string]: unknown
+  [key: string]: unknown;
+  events?: PropsEvent[];
+  attributes?: PropsAttributes;
 }
 
 interface Selectors {
-  [key: string]: string
+  [key: string]: string;
 }
 
 interface ContentChildren {
-  [key: string]: string
+  [key: string]: Block;
 }
 
 class Block {
@@ -32,7 +42,7 @@ class Block {
 
   children: ContentChildren;
 
-  props: { events: [], attributes: Record<string, string | number> };
+  props: Props;
 
   get element() {
     return this._element;
@@ -60,7 +70,7 @@ class Block {
   }
 
   // eslint-disable-next-line class-methods-use-this
-  _setAttributes(element: HTMLElement, attributes: Record<string, string> = {}) {
+  _setAttributes(element: HTMLElement, attributes: PropsAttributes = {}) {
     Object.keys(attributes).forEach((attr: string) => {
       element.setAttribute(attr, attributes[attr]);
     });
@@ -94,7 +104,7 @@ class Block {
   }
 
   _componentDidUpdate(newProps: any, oldProps: any) {
-    this._removeEvents(oldProps);
+    this._removeEvents(oldProps.events);
     this.componentDidUpdate(newProps, oldProps);
     this._updateResources(newProps);
     this._render();
@@ -136,7 +146,7 @@ class Block {
       const fragment = this.stringToDocumentFragment(block);
       this.element.append(fragment);
     }
-    this._addEvents(this.props);
+    this._addEvents(this.props.events);
     this.replaceChildren();
     this._componentDidMount();
   }
@@ -149,32 +159,30 @@ class Block {
     return this.element;
   }
 
-  _addEvents(props: { events: [] }) {
-    const { events = [] } = props;
-    for (const { type, selector, cb } of events) {
-      const element = selector ? this._element.querySelector(selector) || this._element : this._element;
+  _addEvents(events: PropsEvent[] = []) {
+    events.forEach(({ type, selector, cb }) => {
+      const element = (selector && this._element.querySelector(selector)) || this._element;
       element.addEventListener(type, cb);
-    }
+    });
   }
 
-  _removeEvents(props: { events: [] }) {
-    const { events = [] } = props;
-    for (const { type, selector, cb } of events) {
-      const element = selector ? this._element.querySelector(selector) || this._element : this._element;
-      element.removeEventListener(type, cb);
-    }
+  _removeEvents(events: PropsEvent[] = []) {
+    events.forEach(({ type, selector, cb }) => {
+      const element = (selector && this._element.querySelector(selector)) || this._element;
+      element.addEventListener(type, cb);
+    });
   }
 
   _makePropsProxy(props: {}) {
     const handler = {
-      get: (target: any, prop: string) => {
+      get: (target: Props, prop: string) => {
         if (prop.indexOf('_') === 0) {
           throw new Error(Block.MESSAGE_ACCESS_ERROR);
         }
         const value = target[prop];
         return typeof value === 'function' ? value.bind(target) : value;
       },
-      set: (target: any, prop: string, value: any) => {
+      set: (target: Props, prop: string, value: any) => {
         const oldProps = { ...target };
         // eslint-disable-next-line no-param-reassign
         target[prop] = value;
