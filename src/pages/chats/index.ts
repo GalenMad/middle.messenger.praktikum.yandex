@@ -28,10 +28,11 @@ class Page extends Block {
     const events = [{
       type: 'click',
       cb: (evt: Event) => {
+        evt.stopPropagation();
         if (evt.target.id === 'create-chat') {
           evt.stopPropagation();
           createChatModal.show();
-        } else if (evt.path.some((elem: HTMLElement) => elem.classList.contains('chat-item'))) {
+        } else if (evt.path.some((elem: HTMLElement) => elem.classList && elem.classList.contains('chat-item'))) {
           const chatItemId = evt.path.find((elem: HTMLElement) => elem.classList.contains('chat-item')).id;
           chatsController.setActiveChat(chatItemId)
         }
