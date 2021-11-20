@@ -1,6 +1,6 @@
-import BaseController from './base.controller';
-import { LoginAPI, LogoutAPI, UserInfoAPI } from '../api/auth.api';
-import ChatsController from './chats.controller';
+import BaseController from './base';
+import { LoginAPI, LogoutAPI, UserInfoAPI } from '../api/auth';
+import ChatsController from './chats';
 
 // TODO: К вопросу ниже, нужны ли эти консты здесь
 const loginAPI = new LoginAPI();

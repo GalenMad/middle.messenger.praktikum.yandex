@@ -1,5 +1,5 @@
-import BaseController from './base.controller';
-import { ChatsAPI } from '../api/chats.api';
+import BaseController from './base';
+import { ChatsAPI } from '../api/chats';
 
 const chatsAPI = new ChatsAPI();
 

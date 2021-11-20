@@ -1,5 +1,5 @@
 /* eslint-disable max-classes-per-file */
-import BaseAPI from './base.api';
+import BaseAPI from './base';
 
 class AuthAPI extends BaseAPI {
   constructor() {

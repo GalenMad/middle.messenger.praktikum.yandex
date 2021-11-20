@@ -4,7 +4,7 @@ import './styles.scss';
 import Form from '../../components/form';
 import ModalWrapper from '../../components/modal-wrapper';
 import ChatInner from './chat-inner';
-import ChatsController from '../../modules/controllers/chats.controller';
+import ChatsController from '../../modules/controllers/chats';
 
 const chatsController = new ChatsController();
 

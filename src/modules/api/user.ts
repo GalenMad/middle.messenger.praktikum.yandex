@@ -1,5 +1,5 @@
 // eslint-disable-next-line max-classes-per-file
-import BaseAPI from './base.api';
+import BaseAPI from './base';
 
 class UserAPI extends BaseAPI {
   constructor() {

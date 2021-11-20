@@ -1,7 +1,7 @@
 import './scss/styles.scss';
 import pages from './pages';
 import Router from './modules/router';
-import AuthController from './modules/controllers/auth.controller';
+import AuthController from './modules/controllers/auth';
 
 // TODO: Прикрутить алиасы когда будет вебпак
 // TODO: Попробовать организовать глобальные события, чтобы чистить валидацию, 

@@ -2,8 +2,8 @@ import Block from '../../modules/block';
 import Form from '../../components/form';
 import ModalWrapper from '../../components/modal-wrapper';
 import compileTemplate from './template.pug';
-import AuthController from '../../modules/controllers/auth.controller';
-import UserController from '../../modules/controllers/current-user.controller';
+import AuthController from '../../modules/controllers/auth';
+import UserController from '../../modules/controllers/current-user';
 import './styles.scss';
 
 // TODO: Подумать что можно сделать с этими вечными объявлениями классов

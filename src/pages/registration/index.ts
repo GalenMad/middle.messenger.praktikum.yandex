@@ -1,5 +1,5 @@
 import FormPage from '../../components/form-page';
-import AuthController from '../../modules/controllers/auth.controller';
+import AuthController from '../../modules/controllers/auth';
 
 const pageProps = {
   title: 'Регистрация',
