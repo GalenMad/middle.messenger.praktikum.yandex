@@ -5,7 +5,7 @@ import './styles.scss';
 export default class ChatInner extends Block {
   constructor(props?: { [key: string]: any }) {
     const attributes = { class: 'chat' };
-    super('div', { attributes, ...props }, {}, { chat: 'activeChat' });
+    super('div', { attributes, ...props }, {}, { chat: 'activeChat', chatUsers: 'chatsUsers' });
   }
 
   render() {

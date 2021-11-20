@@ -2,7 +2,10 @@ if chat
     header.chat_header
         article.chat_heading 
             img.chat_avatar(src=chat.avatar, alt=chat.title)
-            p.chat_title= chat.title
+            .chat_info
+                p.chat_title= chat.title
+                if (chatUsers &&chatUsers[chat.id])
+                    p.chat_users= chatUsers[chat.id].join(', ')
         div.chat_options
             button.link.link_red Убавить
             button.link Добавить
