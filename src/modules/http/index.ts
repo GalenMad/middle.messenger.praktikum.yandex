@@ -9,11 +9,11 @@ enum METHODS {
   DELETE = 'DELETE',
 }
 
-const stringifyQuery = (data: Record<string, string | number | unknown>) => {
+const stringifyQuery = (data: QueryData) => {
   if (!data || typeof data !== 'object') {
     return '';
   }
-  return Object.entries(data).reduceRight((prev: any, curr: any): string => `${curr[0]}=${curr[1].toString()}${prev ? `&${prev}` : ''}`, null);
+  return Object.entries(data).reduceRight((prev: string | null, curr: string[]): string => `${curr[0]}=${curr[1].toString()}${prev ? `&${prev}` : ''}`, null);
 };
 
 const getJSONFromString = (string: string) => {
@@ -63,7 +63,7 @@ class HTTPTransport {
 
       xhr.open(method, this._host + this._hand + path);
       xhr.timeout = timeout;
-      // xhr.withCredentials = true;
+      xhr.withCredentials = true;
 
       if (headers) {
         Object.keys(headers).forEach((header) => xhr.setRequestHeader(header, headers[header]));

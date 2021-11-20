@@ -1,10 +1,6 @@
+/* eslint-disable import/prefer-default-export */
+/* eslint-disable max-classes-per-file */
 import BaseAPI from './base.api';
-
-interface response {
-  error: boolean,
-  status: number | string,
-  data: { reason?: string } | string | null
-}
 
 class ChatsBaseAPI extends BaseAPI {
   constructor() {
@@ -13,17 +9,17 @@ class ChatsBaseAPI extends BaseAPI {
 }
 
 export class ChatsAPI extends ChatsBaseAPI {
-  async request(data?: { offset: number, limit: number, title: string }): Promise<response> {
+  async request(data?: { offset: number, limit: number, title: string }): Promise<RequestResponse> {
     return this.apiInstance.get('/', { data }).then((res) => res);
   }
 
   // TODO: Создание чата точно апдейт?
-  async update(data: { title: string }): Promise<response> {
+  async update(data: { title: string }): Promise<RequestResponse> {
     const { headers } = this;
     return this.apiInstance.post('/', { data, headers }).then((res) => res);
   }
 
-  async delete(data: { chatId: number }): Promise<response> {
+  async delete(data: { chatId: number }): Promise<RequestResponse> {
     const { headers } = this;
     return this.apiInstance.delete('/', { data, headers }).then((res) => res);
   }

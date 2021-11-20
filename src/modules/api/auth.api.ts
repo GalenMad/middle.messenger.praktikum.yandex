@@ -1,10 +1,5 @@
+/* eslint-disable max-classes-per-file */
 import BaseAPI from './base.api';
-
-interface response {
-  error: boolean,
-  status: number | string,
-  data: { reason?: string } | string | null
-}
 
 class AuthAPI extends BaseAPI {
   constructor() {
@@ -13,26 +8,26 @@ class AuthAPI extends BaseAPI {
 }
 
 export class LoginAPI extends AuthAPI {
-  async create(data: Record<string, unknown>): Promise<response> {
+  async create(data: QueryData): Promise<RequestResponse> {
     const { headers } = this;
     return this.apiInstance.post('/signup', { data, headers }).then((res) => res);
   }
 
-  async request(data: Record<string, unknown>): Promise<response> {
+  async request(data: QueryData): Promise<RequestResponse> {
     const { headers } = this;
     return this.apiInstance.post('/signin', { data, headers }).then((res) => res);
   }
 }
 
 export class LogoutAPI extends AuthAPI {
-  async request(): Promise<response> {
+  async request(): Promise<RequestResponse> {
     return this.apiInstance.post('/logout').then((res) => res);
   }
 }
 
 export class UserInfoAPI extends AuthAPI {
-  async request(noCache: boolean): Promise<response> {
-    const headers = noCache ? { 'Cache-Control': 'no-cache' } : null;
+  async request(noCache: boolean): Promise<RequestResponse> {
+    const headers = noCache ? { 'Cache-Control': 'no-cache' } : undefined;
     return this.apiInstance.get('/user', { headers }).then((res) => res);
   }
 }

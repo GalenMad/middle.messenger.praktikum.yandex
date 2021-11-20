@@ -13,7 +13,8 @@ export default class FormGroup extends Block {
   }
 
   get isValid() {
-    return !this.props.validators || !this.props.validators.some((validator) => validator(this.value));
+    return !this.props.validators ||
+      !this.props.validators.some((validator) => validator(this.value));
   }
 
   get name() {
@@ -37,7 +38,7 @@ export default class FormGroup extends Block {
         this.checkValidity();
       });
     } else {
-      input?.addEventListener('input', () => console.log('Загружено:', input.value));
+      input?.addEventListener('input', () => console.info('Загружено:', input.value));
     }
   }
 

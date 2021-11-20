@@ -1,10 +1,5 @@
+// eslint-disable-next-line max-classes-per-file
 import BaseAPI from './base.api';
-
-interface response {
-  error: boolean,
-  status: number | string,
-  data: { reason?: string } | string | null
-}
 
 class UserAPI extends BaseAPI {
   constructor() {
@@ -13,20 +8,20 @@ class UserAPI extends BaseAPI {
 }
 
 export class UserInfoAPI extends UserAPI {
-  async update(data: Record<string, unknown>): Promise<response> {
+  async update(data: QueryData): Promise<RequestResponse> {
     const { headers } = this;
     return this.apiInstance.put('/profile', { data, headers }).then((res) => res);
   }
 }
 
 export class UserAvatarAPI extends UserAPI {
-  async update(data: Record<string, unknown>): Promise<response> {
+  async update(data: QueryData): Promise<RequestResponse> {
     return this.apiInstance.put('/profile/avatar', { data }).then((res) => res);
   }
 }
 
 export class UserPasswordAPI extends UserAPI {
-  async update(data: Record<string, unknown>): Promise<response> {
+  async update(data: QueryData): Promise<RequestResponse> {
     const { headers } = this;
     return this.apiInstance.put('/password', { data, headers }).then((res) => res);
   }

@@ -10,3 +10,5 @@ interface RequestResponse {
   status: string | number,
   data: { reason?: string } | string | null
 }
+
+interface QueryData { [key: string]: string }
