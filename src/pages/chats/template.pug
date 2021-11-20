@@ -10,7 +10,7 @@ main.chats
         section.chats-aside_tape
             if chats
                 each chat in chats
-                    button.chat-item
+                    button.chat-item(id=chat.id)
                         img.chat-item_avatar(src=chat.avatar, alt=chat.title)
                         div.chat-item_body
                             h3.chat-item_name= chat.title

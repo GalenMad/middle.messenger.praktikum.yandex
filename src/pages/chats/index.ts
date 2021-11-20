@@ -27,13 +27,17 @@ class Page extends Block {
     const createChatModal = createNewChatModal();
     const events = [{
       type: 'click',
-      selector: '#create-chat',
-      cb: (evt) => {
-        evt.stopPropagation();
-        createChatModal.show();
+      cb: (evt: Event) => {
+        if (evt.target.id === 'create-chat') {
+          evt.stopPropagation();
+          createChatModal.show();
+        } else if (evt.path.some((elem: HTMLElement) => elem.classList.contains('chat-item'))) {
+          const chatItemId = evt.path.find((elem: HTMLElement) => elem.classList.contains('chat-item')).id;
+          chatsController.setActiveChat(chatItemId)
+        }
       },
     }];
-    super('div', { ...props, events }, { createChatModal }, { avatar: 'userInfo.avatar', chats: 'chatList' });
+    super('div', { ...props, events }, { createChatModal }, { avatar: 'userInfo.avatar', chats: 'chatList', activeChat: 'activeChat' });
   }
 
   render() {

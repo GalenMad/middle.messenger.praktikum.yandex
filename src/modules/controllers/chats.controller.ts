@@ -24,4 +24,8 @@ export default class ChatsController extends BaseController {
     await this.getChats();
     this.successModal.show();
   }
+
+  setActiveChat(id) {
+    this.mutations.setActiveChat(id);
+  }
 }

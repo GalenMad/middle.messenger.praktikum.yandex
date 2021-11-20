@@ -42,7 +42,7 @@ interface FormField {
 }
 
 interface GlobalStore {
-  [index: string]: boolean | UserInfo | UserProfileItem[] | ChatItem[] | FormField[];
+  [index: string]: boolean | UserInfo | UserProfileItem[] | ChatItem[] | ChatItem | FormField[];
 }
 
 export const storeEvents = new EventBus();
@@ -69,9 +69,12 @@ const store: GlobalStore = makeProxy({
   userData: {},
   userProfile: {},
   chatList: {},
+  activeChat: null,
   changeInfoFields: null,
   ...data,
 });
+
+window.store = store;
 
 function updateUserProfile(info: UserInfo) {
   return Object.keys(userProfileLabels).map((label: string) => ({
@@ -112,5 +115,9 @@ export const mutations = {
       chat.avatar = chat.avatar ? RESOURCES_HOST + chat.avatar : defaultAvatar;
       return chat;
     });
+  },
+  setActiveChat: (id: number | string) => {
+    const newActiveChat = store.chatList.find((chat) => chat.id === Number(id));
+    store.activeChat = newActiveChat;
   },
 };
