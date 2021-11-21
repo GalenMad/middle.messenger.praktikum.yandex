@@ -29,7 +29,9 @@ export default class ChatInner extends Block {
     const attributes = { class: 'chat' };
     const addUserModal = createModal({ title: 'Добавить пользователя', button: 'Добавить' }, chatsController.addUserByLogin.bind(chatsController));
     const removeUserModal = createModal({ title: 'Удалить пользователя', button: 'Удалить' }, chatsController.removeUserByLogin.bind(chatsController));
-    const selectors = { chat: 'activeChat', chatsUsers: 'chatsUsers', messages: 'messages' };
+    const selectors = {
+      chat: 'activeChat', chatsUsers: 'chatsUsers', messages: 'messages', userId: 'userInfo.id',
+    };
     const events = [{
       type: 'click',
       selector: '#add-user',

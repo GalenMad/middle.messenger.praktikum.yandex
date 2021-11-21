@@ -185,8 +185,11 @@ export const mutations = {
     delete store.sockets[id];
   },
   setChatUsers: (id: number, users: UserInfo[]) => {
-    const usersNames = users.map((user: UserInfo) => user.display_name || user.login);
-    store.chatsUsers[id] = usersNames;
+    const userNames = {};
+    users.forEach((user: UserInfo) => {
+      userNames[user.id] = user.display_name || user.login;
+    });
+    store.chatsUsers[id] = userNames;
     store.chatsUsers = { ...store.chatsUsers };
   },
   setMessages: (id: number, list: []) => {

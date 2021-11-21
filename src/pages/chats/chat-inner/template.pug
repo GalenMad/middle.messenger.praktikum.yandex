@@ -5,16 +5,18 @@ if chat
             .chat_info
                 p.chat_title= chat.title
                 if (chatsUsers && chatsUsers[chat.id])
-                    p.chat_users= chatsUsers[chat.id].join(', ')
+                    p.chat_users= Object.values(chatsUsers[chat.id]).join(', ')
         div.chat_options
             button.link.link_red#remove-user Убавить
             button.link#add-user Добавить
     section.chat_body
         if messages[chat.id]
             each message in messages[chat.id]
-                article(class=message.my ? 'message' : 'message message_user')
+                article(class= userId !== message.user_id ? 'message' : 'message message_user')
                     span.message_content= message.content
                     span.message_time= message.time
+                    if userId !== message.user_id
+                        span.message_time= chatsUsers[chat.id][message.user_id]
     section.chat_footer
         button.chat_add-attachment
         textarea.chat_input(placeholder="Написать сообщение…")
