@@ -10,8 +10,8 @@ if chat
             button.link.link_red#remove-user Убавить
             button.link#add-user Добавить
     section.chat_body
-        if messages
-            each message in messages
+        if messages[chat.id]
+            each message in messages[chat.id]
                 article(class=message.my ? 'message' : 'message message_user')
                     span.message_content= message.content
                     span.message_time= message.time

@@ -190,10 +190,17 @@ export const mutations = {
     store.chatsUsers = { ...store.chatsUsers };
   },
   setMessages: (id: number, list: []) => {
+    list.forEach(item => {
+      item.time = formatDate(new Date(item.time));
+    });
     store.messages[id] = list;
+    // TODO: Можно ли обойтись без реструктуризации?
+    store.messages = { ...store.messages };
   },
   addMessage: (id: number, message: {}) => {
+    message.time = formatDate(new Date(message.time));
     store.messages[id].push(message);
+    store.messages = { ...store.messages };
   },
 };
 
