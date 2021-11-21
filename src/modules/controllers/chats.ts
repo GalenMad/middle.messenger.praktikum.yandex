@@ -30,6 +30,7 @@ export default class ChatsController extends BaseController {
     const socket = new WebSocket(`wss://ya-praktikum.tech/ws/chats/${userId}/${chatId}/${response.data.token}`);
     this.mutations.addSocket(chatId, socket);
 
+    // TODO: Подгрузка большего числа сообщений на скролл
     socket.onopen = () => {
       socket.send(JSON.stringify({
         content: '0',
@@ -105,6 +106,14 @@ export default class ChatsController extends BaseController {
     if (response.error) {
       this.throwError(response);
     }
+  }
+
+  async sendMessage(content: string) {
+    const socket = this.getters.getActiveSocket();
+    socket.send(JSON.stringify({
+      content,
+      type: 'message',
+    }));
   }
 
   // TODO: Удалять нужно через локальный поиск логинов + доп. проверка через сервер

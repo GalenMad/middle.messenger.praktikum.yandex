@@ -19,6 +19,7 @@ export default class BaseController {
     setUserChats: (chats: ChatItem[]) => void;
     setChatUsers: (id: number, users: UserInfo[]) => void;
     setActiveChat: (id: number) => void;
+    getActiveSocket: () => WebSocket;
     setMessages: (id: number, list: {}[]) => void;
     addMessage: (id: number, list: {}[]) => void;
     addSocket: (id: number, socket: WebSocket) => void;

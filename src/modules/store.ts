@@ -41,6 +41,7 @@ interface FormField {
   validators: Function[];
 }
 
+// TODO: Расширить форматирование дат
 function formatDate(date) {
   const diff = new Date() - date;
 
@@ -202,7 +203,7 @@ export const mutations = {
   },
   addMessage: (id: number, message: {}) => {
     message.time = formatDate(new Date(message.time));
-    store.messages[id].push(message);
+    store.messages[id].unshift(message);
     store.messages = { ...store.messages };
   },
 };
@@ -210,6 +211,7 @@ export const mutations = {
 // TODO: Может обозвать не геттерами?
 export const getters = {
   checkSocket: (id: number) => store.sockets[id] && store.sockets[id]?.readyState === 1,
+  getActiveSocket: () => store.activeSocket,
   isAuthorized: () => store.isAuthorized,
   userId: () => store.userInfo.id,
 };

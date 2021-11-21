@@ -61,7 +61,7 @@ export default class ChatInner extends Block {
       submit.addEventListener('click', () => {
         const value = input.value.trim();
         if (value) {
-          console.log(value);
+          chatsController.sendMessage(value);
         }
       });
     }
