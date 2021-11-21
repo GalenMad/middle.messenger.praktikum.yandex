@@ -2,7 +2,7 @@ import BaseController from './base';
 import { ChatsAPI, ChatsUsersAPI, ChatsTokenAPI } from '../api/chats';
 import { UserSearchAPI } from '../api/user';
 
-// TODO: Разделить логику в этом модуле
+// TODO: Разделить логику в этом модуле, выглядит как помойка
 
 const chatsAPI = new ChatsAPI();
 const chatsUsersAPI = new ChatsUsersAPI();

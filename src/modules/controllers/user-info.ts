@@ -5,6 +5,7 @@ const userInfoAPI = new UserInfoAPI();
 const userPasswordAPI = new UserPasswordAPI();
 const userAvatarAPI = new UserAvatarAPI();
 
+// TODO: После обновления display name в форме в активном чате не обновилось имя. Проверить
 export default class UserController extends BaseController {
   async updateUserInfo(data: QueryData) {
     const response = await userInfoAPI.update(data);
