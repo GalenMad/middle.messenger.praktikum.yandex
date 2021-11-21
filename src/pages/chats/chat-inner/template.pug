@@ -18,6 +18,7 @@ if chat
     section.chat_footer
         button.chat_add-attachment
         textarea.chat_input(placeholder="Написать сообщение…")
-        button.chat_submit-message
+        div.chat_submit-holder
+            button.chat_submit-message(disabled)
 template(data-component="addUserModal")
 template(data-component="removeUserModal")

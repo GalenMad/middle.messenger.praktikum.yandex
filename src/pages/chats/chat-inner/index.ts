@@ -42,6 +42,29 @@ export default class ChatInner extends Block {
     super('div', { attributes, events, ...props }, { addUserModal, removeUserModal }, selectors);
   }
 
+  componentDidMount() {
+    // TODO: Перенести слушатели после обновления жизненного цикла
+    const input = this.element.querySelector('.chat_input');
+    const submit = this.element.querySelector('.chat_submit-message');
+    if (input && submit) {
+      input.addEventListener('input', ({ target }) => {
+        const value = target.value.trim();
+        if (value) {
+          submit.removeAttribute('disabled');
+        } else {
+          submit.setAttribute('disabled', 'disabled');
+        }
+      });
+
+      submit.addEventListener('click', () => {
+        const value = input.value.trim();
+        if (value) {
+          console.log(value);
+        }
+      });
+    }
+  }
+
   render() {
     return compileTemplate(this.props);
   }
