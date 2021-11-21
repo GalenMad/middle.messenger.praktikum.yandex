@@ -40,3 +40,9 @@ export class ChatsUsersAPI extends ChatsBaseAPI {
     return this.apiInstance.delete('/users', { data, headers }).then((res) => res);
   }
 }
+
+export class ChatsTokenAPI extends ChatsBaseAPI {
+  async request(id: number): Promise<RequestResponse> {
+    return this.apiInstance.post(`/token/${id}`).then((res) => res);
+  }
+}
