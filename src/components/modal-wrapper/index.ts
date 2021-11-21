@@ -17,7 +17,7 @@ export default class ModalWrapper extends Block {
     const attributes = { class: 'modal' };
     super('div', { attributes, fixed, hideCallback }, { content });
     this.isOpen = false;
-    this.classForClose = ['.close-button', '.modal-dialog'];
+    this.classForClose = ['.close-button', '.modal', '.modal-dialog'];
   }
 
   clickHandler({ target }) {
