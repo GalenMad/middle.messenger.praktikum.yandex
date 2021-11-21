@@ -13,7 +13,7 @@ export default class AuthController extends BaseController {
   async init() {
     this.loadingModal.show();
     await this.checkAuthorization();
-    this.router.start(this.getAuthorizationStatus);
+    this.router.start(this.getters.isAuthorized);
     this.loadingModal.hide();
   }
 

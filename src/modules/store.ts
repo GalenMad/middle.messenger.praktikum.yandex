@@ -42,6 +42,8 @@ interface FormField {
 }
 
 interface GlobalStore {
+  activeSocket: WebSocket;
+  sockets: { [index: number]: WebSocket };
   isAuthorized: boolean;
   activeChat: ChatItem;
   chatList: ChatItem[];
@@ -77,9 +79,13 @@ const store: GlobalStore = makeProxy({
   chatList: {},
   activeChat: null,
   chatsUsers: {},
+  sockets: {},
+  activeSocket: null,
   changeInfoFields: null,
   ...data,
 });
+
+// TODO: Сохранять значения инпутов в чате
 
 window.store = store;
 
@@ -133,9 +139,17 @@ export const mutations = {
     const newActiveChat = store.chatList.find((chat) => chat.id === Number(id));
     if (newActiveChat) store.activeChat = newActiveChat;
   },
+  setActiveSocket: (id: number) => {
+    store.activeSocket = store.sockets[id];
+  },
   setChatUsers: (id: number, users: UserInfo[]) => {
     const usersNames = users.map((user: UserInfo) => user.display_name || user.login);
     store.chatsUsers[id] = usersNames;
     store.chatsUsers = { ...store.chatsUsers };
   },
+};
+
+export const getters = {
+  checkSocket: (id: number) => store.sockets[id] && store.sockets[id].readyState === 1,
+  isAuthorized: () => store.isAuthorized,
 };
