@@ -135,7 +135,7 @@ export const mutations = {
   },
   setChatUsers: (id: number, users: UserInfo[]) => {
     const usersNames = users.map((user: UserInfo) => user.display_name || user.login);
-    store.chatsUsers = { ...store.chatsUsers };
     store.chatsUsers[id] = usersNames;
+    store.chatsUsers = { ...store.chatsUsers };
   },
 };

@@ -56,7 +56,7 @@ export default class ChatsController extends BaseController {
     }
   }
 
-  // TODO: Удалять нужно через локальный поиск логинов, иначе бесполезно
+  // TODO: Удалять нужно через локальный поиск логинов + доп. проверка через сервер
   // TODO: Выкатить геттеры для стора
   async removeUserByLogin(login: string, chatId: number) {
     const response = await userSearchAPI.request({ login });

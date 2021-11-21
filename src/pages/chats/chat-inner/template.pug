@@ -4,11 +4,11 @@ if chat
             img.chat_avatar(src=chat.avatar, alt=chat.title)
             .chat_info
                 p.chat_title= chat.title
-                if (chatUsers &&chatUsers[chat.id])
-                    p.chat_users= chatUsers[chat.id].join(', ')
+                //- if (chatsUsers && chatsUsers[chat.id])
+                p.chat_users= chatsUsers[chat.id]
         div.chat_options
-            button.link.link_red Убавить
-            button.link Добавить
+            button.link.link_red#remove-user Убавить
+            button.link#add-user Добавить
     section.chat_body
         if messages
             each message in messages
@@ -19,3 +19,5 @@ if chat
         button.chat_add-attachment
         textarea.chat_input(placeholder="Написать сообщение…")
         button.chat_submit-message
+template(data-component="addUserModal")
+template(data-component="removeUserModal")

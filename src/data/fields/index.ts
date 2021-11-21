@@ -1,3 +1,4 @@
+import addUserFields from './add-user';
 import changeAvatarFields from './change-avatar';
 import loginFields from './login-fields';
 import changeInfoFields from './change-info';
@@ -11,6 +12,7 @@ export const data = {
   changePasswordFields,
   registrationFields,
   loginFields,
+  addUserFields,
 };
 
 export { changeInfoFields };
