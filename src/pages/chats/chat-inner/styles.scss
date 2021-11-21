@@ -59,7 +59,8 @@
         margin: 0;
         font-size: 16px;
         flex-shrink: 0;
-        & > * {
+
+        &>* {
             margin-left: 16px;
         }
     }
@@ -82,7 +83,7 @@
         box-shadow: 0 4px 4px rgb(0 0 0 / 10%);
         border-radius: 10px;
         max-width: 420px;
-        min-width: 45%;
+        width: fit-content;
         padding: 10px 12px;
         display: flex;
         align-items: flex-end;
@@ -91,7 +92,9 @@
 
         &_user {
             background-color: $sky-blue-overlay-darker;
-            align-self: flex-end;
+            @media (max-width: 1199px) {
+                align-self: flex-end;
+            }
         }
 
         &_content {
