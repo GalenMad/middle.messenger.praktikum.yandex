@@ -12,6 +12,7 @@ main.chats
                 each chat in chats
                     button.chat-item(id=chat.id)
                         img.chat-item_avatar(src=chat.avatar, alt=chat.title)
+                        //- TODO: Рефактор раскладки
                         div.chat-item_body
                             h3.chat-item_name= chat.title
                             if chat.last_message
