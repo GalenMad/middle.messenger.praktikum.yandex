@@ -41,7 +41,38 @@ interface FormField {
   validators: Function[];
 }
 
+function formatDate(date) {
+  const diff = new Date() - date;
+
+  if (diff < 1000) {
+    return 'прямо сейчас';
+  }
+
+  const sec = Math.floor(diff / 1000);
+
+  if (sec < 60) {
+    return `${sec} сек. назад`;
+  }
+
+  const min = Math.floor(diff / 60000);
+  if (min < 60) {
+    return `${min} мин. назад`;
+  }
+
+  let d = date;
+  d = [
+    `0${d.getDate()}`,
+    `0${d.getMonth() + 1}`,
+    `${d.getFullYear()}`,
+    `0${d.getHours()}`,
+    `0${d.getMinutes()}`,
+  ].map((component) => component.slice(-2));
+
+  return `${d.slice(0, 3).join('.')} ${d.slice(3).join(':')}`;
+}
+
 interface GlobalStore {
+  messages: { [index: number]: {}[] };
   activeSocket: WebSocket;
   sockets: { [index: number]: WebSocket };
   isAuthorized: boolean;
@@ -80,6 +111,7 @@ const store: GlobalStore = makeProxy({
   activeChat: null,
   chatsUsers: {},
   sockets: {},
+  messages: {},
   activeSocket: null,
   changeInfoFields: null,
   ...data,
@@ -127,6 +159,10 @@ export const mutations = {
   setUserChats: (chats: ChatItem[]) => {
     store.chatList = chats.map((chat) => {
       chat.avatar = chat.avatar ? RESOURCES_HOST + chat.avatar : defaultAvatar;
+      if (chat.last_message) {
+        const { time } = chat.last_message;
+        chat.last_message.time = formatDate(new Date(time));
+      }
       return chat;
     });
 
@@ -135,21 +171,35 @@ export const mutations = {
       mutations.setActiveChat(id);
     }
   },
-  setActiveChat: (id: number | string) => {
+  setActiveChat: (id: number) => {
     const newActiveChat = store.chatList.find((chat) => chat.id === Number(id));
-    if (newActiveChat) store.activeChat = newActiveChat;
+    if (newActiveChat) {
+      store.activeChat = newActiveChat;
+      store.activeSocket = store.sockets[id];
+    }
   },
-  setActiveSocket: (id: number) => {
-    store.activeSocket = store.sockets[id];
+  addSocket: (id: number, socket: WebSocket) => {
+    store.sockets[id] = socket;
+  },
+  removeSocket: (id: number) => {
+    delete store.sockets[id];
   },
   setChatUsers: (id: number, users: UserInfo[]) => {
     const usersNames = users.map((user: UserInfo) => user.display_name || user.login);
     store.chatsUsers[id] = usersNames;
     store.chatsUsers = { ...store.chatsUsers };
   },
+  setMessages: (id: number, list: []) => {
+    store.messages[id] = list;
+  },
+  addMessage: (id: number, message: {}) => {
+    store.messages[id].push(message);
+  },
 };
 
+// TODO: Может обозвать не геттерами?
 export const getters = {
-  checkSocket: (id: number) => store.sockets[id] && store.sockets[id].readyState === 1,
+  checkSocket: (id: number) => store.sockets[id] && store.sockets[id]?.readyState === 1,
   isAuthorized: () => store.isAuthorized,
+  userId: () => store.userInfo.id,
 };

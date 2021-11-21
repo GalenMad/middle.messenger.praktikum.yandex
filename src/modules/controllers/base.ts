@@ -10,6 +10,7 @@ export default class BaseController {
   getters: {
     checkSocket: (id: number) => boolean;
     isAuthorized: () => boolean;
+    userId: () => number;
   };
 
   mutations: {
@@ -17,7 +18,11 @@ export default class BaseController {
     setUserInfo: (info: UserInfo) => void;
     setUserChats: (chats: ChatItem[]) => void;
     setChatUsers: (id: number, users: UserInfo[]) => void;
-    setActiveChat: (id: number | string) => void;
+    setActiveChat: (id: number) => void;
+    setMessages: (id: number, list: {}[]) => void;
+    addMessage: (id: number, list: {}[]) => void;
+    addSocket: (id: number, socket: WebSocket) => void;
+    removeSocket: (id: number) => void;
   };
 
   loadingModal: LoadingModalController;
