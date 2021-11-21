@@ -13,7 +13,6 @@ export class ChatsAPI extends ChatsBaseAPI {
     return this.apiInstance.get('/', { data }).then((res) => res);
   }
 
-  // TODO: Создание чата точно апдейт?
   async update(data: { title: string }): Promise<RequestResponse> {
     const { headers } = this;
     return this.apiInstance.post('/', { data, headers }).then((res) => res);
