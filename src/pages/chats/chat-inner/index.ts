@@ -45,9 +45,16 @@ export default class ChatInner extends Block {
   }
 
   componentDidMount() {
-    // TODO: Перенести слушатели после обновления жизненного цикла
+    // TODO: Перенести и рефакторить слушатели после обновления жизненного цикла
     const input = this.element.querySelector('.chat_input');
     const submit = this.element.querySelector('.chat_submit-message');
+
+    const keydownHandler = (evt) => {
+      if (evt.key === 'Enter') {
+        submit.click();
+      }
+    };
+
     if (input && submit) {
       input.addEventListener('input', ({ target }) => {
         const value = target.value.trim();
@@ -56,6 +63,14 @@ export default class ChatInner extends Block {
         } else {
           submit.setAttribute('disabled', 'disabled');
         }
+      });
+
+      input.addEventListener('focus', () => {
+        document.addEventListener('keydown', keydownHandler);
+      });
+
+      input.addEventListener('blur', () => {
+        document.removeEventListener('keydown', keydownHandler);
       });
 
       submit.addEventListener('click', () => {

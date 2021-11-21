@@ -13,14 +13,14 @@ if chat
         if messages[chat.id]
             each message in messages[chat.id]
                 article(class= userId !== message.user_id ? 'message' : 'message message_user')
-                    span.message_content= message.content
+                    pre.message_content= message.content
                     span.message_time= message.time
                     if userId !== message.user_id
                         span.message_time= chatsUsers[chat.id][message.user_id]
-    section.chat_footer
+    div.chat_footer
         button.chat_add-attachment
         textarea.chat_input(placeholder="Написать сообщение…")
         div.chat_submit-holder
-            button.chat_submit-message(disabled)
+            button.chat_submit-message(type="submit" disabled)
 template(data-component="addUserModal")
 template(data-component="removeUserModal")
