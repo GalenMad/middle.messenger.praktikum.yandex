@@ -7,33 +7,15 @@ import ChatsController from '../../../modules/controllers/chats';
 
 const chatsController = new ChatsController();
 
-const createAddModal = () => {
+const createModal = (props: { button: string, title: string }, callback: Function) => {
   const formProps = {
-    buttonText: 'Добавить',
-    title: 'Добавить пользователя',
-    submitCallback: (data) => {
+    buttonText: props.button,
+    title: props.title,
+    submitCallback: (data: { login: string }) => {
       const { login } = data;
       const { id } = form.props.chat;
+      callback(login, id);
       modal.hide();
-      console.log(login, id);
-      chatsController.addUserByLogin(login, id);
-    },
-  };
-
-  const form = new Form(formProps, { fields: 'addUserFields', chat: 'activeChat' });
-  const modal = new ModalWrapper({ content: form });
-  return modal;
-};
-
-const createRemoveModal = () => {
-  const formProps = {
-    buttonText: 'Удалить',
-    title: 'Удалить пользователя',
-    submitCallback: (data) => {
-      const { login } = data;
-      const { id } = form.props.chat;
-      modal.hide();
-      chatsController.removeUserByLogin(login, id);
     },
   };
 
@@ -45,8 +27,8 @@ const createRemoveModal = () => {
 export default class ChatInner extends Block {
   constructor(props?: { [key: string]: any }) {
     const attributes = { class: 'chat' };
-    const addUserModal = createAddModal();
-    const removeUserModal = createRemoveModal();
+    const addUserModal = createModal({ title: 'Добавить пользователя', button: 'Добавить' }, chatsController.addUserByLogin.bind(chatsController));
+    const removeUserModal = createModal({ title: 'Удалить пользователя', button: 'Удалить' }, chatsController.removeUserByLogin.bind(chatsController));
     const selectors = { chat: 'activeChat', chatsUsers: 'chatsUsers' };
     const events = [{
       type: 'click',
