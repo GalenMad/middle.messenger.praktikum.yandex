@@ -23,7 +23,7 @@ const createNewChatModal = () => {
   return modal;
 };
 
-// TODO: Добавить в доку инфо про stopPropaganation
+// TODO: Добавить в доку инфо про stopPropaganation и отслеживание ссылок
 // TODO: Chat Item в отдельный компонент, чтобы не возиться с атрибутами
 
 export default class Page extends Block {
@@ -37,7 +37,7 @@ export default class Page extends Block {
     }, {
       type: 'click',
       cb: (evt: Event) => {
-        if (evt.path.some((elem: HTMLElement) => elem.classList && elem.classList.contains('chat-item'))) {
+        if (evt.path && evt.path.some((elem: HTMLElement) => elem.classList && elem.classList.contains('chat-item'))) {
           const chatItemId = evt.path.find((elem: HTMLElement) => elem.classList.contains('chat-item')).id;
           chatsController.setActiveChat(chatItemId);
         }

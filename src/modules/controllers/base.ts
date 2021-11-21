@@ -1,5 +1,5 @@
 import Router from '../router';
-import { mutations, get } from '../store';
+import { mutations, getters } from '../store';
 import LoadingModalController from './loading-modal';
 import ErrorModalController from './error-modal';
 import SuccessModalController from './success-modal';
@@ -7,14 +7,23 @@ import SuccessModalController from './success-modal';
 export default class BaseController {
   router: typeof Router;
 
-  getAuthorizationStatus: () => boolean;
+  getters: {
+    checkSocket: (id: number) => boolean;
+    isAuthorized: () => boolean;
+    userId: () => number;
+  };
 
   mutations: {
     setAuthorizationStatus: (status: boolean) => void;
     setUserInfo: (info: UserInfo) => void;
     setUserChats: (chats: ChatItem[]) => void;
     setChatUsers: (id: number, users: UserInfo[]) => void;
-    setActiveChat: (id: number | string) => void;
+    setActiveChat: (id: number) => void;
+    getActiveSocket: () => WebSocket;
+    setMessages: (id: number, list: {}[]) => void;
+    addMessage: (id: number, list: {}[]) => void;
+    addSocket: (id: number, socket: WebSocket) => void;
+    removeSocket: (id: number) => void;
   };
 
   loadingModal: LoadingModalController;
@@ -26,7 +35,7 @@ export default class BaseController {
   constructor() {
     this.router = Router;
     this.mutations = mutations;
-    this.getAuthorizationStatus = () => get('isAuthorized');
+    this.getters = getters;
     this.loadingModal = new LoadingModalController();
     this.errorModal = new ErrorModalController();
     this.successModal = new SuccessModalController();

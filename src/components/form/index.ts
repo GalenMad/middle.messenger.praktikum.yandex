@@ -43,7 +43,6 @@ class Form extends Block {
           this.element.reset();
         }
       },
-      selector: 'form',
       type: 'submit',
     }];
 

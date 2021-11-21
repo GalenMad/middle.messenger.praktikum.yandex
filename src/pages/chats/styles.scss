@@ -11,7 +11,7 @@
   position: relative;
 }
 
-// TODO: Попробовать реализовать всё одной хитрой grid-раскладкой
+// TODO: Попробовать реализовать всё одной хитрой grid-раскладкой + адаптив
 .chats-aside {
   background-color: $base-dark-overlay;
   position: relative;
@@ -152,6 +152,7 @@
     margin: 0;
     font-size: 14px;
     line-height: 1.4;
+    text-align: left;
   }
 
   &_details {

@@ -10,7 +10,7 @@ import './styles.scss';
 const authController = new AuthController();
 const userController = new UserController();
 
-// TODO: Создать единую обёртку с логиков для форм в модалках
+// TODO: Создать единую обёртку с логиков для форм в модалках (одна модалка на всё)
 const createFormModal = (title: string, fieldsSelector: string, callback: Function) => {
   const props = {
     buttonText: 'Отправить',

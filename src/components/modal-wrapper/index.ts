@@ -11,16 +11,17 @@ export default class ModalWrapper extends Block {
 
   addedKeydownHandler: Function;
 
+  classForClose: string[];
+
   constructor({ content, fixed = false, hideCallback = null }) {
     const attributes = { class: 'modal' };
     super('div', { attributes, fixed, hideCallback }, { content });
     this.isOpen = false;
+    this.classForClose = ['.close-button', '.modal', '.modal-dialog'];
   }
 
-  clickHandler(evt) {
-    evt.stopPropagation();
-    const closeTrigger = ['close-button', 'modal'].some((cls: string) => evt.target.classList.contains(cls));
-    if (closeTrigger) {
+  clickHandler({ target }) {
+    if (this.classForClose.some((cls: string) => target.matches(cls))) {
       this.hide();
     }
   }

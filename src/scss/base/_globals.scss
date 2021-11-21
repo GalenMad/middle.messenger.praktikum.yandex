@@ -51,6 +51,11 @@ p {
   margin-bottom: 0.8em;
 }
 
+pre {
+  white-space: break-spaces;
+  margin: 0;
+}
+
 .visually-hidden,
 .visually-hidden-focusable:not(:focus):not(:focus-within) {
   position: absolute !important;

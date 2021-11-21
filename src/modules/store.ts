@@ -41,7 +41,41 @@ interface FormField {
   validators: Function[];
 }
 
+// TODO: Расширить форматирование дат
+function formatDate(date) {
+  const diff = new Date() - date;
+
+  if (diff < 1000) {
+    return 'прямо сейчас';
+  }
+
+  const sec = Math.floor(diff / 1000);
+
+  if (sec < 60) {
+    return `${sec} сек. назад`;
+  }
+
+  const min = Math.floor(diff / 60000);
+  if (min < 60) {
+    return `${min} мин. назад`;
+  }
+
+  let d = date;
+  d = [
+    `0${d.getDate()}`,
+    `0${d.getMonth() + 1}`,
+    `${d.getFullYear()}`,
+    `0${d.getHours()}`,
+    `0${d.getMinutes()}`,
+  ].map((component) => component.slice(-2));
+
+  return `${d.slice(0, 3).join('.')} ${d.slice(3).join(':')}`;
+}
+
 interface GlobalStore {
+  messages: { [index: number]: {}[] };
+  activeSocket: WebSocket;
+  sockets: { [index: number]: WebSocket };
   isAuthorized: boolean;
   activeChat: ChatItem;
   chatList: ChatItem[];
@@ -77,9 +111,14 @@ const store: GlobalStore = makeProxy({
   chatList: {},
   activeChat: null,
   chatsUsers: {},
+  sockets: {},
+  messages: {},
+  activeSocket: null,
   changeInfoFields: null,
   ...data,
 });
+
+// TODO: Сохранять значения инпутов в чате
 
 window.store = store;
 
@@ -121,6 +160,10 @@ export const mutations = {
   setUserChats: (chats: ChatItem[]) => {
     store.chatList = chats.map((chat) => {
       chat.avatar = chat.avatar ? RESOURCES_HOST + chat.avatar : defaultAvatar;
+      if (chat.last_message) {
+        const { time } = chat.last_message;
+        chat.last_message.time = formatDate(new Date(time));
+      }
       return chat;
     });
 
@@ -129,13 +172,46 @@ export const mutations = {
       mutations.setActiveChat(id);
     }
   },
-  setActiveChat: (id: number | string) => {
+  setActiveChat: (id: number) => {
     const newActiveChat = store.chatList.find((chat) => chat.id === Number(id));
-    if (newActiveChat) store.activeChat = newActiveChat;
+    if (newActiveChat) {
+      store.activeChat = newActiveChat;
+      store.activeSocket = store.sockets[id];
+    }
+  },
+  addSocket: (id: number, socket: WebSocket) => {
+    store.sockets[id] = socket;
+  },
+  removeSocket: (id: number) => {
+    delete store.sockets[id];
   },
   setChatUsers: (id: number, users: UserInfo[]) => {
-    const usersNames = users.map((user: UserInfo) => user.display_name || user.login);
+    const userNames = {};
+    users.forEach((user: UserInfo) => {
+      userNames[user.id] = user.display_name || user.login;
+    });
+    store.chatsUsers[id] = userNames;
     store.chatsUsers = { ...store.chatsUsers };
-    store.chatsUsers[id] = usersNames;
   },
+  setMessages: (id: number, list: []) => {
+    list.forEach(item => {
+      item.time = formatDate(new Date(item.time));
+    });
+    store.messages[id] = list;
+    // TODO: Можно ли обойтись без реструктуризации?
+    store.messages = { ...store.messages };
+  },
+  addMessage: (id: number, message: {}) => {
+    message.time = formatDate(new Date(message.time));
+    store.messages[id].unshift(message);
+    store.messages = { ...store.messages };
+  },
+};
+
+// TODO: Может обозвать не геттерами?
+export const getters = {
+  checkSocket: (id: number) => store.sockets[id] && store.sockets[id]?.readyState === 1,
+  getActiveSocket: () => store.activeSocket,
+  isAuthorized: () => store.isAuthorized,
+  userId: () => store.userInfo.id,
 };

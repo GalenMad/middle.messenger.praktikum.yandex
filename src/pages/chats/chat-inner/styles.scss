@@ -59,7 +59,8 @@
         margin: 0;
         font-size: 16px;
         flex-shrink: 0;
-        & > * {
+
+        &>* {
             margin-left: 16px;
         }
     }
@@ -82,21 +83,25 @@
         box-shadow: 0 4px 4px rgb(0 0 0 / 10%);
         border-radius: 10px;
         max-width: 420px;
-        min-width: 45%;
+        width: fit-content;
         padding: 10px 12px;
         display: flex;
         align-items: flex-end;
         margin-bottom: 10px;
+        flex-direction: column;
 
         &_user {
             background-color: $sky-blue-overlay-darker;
-            align-self: flex-end;
+            @media (max-width: 1199px) {
+                align-self: flex-end;
+            }
         }
 
         &_content {
             font-family: $secondary-font-family;
             margin-bottom: 10px;
             color: white;
+            margin: 0 0 4px;
         }
 
         &_time {
@@ -142,11 +147,16 @@
         flex-grow: 1;
 
         // TODO: Настроить контроль высоты textarea
-        // TODO: Настроить аутлайны
+        // TODO: Настроить аутлайны (глобально для всех контролов)
         &:hover,
         &:focus {
             outline: 0;
         }
+    }
+
+    &_submit-holder {
+        width: 64px;
+        height: 100%;
     }
 
     &_submit-message {
@@ -157,5 +167,9 @@
         background-size: 22px;
         background-repeat: no-repeat;
         background-position: center;
+
+        &:disabled {
+            display: none;
+        }
     }
 }

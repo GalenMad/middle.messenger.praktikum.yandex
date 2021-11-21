@@ -145,8 +145,8 @@ class Block {
       const fragment = this.stringToDocumentFragment(block);
       this.element.append(fragment);
     }
-    this._addEvents(this.props.events);
     this.replaceChildren();
+    this._addEvents(this.props.events);
     this._componentDidMount();
   }
 
@@ -160,14 +160,16 @@ class Block {
 
   _addEvents(events: PropsEvent[] = []) {
     events.forEach(({ type, selector, cb }) => {
-      const element = (selector && this._element.querySelector(selector)) || this._element;
+      const element = selector ? this._element.querySelector(selector) : this.element;
+      if (!element) return;
       element.addEventListener(type, cb);
     });
   }
 
   _removeEvents(events: PropsEvent[] = []) {
     events.forEach(({ type, selector, cb }) => {
-      const element = (selector && this._element.querySelector(selector)) || this._element;
+      const element = selector ? this._element.querySelector(selector) : this.element;
+      if (!element) return;
       element.addEventListener(type, cb);
     });
   }

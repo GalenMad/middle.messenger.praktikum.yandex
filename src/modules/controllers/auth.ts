@@ -13,7 +13,7 @@ export default class AuthController extends BaseController {
   async init() {
     this.loadingModal.show();
     await this.checkAuthorization();
-    this.router.start(this.getAuthorizationStatus);
+    this.router.start(this.getters.isAuthorized);
     this.loadingModal.hide();
   }
 
@@ -66,7 +66,7 @@ export default class AuthController extends BaseController {
   }
 
   // TODO: Как быть, если юзер почистит куки на страницах с чатами?
-  // TODO: Прикрутить ресет данных на разлогин
+  // TODO: Чистить стор при выходе
   async logout() {
     this.loadingModal.show();
     const response = await logoutAPI.request();

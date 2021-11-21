@@ -13,7 +13,6 @@ export class ChatsAPI extends ChatsBaseAPI {
     return this.apiInstance.get('/', { data }).then((res) => res);
   }
 
-  // TODO: Создание чата точно апдейт?
   async update(data: { title: string }): Promise<RequestResponse> {
     const { headers } = this;
     return this.apiInstance.post('/', { data, headers }).then((res) => res);
@@ -38,5 +37,11 @@ export class ChatsUsersAPI extends ChatsBaseAPI {
   async delete(data: { chatId: number, users: number[] }): Promise<RequestResponse> {
     const { headers } = this;
     return this.apiInstance.delete('/users', { data, headers }).then((res) => res);
+  }
+}
+
+export class ChatsTokenAPI extends ChatsBaseAPI {
+  async request(id: number): Promise<RequestResponse> {
+    return this.apiInstance.post(`/token/${id}`).then((res) => res);
   }
 }
