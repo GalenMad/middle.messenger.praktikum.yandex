@@ -8,8 +8,8 @@ const userSearchAPI = new UserSearchAPI();
 
 export default class ChatsController extends BaseController {
   async setActiveChat(chatId: number) {
+    // TODO: Придумать как отслеживать, чтобы не дёргать каждый раз подгрузку
     await this.getUsers(chatId);
-    // TODO: Придумать как отслеживать, чтобы не дёргать каждый раз
     this.mutations.setActiveChat(chatId);
   }
 

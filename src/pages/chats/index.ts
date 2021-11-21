@@ -23,7 +23,7 @@ const createNewChatModal = () => {
   return modal;
 };
 
-// TODO: Добавить в доку инфо про stopPropaganation
+// TODO: Добавить в доку инфо про stopPropaganation и отслеживание ссылок
 // TODO: Chat Item в отдельный компонент, чтобы не возиться с атрибутами
 
 export default class Page extends Block {

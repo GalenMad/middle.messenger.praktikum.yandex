@@ -66,6 +66,7 @@ export default class AuthController extends BaseController {
   }
 
   // TODO: Как быть, если юзер почистит куки на страницах с чатами?
+  // TODO: Чистить стор при выходе
   async logout() {
     this.loadingModal.show();
     const response = await logoutAPI.request();
