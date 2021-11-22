@@ -12,7 +12,7 @@ interface PropsAttributes {
   [key: string]: string;
 }
 interface Props {
-  [key: string]: unknown;
+  [key: string]: Function | unknown;
   events?: PropsEvent[];
   attributes?: PropsAttributes;
 }
