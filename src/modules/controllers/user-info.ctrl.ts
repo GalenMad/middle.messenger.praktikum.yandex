@@ -1,5 +1,5 @@
 import BaseController from './base.ctrl';
-import { UserInfoAPI, UserPasswordAPI, UserAvatarAPI } from '../api/user';
+import { UserInfoAPI, UserPasswordAPI, UserAvatarAPI } from '../api/user.api';
 
 const userInfoAPI = new UserInfoAPI();
 const userPasswordAPI = new UserPasswordAPI();

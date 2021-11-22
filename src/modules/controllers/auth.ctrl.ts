@@ -1,5 +1,5 @@
 import BaseController from './base.ctrl';
-import { LoginAPI, LogoutAPI, UserInfoAPI } from '../api/auth';
+import { LoginAPI, LogoutAPI, UserInfoAPI } from '../api/auth.api';
 import ChatsController from './chats.ctrl';
 
 // TODO: К вопросу ниже, нужны ли эти консты здесь

@@ -1,7 +1,7 @@
 import './scss/styles.scss';
 import pages from './pages';
 import Router from './modules/router';
-import AuthController from './modules/controllers/auth';
+import AuthController from './modules/controllers/auth.ctrl';
 
 // TODO: Прикрутить алиасы когда будет вебпак
 

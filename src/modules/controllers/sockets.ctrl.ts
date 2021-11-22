@@ -1,5 +1,5 @@
 import BaseController from './base.ctrl';
-import { ChatsTokenAPI } from '../api/chats';
+import { ChatsTokenAPI } from '../api/chats.api';
 
 // TODO: Разделить логику в этом модуле
 const chatsTokenAPI = new ChatsTokenAPI();

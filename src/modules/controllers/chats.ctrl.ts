@@ -1,6 +1,6 @@
 import BaseController from './base.ctrl';
-import { ChatsAPI, ChatsUsersAPI } from '../api/chats';
-import { UserSearchAPI } from '../api/user';
+import { ChatsAPI, ChatsUsersAPI } from '../api/chats.api';
+import { UserSearchAPI } from '../api/user.api';
 
 const chatsAPI = new ChatsAPI();
 const chatsUsersAPI = new ChatsUsersAPI();
