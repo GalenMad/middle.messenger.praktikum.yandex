@@ -36,6 +36,7 @@ export default class AuthController extends BaseController {
     if (response.data && typeof response.data !== 'string') {
       this.mutations.setUserInfo(response.data);
       await chatsController.setUserChatList();
+      chatsController.launchUpdateChatListTimeout();
     }
   }
 

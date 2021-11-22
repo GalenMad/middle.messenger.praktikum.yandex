@@ -132,6 +132,7 @@ export const mutations = {
   setAuthorizationStatus: (status: boolean) => {
     store.isAuthorized = status;
   },
+  // TODO: Обновлять имя юзера также и в чатах других пользователей
   setUserInfo: (info: UserInfo) => {
     info.avatar = info.avatar ? RESOURCES_HOST + info.avatar : defaultAvatar;
     store.userInfo = info;
@@ -149,9 +150,14 @@ export const mutations = {
       return chat;
     });
 
+    // TODO: Нормальная проверка на существование в активном чате
     if (store.activeChat) {
       const { id } = store.activeChat;
-      mutations.setActiveChat(id);
+      if (chats.every((chat) => chat.id !== id)) {
+        store.activeChat = null;
+        // TODO: Закрывать сокет и выводить сообщение, мол, вас удалили
+        store.activeSocket = null;
+      }
     }
   },
   setActiveChat: (id: number) => {

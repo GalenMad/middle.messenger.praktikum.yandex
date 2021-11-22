@@ -6,11 +6,22 @@ const chatsAPI = new ChatsAPI();
 const chatsUsersAPI = new ChatsUsersAPI();
 const userSearchAPI = new UserSearchAPI();
 
+function delay() {
+  return new Promise(resolve => setTimeout(resolve, 2000));
+}
+
 export default class ChatsController extends BaseController {
   async setActiveChat(chatId: number) {
     // TODO: Кэшировать юзеров, обновлять их слушая сокет (Но сервер не оповещает о них, кстати)
     await this.getUsers(chatId);
     this.mutations.setActiveChat(chatId);
+  }
+
+  // TODO: Ужасное решение, но пока нет идей как сделать лучше
+  async launchUpdateChatListTimeout() {
+    await delay();
+    await this.setUserChatList();
+    this.launchUpdateChatListTimeout();
   }
 
   async setUserChatList(data?: { offset: number, limit: number, title: string }) {
