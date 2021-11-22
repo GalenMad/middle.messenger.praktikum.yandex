@@ -37,6 +37,7 @@ export default class FormGroup extends Block {
         this.checkValidity();
       });
     } else {
+      // eslint-disable-next-line no-console
       input?.addEventListener('input', () => console.info('Загружено:', input.value));
     }
   }
