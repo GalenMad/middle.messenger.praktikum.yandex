@@ -43,30 +43,12 @@ interface FormField {
 
 // TODO: Расширить форматирование дат
 function formatDate(date) {
-  const diff = new Date() - date;
-
-  if (diff < 1000) {
-    return 'прямо сейчас';
-  }
-
-  const sec = Math.floor(diff / 1000);
-
-  if (sec < 60) {
-    return `${sec} сек. назад`;
-  }
-
-  const min = Math.floor(diff / 60000);
-  if (min < 60) {
-    return `${min} мин. назад`;
-  }
-
-  let d = date;
-  d = [
-    `0${d.getDate()}`,
-    `0${d.getMonth() + 1}`,
-    `${d.getFullYear()}`,
-    `0${d.getHours()}`,
-    `0${d.getMinutes()}`,
+  const d = [
+    `0${date.getDate()}`,
+    `0${date.getMonth() + 1}`,
+    `${date.getFullYear()}`,
+    `0${date.getHours()}`,
+    `0${date.getMinutes()}`,
   ].map((component) => component.slice(-2));
 
   return `${d.slice(0, 3).join('.')} ${d.slice(3).join(':')}`;
@@ -150,6 +132,7 @@ export const mutations = {
   setAuthorizationStatus: (status: boolean) => {
     store.isAuthorized = status;
   },
+  // TODO: Обновлять имя юзера также и в чатах других пользователей
   setUserInfo: (info: UserInfo) => {
     info.avatar = info.avatar ? RESOURCES_HOST + info.avatar : defaultAvatar;
     store.userInfo = info;
@@ -167,17 +150,24 @@ export const mutations = {
       return chat;
     });
 
+    // TODO: Нормальная проверка на существование в активном чате
     if (store.activeChat) {
       const { id } = store.activeChat;
-      mutations.setActiveChat(id);
+      if (chats.every((chat) => chat.id !== id)) {
+        store.activeChat = null;
+        // TODO: Закрывать сокет и выводить сообщение, мол, вас удалили
+        store.activeSocket = null;
+      }
     }
   },
   setActiveChat: (id: number) => {
     const newActiveChat = store.chatList.find((chat) => chat.id === Number(id));
     if (newActiveChat) {
       store.activeChat = newActiveChat;
-      store.activeSocket = store.sockets[id];
     }
+  },
+  setActiveSocket: (id: number) => {
+    store.activeSocket = store.sockets[id];
   },
   addSocket: (id: number, socket: WebSocket) => {
     store.sockets[id] = socket;

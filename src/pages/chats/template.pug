@@ -5,28 +5,16 @@ main.chats
             a(href="/profile").profile-link
                 img(src=avatar, alt="Вы").profile-link_avatar
                 div.icon-holder
-            input(type="text" name="search").search-input
+            //- input(type="text" name="search").search-input
             button.button#create-chat Создать чат
-        section.chats-aside_tape
-            if chats
-                each chat in chats
-                    button.chat-item(id=chat.id)
-                        img.chat-item_avatar(src=chat.avatar, alt=chat.title)
-                        //- TODO: Рефактор раскладки
-                        div.chat-item_body
-                            h3.chat-item_name= chat.title
-                            if chat.last_message
-                                p.chat-item_teaser= chat.last_message.content
-                        div.chat-item_details
-                            if chat.last_message
-                                span.chat-item_time= chat.last_message.time
-                            if chat.unread_count > 0
-                                span.chat-item_message-counter= chat.unread_count
+        template(data-component="chatTape")
     section.chat-feed
-        if activeChat
-            div.chat
-            template(data-component="chatInner")
-        else
-            div.chat-feed_empty
-                span.chat-feed_plug У тебя тут чё, реально одни Андреи?
-    template(data-component="createChatModal")
+      if activeChat
+        .chat
+          template(data-component="chatHeader")
+          template(data-component="chatBody")
+          template(data-component="chatFooter")
+      else
+        div.chat-feed_empty
+            span.chat-feed_plug У тебя тут чё, реально одни костыли и велосипеды?
+template(data-component="createChatModal")

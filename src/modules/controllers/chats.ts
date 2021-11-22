@@ -1,71 +1,30 @@
 import BaseController from './base';
-import { ChatsAPI, ChatsUsersAPI, ChatsTokenAPI } from '../api/chats';
+import { ChatsAPI, ChatsUsersAPI } from '../api/chats';
 import { UserSearchAPI } from '../api/user';
-
-// TODO: Разделить логику в этом модуле, выглядит как помойка
 
 const chatsAPI = new ChatsAPI();
 const chatsUsersAPI = new ChatsUsersAPI();
 const userSearchAPI = new UserSearchAPI();
-const chatsTokenAPI = new ChatsTokenAPI();
+
+function delay() {
+  return new Promise(resolve => setTimeout(resolve, 2000));
+}
 
 export default class ChatsController extends BaseController {
   async setActiveChat(chatId: number) {
-    // TODO: Кэшировать юзеров, обновлять их слушая сокет
-
-    if (!this.getters.checkSocket(chatId)) {
-      await this.createSocket(chatId);
-    }
+    // TODO: Кэшировать юзеров, обновлять их слушая сокет (Но сервер не оповещает о них, кстати)
     await this.getUsers(chatId);
     this.mutations.setActiveChat(chatId);
   }
 
-  async createSocket(chatId: number) {
-    const userId = this.getters.userId();
-    const response = await chatsTokenAPI.request(chatId);
-    if (response.error) {
-      this.throwError(response);
-    }
-
-    const socket = new WebSocket(`wss://ya-praktikum.tech/ws/chats/${userId}/${chatId}/${response.data.token}`);
-    this.mutations.addSocket(chatId, socket);
-
-    // TODO: Подгрузка большего числа сообщений на скролл
-    socket.onopen = () => {
-      socket.send(JSON.stringify({
-        content: '0',
-        type: 'get old',
-      }));
-
-      (function ping() {
-        setTimeout(() => {
-          socket.send(JSON.stringify({ type: 'ping' }));
-          ping();
-        }, 3000);
-      }());
-    };
-
-    socket.onmessage = (evt) => {
-      const data = JSON.parse(evt.data);
-      // TODO: Как-то более адекватно получать список сообщений
-      if (Array.isArray(data)) {
-        this.mutations.setMessages(chatId, data);
-      } else if (data.type === 'message') {
-        this.mutations.addMessage(chatId, data);
-      }
-    };
-
-    // TODO: Обработка обрыва во время активности чата
-    socket.onclose = () => {
-      this.mutations.removeSocket(chatId);
-    };
-
-    socket.onerror = ({ message }) => {
-      this.throwError({ status: `Ошибка в сокете ${chatId}`, data: message });
-    };
+  // TODO: Ужасное решение, но пока нет идей как сделать лучше
+  async launchUpdateChatListTimeout() {
+    await delay();
+    await this.setUserChatList();
+    this.launchUpdateChatListTimeout();
   }
 
-  async getChats(data?: { offset: number, limit: number, title: string }) {
+  async setUserChatList(data?: { offset: number, limit: number, title: string }) {
     const response = await chatsAPI.request(data);
     if (response.error) {
       this.throwError(response);
@@ -82,8 +41,7 @@ export default class ChatsController extends BaseController {
       this.throwError(response);
     }
 
-    await this.getChats();
-    this.successModal.show();
+    await this.setUserChatList();
   }
 
   async getUsers(chatId: number) {
@@ -108,16 +66,7 @@ export default class ChatsController extends BaseController {
     }
   }
 
-  async sendMessage(content: string) {
-    const socket = this.getters.getActiveSocket();
-    socket.send(JSON.stringify({
-      content,
-      type: 'message',
-    }));
-  }
-
   // TODO: Удалять нужно через локальный поиск логинов + доп. проверка через сервер
-  // TODO: Выкатить геттеры для стора
   async removeUserByLogin(login: string, chatId: number) {
     const response = await userSearchAPI.request({ login });
     if (response.error) {

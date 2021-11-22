@@ -22,19 +22,8 @@
     padding: 16px;
     box-shadow: -2px 5px 4px rgb(0 0 0 / 5%);
     display: grid;
-    grid-template: 48px 48px / 80px 1fr;
+    grid-template: 48px / 80px 1fr;
     grid-gap: 10px;
-
-    .button {
-      grid-column: 1 / 3;
-    }
-  }
-
-  &_tape {
-    // TODO: Сделать фикс высоты
-    max-height: calc(100vh - 140px);
-    overflow-y: auto;
-    padding: 8px 1px 0 0;
   }
 }
 
@@ -99,90 +88,6 @@
 
   &:focus {
     opacity: 100%;
-  }
-}
-
-.chat-item {
-  display: flex;
-  align-items: stretch;
-  padding: 16px;
-  border-bottom: 1px solid $grey-filler;
-  width: 100%;
-  color: white;
-  transition: 0.2s ease-in background-color;
-
-  &:focus,
-  &:hover {
-    background-color: $sky-blue-overlay-darker;
-  }
-
-  &:last-of-type {
-    border-bottom-color: transparent;
-  }
-
-  &_avatar {
-    width: 68px;
-    height: 68px;
-    margin-right: 12px;
-  }
-
-  &_body {
-    padding-top: 4px;
-    max-height: 68px;
-    flex-grow: 1;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  &_name {
-    margin: 0;
-    margin-bottom: 9px;
-    font-weight: 600;
-    font-size: 16px;
-    line-height: 13px;
-  }
-
-  &_teaser {
-    font-family: $secondary-font-family;
-    font-weight: 400;
-    letter-spacing: 0.6px;
-    color: $base-grey;
-    margin: 0;
-    font-size: 14px;
-    line-height: 1.4;
-    text-align: left;
-  }
-
-  &_details {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: flex-end;
-  }
-
-  &_time {
-    color: $grey-filler;
-    text-align: right;
-    font-family: $secondary-font-family;
-    font-weight: 500;
-    font-size: 12px;
-    letter-spacing: 0.6px;
-    line-height: 14px;
-  }
-
-  &_message-counter {
-    font-weight: 800;
-    font-size: 11px;
-    border-radius: 50px;
-    text-align: right;
-    background-color: $base-pineapple;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 4px 6px;
-    letter-spacing: 0.5px;
   }
 }
 

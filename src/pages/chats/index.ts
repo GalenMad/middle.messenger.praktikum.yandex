@@ -3,7 +3,10 @@ import compileTemplate from './template.pug';
 import './styles.scss';
 import Form from '../../components/form';
 import ModalWrapper from '../../components/modal-wrapper';
-import ChatInner from './chat-inner';
+import ChatFooter from './chat-footer';
+import ChatHeader from './chat-header';
+import ChatTape from './chat-tape';
+import ChatBody from './chat-body';
 import ChatsController from '../../modules/controllers/chats';
 
 const chatsController = new ChatsController();
@@ -27,24 +30,21 @@ const createNewChatModal = () => {
 // TODO: Chat Item в отдельный компонент, чтобы не возиться с атрибутами
 
 export default class Page extends Block {
-  constructor(props = {}) {
+  constructor() {
     const createChatModal = createNewChatModal();
-    const chatInner = new ChatInner();
+    const chatTape = new ChatTape();
+    const chatHeader = new ChatHeader();
+    const chatBody = new ChatBody();
+    const chatFooter = new ChatFooter();
     const events = [{
       type: 'click',
       selector: '#create-chat',
       cb: () => createChatModal.show(),
-    }, {
-      type: 'click',
-      cb: (evt: Event) => {
-        if (evt.path && evt.path.some((elem: HTMLElement) => elem.classList && elem.classList.contains('chat-item'))) {
-          const chatItemId = evt.path.find((elem: HTMLElement) => elem.classList.contains('chat-item')).id;
-          chatsController.setActiveChat(chatItemId);
-        }
-      },
     }];
-    const selectors = { avatar: 'userInfo.avatar', chats: 'chatList', activeChat: 'activeChat' };
-    super('div', { ...props, events }, { createChatModal, chatInner }, selectors);
+    const children = {
+      createChatModal, chatTape, chatHeader, chatBody, chatFooter,
+    };
+    super('div', { events }, children, { avatar: 'userInfo.avatar', activeChat: 'activeChat' });
   }
 
   render() {
