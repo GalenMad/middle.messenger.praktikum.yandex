@@ -28,8 +28,8 @@ class Router {
     this._rootQuery = rootQuery;
   }
 
-  use(pathname: string, block: unknown, props: {}, options: {}) {
-    const route = new Route(pathname, block, { rootQuery: this._rootQuery, ...props }, options);
+  use(pathname: string, block: unknown, options: {}) {
+    const route = new Route(pathname, block, { rootQuery: this._rootQuery }, options);
     this.routes.push(route);
     return this;
   }
