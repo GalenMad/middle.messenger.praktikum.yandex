@@ -103,8 +103,12 @@
 }
 
 .chat-item {
-  display: flex;
-  align-items: stretch;
+  display: grid;
+  grid-template-areas: 
+  "avatar header"
+  "avatar body";
+  grid-template-columns: 76px auto;
+  grid-template-rows: 26px 42px;
   padding: 16px;
   border-bottom: 1px solid $grey-filler;
   width: 100%;
@@ -120,28 +124,43 @@
     border-bottom-color: transparent;
   }
 
-  &_avatar {
-    width: 68px;
-    height: 68px;
-    margin-right: 12px;
+  &_header {
+    grid-area: header;
+    display: flex;
   }
 
   &_body {
-    padding-top: 4px;
-    max-height: 68px;
-    flex-grow: 1;
-    overflow: hidden;
+    grid-area: body;
     display: flex;
-    flex-direction: column;
-    align-items: flex-start;
+    max-height: 42px;
   }
 
-  &_name {
-    margin: 0;
-    margin-bottom: 9px;
+  &_avatar {
+    grid-area: avatar;
+    width: 68px;
+    height: 68px;
+  }
+
+  &_title {
+    text-align: left;
+    margin: 0 6px 0 0;
     font-weight: 600;
     font-size: 16px;
-    line-height: 13px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    width: 100%;
+  }
+
+  &_time {
+    margin: 4px 0 0;
+    flex-shrink: 0;
+    color: $grey-filler;
+    text-align: right;
+    font-family: $secondary-font-family;
+    font-weight: 500;
+    font-size: 12px;
+    letter-spacing: 0.6px;
   }
 
   &_teaser {
@@ -153,31 +172,19 @@
     font-size: 14px;
     line-height: 1.4;
     text-align: left;
-  }
-
-  &_details {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: flex-end;
-  }
-
-  &_time {
-    color: $grey-filler;
-    text-align: right;
-    font-family: $secondary-font-family;
-    font-weight: 500;
-    font-size: 12px;
-    letter-spacing: 0.6px;
-    line-height: 14px;
+    text-overflow: ellipsis;
+    overflow: hidden;
   }
 
   &_message-counter {
     font-weight: 800;
     font-size: 11px;
     border-radius: 50px;
-    text-align: right;
-    background-color: $base-pineapple;
+    background-color: #ff9600;
+    width: fit-content;
+    min-width: 20px;
+    height: fit-content;
+    align-self: flex-end;
     display: flex;
     align-items: center;
     justify-content: center;
