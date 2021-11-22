@@ -8,7 +8,7 @@ const FORM_TAG = 'form';
 
 class Form extends Block {
   get isValid() {
-    return this.formGroups.every((element) => element.isValid);
+    return this.formGroups.every((element: FormGroup) => element.isValid);
   }
 
   get formGroups() {
@@ -16,8 +16,8 @@ class Form extends Block {
   }
 
   get data(): { [key: string]: unknown } {
-    const data = {};
-    this.formGroups.forEach(({ name, value }) => { data[name] = value; });
+    const data: { [key: string]: unknown } = {};
+    this.formGroups.forEach((element: FormGroup) => { data[element.name] = element.value; });
     return data;
   }
 

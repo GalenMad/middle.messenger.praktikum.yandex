@@ -16,9 +16,8 @@ import AuthController from './modules/controllers/auth.ctrl';
 // Вариант 1 — не использовать ререндер для элементов с инпутами
 // Вариант 2 — при перерендере делать проверку на фокус у вложенного инпута
 
-// TODO: Линтинг
 // TODO: TS
 pages.forEach(({
-  block, path, props = {}, options = {},
-}) => Router.use(path, block, props, options));
+  block, path, options = {},
+}) => Router.use(path, block, options));
 new AuthController().init();

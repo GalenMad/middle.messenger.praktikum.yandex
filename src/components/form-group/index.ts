@@ -17,7 +17,7 @@ export default class FormGroup extends Block {
       || !this.props.validators.some((validator) => validator(this.value));
   }
 
-  get name() {
+  get name(): string {
     return this.props.name;
   }
 

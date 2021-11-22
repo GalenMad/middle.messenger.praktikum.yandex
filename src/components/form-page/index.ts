@@ -6,7 +6,7 @@ import './styles.scss';
 const FORM_PAGE_TAG = 'div';
 
 export default class FormPage extends Block {
-  constructor(pageProps, formProps, submitCallback, selectors = {}) {
+  constructor(pageProps, formProps, submitCallback: Function, selectors = {}) {
     const form = new Form({ ...formProps, submitCallback }, selectors);
     super(FORM_PAGE_TAG, { ...pageProps }, { form });
   }

@@ -26,10 +26,6 @@ interface ContentChildren {
 }
 
 class Block {
-  checkValidity(): void {
-    throw new Error('Method not implemented.');
-  }
-
   static MESSAGE_ACCESS_ERROR = 'Нет прав';
 
   _element: HTMLElement;
