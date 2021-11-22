@@ -1,9 +1,9 @@
 import Block from '../../../modules/block';
 import compileTemplate from './template.pug';
 import './styles.scss';
-import ChatsController from '../../../modules/controllers/chats';
+import SocketsController from '../../../modules/controllers/sockets.ctrl';
 
-const chatsController = new ChatsController();
+const socketsController = new SocketsController();
 
 export default class ChatFooter extends Block {
   constructor() {
@@ -16,6 +16,7 @@ export default class ChatFooter extends Block {
     const input = this.element.querySelector('.chat_input');
     const submit = this.element.querySelector('.chat_submit-message');
 
+    // TODO: Отслеживать доп. нажатия на Shift, Ctrl и прочие
     const keydownHandler = (evt) => {
       if (evt.key === 'Enter') {
         evt.preventDefault();
@@ -44,7 +45,7 @@ export default class ChatFooter extends Block {
       submit.addEventListener('click', () => {
         const value = input.value.trim();
         if (value) {
-          chatsController.sendMessage(value);
+          socketsController.sendMessage(value);
           input.value = '';
         }
       });

@@ -158,8 +158,10 @@ export const mutations = {
     const newActiveChat = store.chatList.find((chat) => chat.id === Number(id));
     if (newActiveChat) {
       store.activeChat = newActiveChat;
-      store.activeSocket = store.sockets[id];
     }
+  },
+  setActiveSocket: (id: number) => {
+    store.activeSocket = store.sockets[id];
   },
   addSocket: (id: number, socket: WebSocket) => {
     store.sockets[id] = socket;
