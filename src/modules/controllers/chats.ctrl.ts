@@ -19,9 +19,15 @@ export default class ChatsController extends BaseController {
 
   // TODO: Ужасное решение, но пока нет идей как сделать лучше
   async launchUpdateChatListTimeout() {
-    await delay();
-    await this.setUserChatList();
-    this.launchUpdateChatListTimeout();
+    if (this.getters.isAuthorized()) {
+      await delay();
+    }
+    if (this.getters.isAuthorized()) {
+      await this.setUserChatList();
+    }
+    if (this.getters.isAuthorized()) {
+      this.launchUpdateChatListTimeout();
+    }
   }
 
   async setUserChatList(data?: { offset: number, limit: number, title: string }) {
