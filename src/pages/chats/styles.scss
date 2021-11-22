@@ -186,10 +186,11 @@
     height: fit-content;
     align-self: flex-end;
     display: flex;
-    align-items: center;
     justify-content: center;
     padding: 4px 6px;
     letter-spacing: 0.5px;
+    margin-left: auto;
+    margin-top: 100%;
   }
 }
 
