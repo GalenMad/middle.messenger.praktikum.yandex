@@ -65,7 +65,7 @@ export default class ChatsController extends BaseController {
     };
   }
 
-  async getChats(data?: { offset: number, limit: number, title: string }) {
+  async setUserChatList(data?: { offset: number, limit: number, title: string }) {
     const response = await chatsAPI.request(data);
     if (response.error) {
       this.throwError(response);
@@ -82,7 +82,7 @@ export default class ChatsController extends BaseController {
       this.throwError(response);
     }
 
-    await this.getChats();
+    await this.setUserChatList();
   }
 
   async getUsers(chatId: number) {

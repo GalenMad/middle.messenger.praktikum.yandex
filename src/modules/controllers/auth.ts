@@ -35,7 +35,7 @@ export default class AuthController extends BaseController {
     // TODO: Кривоватая конструкция из-за требований TS
     if (response.data && typeof response.data !== 'string') {
       this.mutations.setUserInfo(response.data);
-      await chatsController.getChats();
+      await chatsController.setUserChatList();
     }
   }
 
