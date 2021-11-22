@@ -1,4 +1,4 @@
-import Block from '../../modules/block';
+import Block, { Props } from '../../modules/block';
 import compileTemplate from './template.pug';
 import './styles.scss';
 
@@ -6,22 +6,32 @@ const FORM_GROUP_CLASS = 'form-group';
 const FORM_GROUP_TAG = 'label';
 const VALIDATION_SELECTOR = '.validation';
 
+export interface FormField extends Props {
+  label: string,
+  id: string,
+  name: string,
+  value: string,
+  validators?: Array<(value: any) => boolean | string>;
+}
 export default class FormGroup extends Block {
+  props: FormField;
+
   get value(): string | File | null | undefined {
     const input = this.element.querySelector('input');
     return input && input.type === 'file' ? input.files && input.files[0] : input?.value;
   }
 
-  get isValid() {
+  get isValid(): boolean {
     // eslint-disable-next-line max-len
-    return !this.props.validators || !this.props.validators.some((validator: (value: any) => boolean) => validator(this.value));
+    return Array.isArray(this.props.validators) && !this.props.validators.some((validator) => validator(this.value));
   }
 
   get name(): string {
-    return this.props.name;
+    // TODO: Видимо, хреновая архитектура, если приходится такие проверки ставить
+    return (typeof this.props.name === 'string' && this.props.name) || 'empty';
   }
 
-  constructor(props) {
+  constructor(props: FormField) {
     const attributes = { ...props.attributes, class: FORM_GROUP_CLASS };
     super(FORM_GROUP_TAG, { ...props, attributes });
   }
@@ -51,17 +61,15 @@ export default class FormGroup extends Block {
 
   checkValidity() {
     const { validators } = this.props;
-    if (!validators) {
-      return;
-    }
-
-    const { value } = this;
-    const container: HTMLElement | null = this.element.querySelector(VALIDATION_SELECTOR);
-    for (let i: number = 0; i < validators.length; i += 1) {
-      const message = validators[i](value);
-      if (message && container) {
-        container.textContent = message;
-        break;
+    if (validators && Array.isArray(validators)) {
+      const { value } = this;
+      const container: HTMLElement | null = this.element.querySelector(VALIDATION_SELECTOR);
+      for (let i: number = 0; i < validators.length; i += 1) {
+        const message = validators[i](value);
+        if (typeof message === 'string' && container) {
+          container.textContent = message;
+          break;
+        }
       }
     }
   }

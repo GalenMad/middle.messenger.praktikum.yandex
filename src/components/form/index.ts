@@ -1,10 +1,15 @@
-import Block from '../../modules/block';
-import FormGroup from '../form-group';
+import Block, { Props } from '../../modules/block';
+import FormGroup, { FormField } from '../form-group';
 import compileTemplate from './template.pug';
 import './styles.scss';
 
 const FORM_CLASS = 'form';
 const FORM_TAG = 'form';
+
+export interface FormProps extends Props {
+  submitCallback: (data: { [key: string]: unknown }) => void;
+  fields: FormField[]
+}
 
 class Form extends Block {
   get isValid() {
@@ -21,12 +26,11 @@ class Form extends Block {
     return data;
   }
 
+  props: FormProps;
+
   // TODO: Добавить общую валидацию для формы
 
-  constructor(props: {
-    attributes?: { class?: string },
-    submitCallback: (data: { [key: string]: unknown }) => void;
-  }, selectors = {}) {
+  constructor(props: FormProps, selectors = {}) {
     // Конструкция ниже нужна для того, чтобы класс, заданный снаружи, был в приоритете
     const className = (props.attributes && props.attributes.class) || FORM_CLASS;
     const attributes = { ...props.attributes, class: className };
@@ -59,9 +63,9 @@ class Form extends Block {
 
   createFormGroups() {
     const formGroups: Record<string, FormGroup> = {};
-    const { fields = [] } = this.props;
+    const { fields } = this.props;
     if (fields) {
-      fields.forEach((field, index: number) => {
+      fields.forEach((field: FormField, index: number) => {
         const prop = `form-group-${index}`;
         formGroups[prop] = new FormGroup(field);
       });

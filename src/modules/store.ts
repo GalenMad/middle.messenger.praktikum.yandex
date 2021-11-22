@@ -38,7 +38,7 @@ interface FormField {
   name: string;
   type: string;
   value: string | number;
-  validators: Function[];
+  validators?: Array<(value: any) => boolean | string>;
 }
 
 // TODO: Расширить форматирование дат

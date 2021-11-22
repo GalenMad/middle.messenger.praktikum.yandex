@@ -3,7 +3,7 @@
 import { get, storeEvents } from './store';
 
 interface PropsEvent {
-  type: keyof ElementEventMap | string;
+  type: keyof ElementEventMap | string | [];
   selector?: string;
   cb: (this: Element, ev: Event) => any;
 }
@@ -11,8 +11,8 @@ interface PropsEvent {
 interface PropsAttributes {
   [key: string]: string;
 }
-interface Props {
-  [key: string]: Function | unknown;
+export interface Props {
+  [key: string]: Function | unknown | string;
   events?: PropsEvent[];
   attributes?: PropsAttributes;
 }
