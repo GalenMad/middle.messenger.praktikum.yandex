@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-use-before-define */
 import Block from '../../modules/block';
 import compileTemplate from './template.pug';
 import './styles.scss';

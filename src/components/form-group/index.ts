@@ -9,9 +9,7 @@ const VALIDATION_SELECTOR = '.validation';
 export default class FormGroup extends Block {
   get value() {
     const input = this.element.querySelector('input');
-    if (input) {
-      return input.type === 'file' ? input.files && input.files[0] : input.value;
-    }
+    return input && input.type === 'file' ? input.files && input.files[0] : input?.value;
   }
 
   get isValid() {

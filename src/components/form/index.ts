@@ -17,7 +17,7 @@ class Form extends Block {
 
   get data(): { [key: string]: unknown } {
     const data = {};
-    this.formGroups.forEach(({ name, value }) => data[name] = value);
+    this.formGroups.forEach(({ name, value }) => { data[name] = value; });
     return data;
   }
 

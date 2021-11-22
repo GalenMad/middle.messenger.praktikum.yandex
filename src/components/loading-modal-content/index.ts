@@ -9,6 +9,6 @@ export default class LoadingModalContent extends Block {
   }
 
   render() {
-    return compileTemplate();
+    return compileTemplate(this.props);
   }
 }
