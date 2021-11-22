@@ -1,4 +1,4 @@
-import SuccessModalContent from '../../components/success-modal-content';
+import SuccessModalContent from '../../components/modals/success-modal-content';
 import ModalWrapper from '../../components/modal-wrapper';
 
 let instance: SuccessModalController | null = null;
