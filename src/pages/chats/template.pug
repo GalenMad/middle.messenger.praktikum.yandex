@@ -9,7 +9,12 @@ main.chats
             button.button#create-chat Создать чат
         template(data-component="chatTape")
     section.chat-feed
-            template(data-component="chatInner")
-            div.chat-feed_empty
-                span.chat-feed_plug У тебя тут чё, реально одни костыли и велосипеды?
+      if activeChat
+        .chat
+          template(data-component="chatHeader")
+          template(data-component="chatBody")
+          template(data-component="chatFooter")
+      else
+        div.chat-feed_empty
+            span.chat-feed_plug У тебя тут чё, реально одни костыли и велосипеды?
 template(data-component="createChatModal")

@@ -1,0 +1,10 @@
+if chat
+    article.chat_heading 
+        img.chat_avatar(src=chat.avatar, alt=chat.title)
+        .chat_info
+            p.chat_title= chat.title
+            if (chatsUsers && chatsUsers[chat.id])
+                p.chat_users= Object.values(chatsUsers[chat.id]).join(', ')
+    div.chat_options
+        button.link.link_red#remove-user Убавить
+        button.link#add-user Добавить
