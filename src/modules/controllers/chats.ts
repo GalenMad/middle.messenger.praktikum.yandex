@@ -7,7 +7,7 @@ const chatsUsersAPI = new ChatsUsersAPI();
 const userSearchAPI = new UserSearchAPI();
 
 function delay() {
-  return new Promise(resolve => setTimeout(resolve, 2000));
+  return new Promise((resolve) => setTimeout(resolve, 2000));
 }
 
 export default class ChatsController extends BaseController {
