@@ -1,5 +1,5 @@
 import SuccessModalContent from '../../components/modals/success-modal-content';
-import ModalWrapper from '../../components/modal-wrapper';
+import ModalWrapper from '../../components/modals/modal-wrapper';
 
 let instance: SuccessModalController | null = null;
 

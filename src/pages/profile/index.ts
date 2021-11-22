@@ -1,6 +1,6 @@
 import Block from '../../modules/block';
 import Form from '../../components/form';
-import ModalWrapper from '../../components/modal-wrapper';
+import ModalWrapper from '../../components/modals/modal-wrapper';
 import compileTemplate from './template.pug';
 import AuthController from '../../modules/controllers/auth.ctrl';
 import UserController from '../../modules/controllers/user-info.ctrl';

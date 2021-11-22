@@ -3,7 +3,7 @@ import Block from '../../modules/block';
 import compileTemplate from './template.pug';
 import './styles.scss';
 import Form from '../../components/form';
-import ModalWrapper from '../../components/modal-wrapper';
+import ModalWrapper from '../../components/modals/modal-wrapper';
 import ChatFooter from './chat-footer';
 import ChatHeader from './chat-header';
 import ChatTape from './chat-tape';

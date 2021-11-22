@@ -1,5 +1,5 @@
-import LoadingModalContent from '../../components/loading-modal-content';
-import ModalWrapper from '../../components/modal-wrapper';
+import LoadingModalContent from '../../components/modals/loading-modal-content';
+import ModalWrapper from '../../components/modals/modal-wrapper';
 
 let instance: LoadingModalController | null = null;
 

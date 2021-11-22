@@ -1,4 +1,4 @@
-import Block from '../../modules/block';
+import Block from '../../../modules/block';
 import compileTemplate from './template.pug';
 import './styles.scss';
 

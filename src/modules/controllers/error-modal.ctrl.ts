@@ -1,5 +1,5 @@
-import ErrorModalContent from '../../components/error-modal-content';
-import ModalWrapper from '../../components/modal-wrapper';
+import ErrorModalContent from '../../components/modals/error-modal-content';
+import ModalWrapper from '../../components/modals/modal-wrapper';
 
 interface ErrorModalContentProps {
   status: number | string;
