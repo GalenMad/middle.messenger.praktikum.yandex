@@ -4,6 +4,7 @@ import './styles.scss';
 import Form from '../../components/form';
 import ModalWrapper from '../../components/modal-wrapper';
 import ChatInner from './chat-inner';
+import ChatTape from './chat-tape';
 import ChatsController from '../../modules/controllers/chats';
 
 const chatsController = new ChatsController();
@@ -30,21 +31,14 @@ export default class Page extends Block {
   constructor(props = {}) {
     const createChatModal = createNewChatModal();
     const chatInner = new ChatInner();
+    const chatTape = new ChatTape();
     const events = [{
       type: 'click',
       selector: '#create-chat',
       cb: () => createChatModal.show(),
-    }, {
-      type: 'click',
-      cb: (evt: Event) => {
-        if (evt.path && evt.path.some((elem: HTMLElement) => elem.classList && elem.classList.contains('chat-item'))) {
-          const chatItemId = evt.path.find((elem: HTMLElement) => elem.classList.contains('chat-item')).id;
-          chatsController.setActiveChat(chatItemId);
-        }
-      },
     }];
-    const selectors = { avatar: 'userInfo.avatar', chats: 'chatList', activeChat: 'activeChat' };
-    super('div', { ...props, events }, { createChatModal, chatInner }, selectors);
+    const selectors = { avatar: 'userInfo.avatar' };
+    super('div', { ...props, events }, { createChatModal, chatInner, chatTape }, selectors);
   }
 
   render() {
