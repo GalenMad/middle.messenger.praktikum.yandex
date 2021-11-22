@@ -7,14 +7,14 @@ const FORM_GROUP_TAG = 'label';
 const VALIDATION_SELECTOR = '.validation';
 
 export default class FormGroup extends Block {
-  get value() {
+  get value(): string | File | null | undefined {
     const input = this.element.querySelector('input');
     return input && input.type === 'file' ? input.files && input.files[0] : input?.value;
   }
 
   get isValid() {
-    return !this.props.validators
-      || !this.props.validators.some((validator) => validator(this.value));
+    // eslint-disable-next-line max-len
+    return !this.props.validators || !this.props.validators.some((validator: (value: any) => boolean) => validator(this.value));
   }
 
   get name(): string {

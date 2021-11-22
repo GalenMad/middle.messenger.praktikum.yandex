@@ -11,7 +11,7 @@ class Form extends Block {
     return this.formGroups.every((element: FormGroup) => element.isValid);
   }
 
-  get formGroups() {
+  get formGroups(): Block[] {
     return Object.values(this.children);
   }
 
@@ -25,7 +25,7 @@ class Form extends Block {
 
   constructor(props: {
     attributes?: { class?: string },
-    submitCallback: Function
+    submitCallback: (data: { [key: string]: unknown }) => void;
   }, selectors = {}) {
     // Конструкция ниже нужна для того, чтобы класс, заданный снаружи, был в приоритете
     const className = (props.attributes && props.attributes.class) || FORM_CLASS;
@@ -38,9 +38,9 @@ class Form extends Block {
         evt.preventDefault();
         this.checkValidity();
         const { submitCallback } = this.props;
-        if (this.isValid && submitCallback) {
+        // TODO: Прикрутить возможность сброса значений
+        if (this.isValid && typeof submitCallback === 'function') {
           submitCallback(this.data);
-          this.element.reset();
         }
       },
       type: 'submit',
@@ -50,15 +50,15 @@ class Form extends Block {
   }
 
   checkValidity() {
-    this.formGroups.forEach((element) => element.checkValidity());
+    this.formGroups.forEach((element: FormGroup) => element.checkValidity());
   }
 
   hideValidation() {
-    this.formGroups.forEach((element) => element.hideValidationMessage());
+    this.formGroups.forEach((element: FormGroup) => element.hideValidationMessage());
   }
 
   createFormGroups() {
-    const formGroups: Record<string, Block> = {};
+    const formGroups: Record<string, FormGroup> = {};
     const { fields = [] } = this.props;
     if (fields) {
       fields.forEach((field, index: number) => {
