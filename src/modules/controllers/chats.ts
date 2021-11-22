@@ -83,7 +83,6 @@ export default class ChatsController extends BaseController {
     }
 
     await this.getChats();
-    this.successModal.show();
   }
 
   async getUsers(chatId: number) {

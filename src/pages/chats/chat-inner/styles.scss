@@ -92,9 +92,7 @@
 
         &_user {
             background-color: $sky-blue-overlay-darker;
-            @media (max-width: 1199px) {
-                align-self: flex-end;
-            }
+            align-self: flex-end;
         }
 
         &_content {
