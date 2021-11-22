@@ -181,7 +181,7 @@ export const mutations = {
     store.chatsUsers = { ...store.chatsUsers };
   },
   setMessages: (id: number, list: []) => {
-    list.forEach(item => {
+    list.forEach((item) => {
       item.time = formatDate(new Date(item.time));
     });
     store.messages[id] = list;

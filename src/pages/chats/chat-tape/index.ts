@@ -4,7 +4,6 @@ import './styles.scss';
 import ChatsController from '../../../modules/controllers/chats';
 import SocketsController from '../../../modules/controllers/sockets.ctrl';
 
-
 const chatsController = new ChatsController();
 const socketsController = new SocketsController();
 
