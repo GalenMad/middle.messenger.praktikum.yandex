@@ -34,8 +34,7 @@ export default class SuccessModalController {
       document.querySelector('body')?.append(this.modal);
     }
 
-    // TODO: Узнать как избавиться от избыточных проверок для TS
-    // ↓↓↓↓↓↓↓↓↓↓↓
+    // TODO: Избыточные проверки для TS
     if (this.modal) {
       document.querySelector('body')?.append(this.modal);
       this.modalInstance?.show();

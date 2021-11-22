@@ -28,7 +28,6 @@ export default class FormGroup extends Block {
     super(FORM_GROUP_TAG, { ...props, attributes });
   }
 
-  // TODO: Нужен рефактор жизненного цикла компонента
   // TODO: Добить дизайн и логику работы file инпута
   componentDidMount() {
     const input = this.element.querySelector('input');

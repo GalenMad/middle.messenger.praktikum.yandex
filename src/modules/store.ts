@@ -101,9 +101,6 @@ const store: GlobalStore = makeProxy({
 });
 
 // TODO: Сохранять значения инпутов в чате
-
-window.store = store;
-
 function updateUserProfile(info: UserInfo) {
   return Object.keys(userProfileLabels).map((label: string) => ({
     name: userProfileLabels[label],
@@ -198,7 +195,6 @@ export const mutations = {
   },
 };
 
-// TODO: Может обозвать не геттерами?
 export const getters = {
   checkSocket: (id: number) => store.sockets[id] && store.sockets[id]?.readyState === 1,
   getActiveSocket: () => store.activeSocket,

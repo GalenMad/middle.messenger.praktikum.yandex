@@ -5,14 +5,14 @@ const userInfoAPI = new UserInfoAPI();
 const userPasswordAPI = new UserPasswordAPI();
 const userAvatarAPI = new UserAvatarAPI();
 
-// TODO: После обновления display name в форме в активном чате не обновилось имя. Проверить
+// TODO: После обновления display name в форме в активном чате не обновилось имя
 export default class UserController extends BaseController {
   async updateUserInfo(data: QueryData) {
     const response = await userInfoAPI.update(data);
     if (response.error) {
       this.throwError(response);
     }
-    // TODO: Кривоватая конструкция из-за требований TS
+    // TODO: Избыточные проверки для TS
     if (response.data && typeof response.data !== 'string') {
       this.mutations.setUserInfo(response.data);
       this.successModal.show();
@@ -35,7 +35,7 @@ export default class UserController extends BaseController {
     if (response.error) {
       this.throwError(response);
     }
-    // TODO: Кривоватая конструкция из-за требований TS
+    // TODO: Избыточные проверки для TS
     if (response.data && typeof response.data !== 'string') {
       this.mutations.setUserInfo(response.data);
       this.successModal.show();

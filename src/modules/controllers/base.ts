@@ -43,7 +43,7 @@ export default class BaseController {
 
   throwError(response: { data: string, status: string } | RequestResponse) {
     const { data, status } = response;
-    // TODO: Кривоватая конструкция из-за требований TS
+    // TODO: Избыточные проверки для TS
     const reason = typeof data !== 'string' ? data?.reason : data || 'Не придумал что сюда писать, просто посмотри в консоль';
     this.loadingModal.hide();
     this.errorModal.show({ status, reason });

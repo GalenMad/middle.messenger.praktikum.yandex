@@ -32,7 +32,7 @@ export default class AuthController extends BaseController {
       this.router.go('/sign-in');
       this.throwError(response);
     }
-    // TODO: Кривоватая конструкция из-за требований TS
+    // TODO: Избыточные проверки для TS
     if (response.data && typeof response.data !== 'string') {
       this.mutations.setUserInfo(response.data);
       await chatsController.setUserChatList();
@@ -67,7 +67,7 @@ export default class AuthController extends BaseController {
   }
 
   // TODO: Как быть, если юзер почистит куки на страницах с чатами?
-  // TODO: Чистить стор при выходе
+  // TODO: Чистить стор и сокеты при выходе
   async logout() {
     this.loadingModal.show();
     const response = await logoutAPI.request();

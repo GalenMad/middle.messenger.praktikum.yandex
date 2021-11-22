@@ -85,7 +85,6 @@ class Router {
 
     const isAuthorized = this.getAuthorizationStatus();
 
-    // TODO: Узнать что уместнее — редирект или рендер с сохранением адреса
     if (!route) {
       this.replaceRoute(ADDRESSES.ERROR);
     } else if (route.isPrivate && !isAuthorized) {
