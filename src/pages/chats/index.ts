@@ -8,7 +8,7 @@ import ChatFooter from './chat-footer';
 import ChatHeader from './chat-header';
 import ChatTape from './chat-tape';
 import ChatBody from './chat-body';
-import ChatsController from '../../modules/controllers/chats';
+import ChatsController from '../../modules/controllers/chats.ctrl';
 
 const chatsController = new ChatsController();
 

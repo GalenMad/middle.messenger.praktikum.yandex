@@ -1,4 +1,4 @@
-import BaseController from './base';
+import BaseController from './base.ctrl';
 import { ChatsTokenAPI } from '../api/chats';
 
 // TODO: Разделить логику в этом модуле

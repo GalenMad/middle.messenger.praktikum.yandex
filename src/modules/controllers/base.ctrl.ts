@@ -1,8 +1,8 @@
 import Router from '../router';
 import { mutations, getters } from '../store';
-import LoadingModalController from './loading-modal';
-import ErrorModalController from './error-modal';
-import SuccessModalController from './success-modal';
+import LoadingModalController from './loading-modal.ctrl';
+import ErrorModalController from './error-modal.ctrl';
+import SuccessModalController from './success-modal.ctrl';
 
 export default class BaseController {
   router: typeof Router;

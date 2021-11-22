@@ -1,4 +1,4 @@
-import BaseController from './base';
+import BaseController from './base.ctrl';
 import { ChatsAPI, ChatsUsersAPI } from '../api/chats';
 import { UserSearchAPI } from '../api/user';
 

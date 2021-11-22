@@ -1,4 +1,4 @@
-import BaseController from './base';
+import BaseController from './base.ctrl';
 import { UserInfoAPI, UserPasswordAPI, UserAvatarAPI } from '../api/user';
 
 const userInfoAPI = new UserInfoAPI();

@@ -4,7 +4,7 @@ import compileTemplate from './template.pug';
 import './styles.scss';
 import Form from '../../../components/form';
 import ModalWrapper from '../../../components/modal-wrapper';
-import ChatsController from '../../../modules/controllers/chats';
+import ChatsController from '../../../modules/controllers/chats.ctrl';
 
 const chatsController = new ChatsController();
 

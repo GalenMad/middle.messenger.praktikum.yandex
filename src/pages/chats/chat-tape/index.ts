@@ -1,7 +1,7 @@
 import Block from '../../../modules/block';
 import compileTemplate from './template.pug';
 import './styles.scss';
-import ChatsController from '../../../modules/controllers/chats';
+import ChatsController from '../../../modules/controllers/chats.ctrl';
 import SocketsController from '../../../modules/controllers/sockets.ctrl';
 
 const chatsController = new ChatsController();
