@@ -87,6 +87,7 @@ export const mutations = {
     store.userProfile = updateUserProfile(info);
   },
   // TODO: При создании нового чата выводить сообщение о создании
+  // TODO: Сортировка чатов по дате последнего сообщения
   setUserChats: (chats: ChatItem[]) => {
     store.chatList = chats.map((chat) => {
       chat.avatar = chat.avatar ? RESOURCES_HOST + chat.avatar : defaultAvatar;
