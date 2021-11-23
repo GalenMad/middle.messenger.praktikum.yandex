@@ -12,8 +12,9 @@ export default class ChatTape extends Block {
     const events = [{
       type: 'click',
       cb: (evt: Event) => {
-        if (evt.path && evt.path.some((elem: HTMLElement) => elem.classList && elem.classList.contains('chat-item'))) {
-          const chatItemId = evt.path.find((elem: HTMLElement) => elem.classList.contains('chat-item')).id;
+        const chatItem = evt.target.closest('.chat-item');
+        if (chatItem) {
+          const chatItemId = chatItem.dataset.id;
           chatsController.setActiveChat(chatItemId);
           socketsController.setActiveSocket(chatItemId);
         }

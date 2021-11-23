@@ -52,7 +52,7 @@ class Router {
     root.innerHTML = '';
 
     root.addEventListener('click', (evt) => {
-      const link = evt.path && evt.path.find((elem: HTMLElement) => elem.tagName === 'A' && elem.href);
+      const link = evt.target.closest('a');
       if (link) {
         const pathname = link.getAttribute('href');
         this.go(pathname);

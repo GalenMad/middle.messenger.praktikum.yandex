@@ -1,7 +1,7 @@
 
 if chats
     each chat in chats
-        button.chat-item(id=chat.id class=(activeChat && activeChat.id === chat.id ? 'active' : ''))
+        button.chat-item(data-id=chat.id class=(activeChat && activeChat.id === chat.id ? 'active' : ''))
             img.chat-item_avatar(src=chat.avatar, alt='avatar')
             header.chat-item_header
                 h3.chat-item_title= chat.title
