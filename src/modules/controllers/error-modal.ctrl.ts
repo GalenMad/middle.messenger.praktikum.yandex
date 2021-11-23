@@ -1,5 +1,5 @@
-import ErrorModalContent from '../../components/error-modal-content';
-import ModalWrapper from '../../components/modal-wrapper';
+import ErrorModalContent from '../../components/modals/error-modal-content';
+import ModalWrapper from '../../components/modals/modal-wrapper';
 
 interface ErrorModalContentProps {
   status: number | string;
@@ -11,9 +11,9 @@ let instance: ErrorModalController | null = null;
 // TODO: Допилить и расширить логику появления модалок
 // Одна модалка на всё
 // Контроллер будет принимать контент и давать интерфейс
+// При открытии модалки предыдущая закрывается
 // Объединить информационные модалки
 // Сервисные сообщения, вина юзера, вина сервера, etc.
-// При пятисотых хорошо бы отправлять на 500-page
 export default class ErrorModalController {
   ModalContentClass: typeof ErrorModalContent;
 

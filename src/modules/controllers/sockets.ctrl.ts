@@ -1,11 +1,13 @@
-import BaseController from './base';
-import { ChatsTokenAPI } from '../api/chats';
+import BaseController from './base.ctrl';
+import { ChatsTokenAPI } from '../api/chats.api';
 
-// TODO: Разделить логику в этом модуле, выглядит как помойка
+// TODO: Разделить логику в этом модуле
 const chatsTokenAPI = new ChatsTokenAPI();
 
 export default class ChatsController extends BaseController {
   async setActiveSocket(id: number) {
+    // TODO: Держать активным только один сокет, при выходе из чата закрывать его
+    // При открытом сокете новые сообщения сразу отмечаются прочитанными
     if (!this.getters.checkSocket(id)) {
       await this.createSocket(id);
     }

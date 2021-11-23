@@ -1,4 +1,4 @@
-import Block from '../../modules/block';
+import Block from '../../../modules/block';
 import compileTemplate from './template.pug';
 import './styles.scss';
 
@@ -7,44 +7,48 @@ const ESC_KEY = 'Escape';
 export default class ModalWrapper extends Block {
   isOpen: boolean;
 
-  addedClickHandler: Function;
+  addedClickHandler: (this: HTMLElement, ev: MouseEvent) => void;
 
-  addedKeydownHandler: Function;
+  addedKeydownHandler: (this: HTMLElement, ev: KeyboardEvent) => void;
 
   classForClose: string[];
 
-  constructor({ content, fixed = false, hideCallback = null }) {
+  fixed: boolean;
+
+  constructor(props: { content: Block, fixed: boolean, hideCallback: () => void }) {
+    const { content, fixed = false, hideCallback = null } = props;
     const attributes = { class: 'modal' };
     super('div', { attributes, fixed, hideCallback }, { content });
     this.isOpen = false;
     this.classForClose = ['.close-button', '.modal', '.modal-dialog'];
   }
 
-  clickHandler({ target }) {
-    if (this.classForClose.some((cls: string) => target.matches(cls))) {
+  clickHandler(evt: MouseEvent): void {
+    // eslint-disable-next-line max-len
+    if (this.classForClose.some((cls: string) => evt && evt.target instanceof HTMLElement && evt.target.matches(cls))) {
       this.hide();
     }
   }
 
-  keydownHandler(evt) {
+  keydownHandler(evt: KeyboardEvent): void {
     if (evt.key === ESC_KEY) {
       this.hide();
     }
   }
 
-  addCloseHandlers() {
+  addCloseHandlers(): void {
     this.addedClickHandler = this.clickHandler.bind(this);
     this.addedKeydownHandler = this.keydownHandler.bind(this);
     this.element.addEventListener('click', this.addedClickHandler);
     document.addEventListener('keydown', this.addedKeydownHandler);
   }
 
-  removeCloseHandlers() {
+  removeCloseHandlers(): void {
     this.element.removeEventListener('click', this.addedClickHandler);
     document.removeEventListener('keydown', this.addedKeydownHandler);
   }
 
-  show() {
+  show(): void {
     if (!this.isOpen) {
       this.element.classList.add('show');
       document.querySelector('body')?.classList.add('show-modal');
@@ -55,12 +59,12 @@ export default class ModalWrapper extends Block {
     }
   }
 
-  hide() {
+  hide(): void {
     if (this.isOpen) {
       this.element.classList.remove('show');
       document.querySelector('body')?.classList.remove('show-modal');
       this.isOpen = false;
-      if (this.props.hideCallback) {
+      if (typeof this.props.hideCallback === 'function') {
         this.props.hideCallback();
       }
       if (!this.fixed) {

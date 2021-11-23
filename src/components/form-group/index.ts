@@ -1,4 +1,4 @@
-import Block from '../../modules/block';
+import Block, { Props } from '../../modules/block';
 import compileTemplate from './template.pug';
 import './styles.scss';
 
@@ -6,29 +6,36 @@ const FORM_GROUP_CLASS = 'form-group';
 const FORM_GROUP_TAG = 'label';
 const VALIDATION_SELECTOR = '.validation';
 
+export interface FormField extends Props {
+  label: string,
+  id: string,
+  name: string,
+  value: string,
+  validators?: Array<(value: any) => boolean | string>;
+}
 export default class FormGroup extends Block {
-  get value() {
+  props: FormField;
+
+  get value(): string | File | null | undefined {
     const input = this.element.querySelector('input');
-    if (input) {
-      return input.type === 'file' ? input.files && input.files[0] : input.value;
-    }
+    return input && input.type === 'file' ? input.files && input.files[0] : input?.value;
   }
 
-  get isValid() {
-    return !this.props.validators ||
-      !this.props.validators.some((validator) => validator(this.value));
+  get isValid(): boolean {
+    // eslint-disable-next-line max-len
+    return Array.isArray(this.props.validators) && !this.props.validators.some((validator) => validator(this.value));
   }
 
-  get name() {
-    return this.props.name;
+  get name(): string {
+    // TODO: Видимо, хреновая архитектура, если приходится такие проверки ставить
+    return (typeof this.props.name === 'string' && this.props.name) || 'empty';
   }
 
-  constructor(props) {
+  constructor(props: FormField) {
     const attributes = { ...props.attributes, class: FORM_GROUP_CLASS };
     super(FORM_GROUP_TAG, { ...props, attributes });
   }
 
-  // TODO: Нужен рефактор жизненного цикла компонента
   // TODO: Добить дизайн и логику работы file инпута
   componentDidMount() {
     const input = this.element.querySelector('input');
@@ -40,6 +47,7 @@ export default class FormGroup extends Block {
         this.checkValidity();
       });
     } else {
+      // eslint-disable-next-line no-console
       input?.addEventListener('input', () => console.info('Загружено:', input.value));
     }
   }
@@ -53,17 +61,15 @@ export default class FormGroup extends Block {
 
   checkValidity() {
     const { validators } = this.props;
-    if (!validators) {
-      return;
-    }
-
-    const { value } = this;
-    const container: HTMLElement | null = this.element.querySelector(VALIDATION_SELECTOR);
-    for (let i: number = 0; i < validators.length; i += 1) {
-      const message = validators[i](value);
-      if (message && container) {
-        container.textContent = message;
-        break;
+    if (validators && Array.isArray(validators)) {
+      const { value } = this;
+      const container: HTMLElement | null = this.element.querySelector(VALIDATION_SELECTOR);
+      for (let i: number = 0; i < validators.length; i += 1) {
+        const message = validators[i](value);
+        if (typeof message === 'string' && container) {
+          container.textContent = message;
+          break;
+        }
       }
     }
   }

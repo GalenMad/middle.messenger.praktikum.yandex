@@ -38,7 +38,7 @@ interface FormField {
   name: string;
   type: string;
   value: string | number;
-  validators: Function[];
+  validators?: Array<(value: any) => boolean | string>;
 }
 
 // TODO: Расширить форматирование дат
@@ -101,9 +101,6 @@ const store: GlobalStore = makeProxy({
 });
 
 // TODO: Сохранять значения инпутов в чате
-
-window.store = store;
-
 function updateUserProfile(info: UserInfo) {
   return Object.keys(userProfileLabels).map((label: string) => ({
     name: userProfileLabels[label],
@@ -184,7 +181,7 @@ export const mutations = {
     store.chatsUsers = { ...store.chatsUsers };
   },
   setMessages: (id: number, list: []) => {
-    list.forEach(item => {
+    list.forEach((item) => {
       item.time = formatDate(new Date(item.time));
     });
     store.messages[id] = list;
@@ -198,7 +195,6 @@ export const mutations = {
   },
 };
 
-// TODO: Может обозвать не геттерами?
 export const getters = {
   checkSocket: (id: number) => store.sockets[id] && store.sockets[id]?.readyState === 1,
   getActiveSocket: () => store.activeSocket,

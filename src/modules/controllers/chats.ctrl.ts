@@ -1,13 +1,13 @@
-import BaseController from './base';
-import { ChatsAPI, ChatsUsersAPI } from '../api/chats';
-import { UserSearchAPI } from '../api/user';
+import BaseController from './base.ctrl';
+import { ChatsAPI, ChatsUsersAPI } from '../api/chats.api';
+import { UserSearchAPI } from '../api/user.api';
 
 const chatsAPI = new ChatsAPI();
 const chatsUsersAPI = new ChatsUsersAPI();
 const userSearchAPI = new UserSearchAPI();
 
 function delay() {
-  return new Promise(resolve => setTimeout(resolve, 2000));
+  return new Promise((resolve) => setTimeout(resolve, 2000));
 }
 
 export default class ChatsController extends BaseController {
@@ -19,9 +19,15 @@ export default class ChatsController extends BaseController {
 
   // TODO: Ужасное решение, но пока нет идей как сделать лучше
   async launchUpdateChatListTimeout() {
-    await delay();
-    await this.setUserChatList();
-    this.launchUpdateChatListTimeout();
+    if (this.getters.isAuthorized()) {
+      await delay();
+    }
+    if (this.getters.isAuthorized()) {
+      await this.setUserChatList();
+    }
+    if (this.getters.isAuthorized()) {
+      this.launchUpdateChatListTimeout();
+    }
   }
 
   async setUserChatList(data?: { offset: number, limit: number, title: string }) {

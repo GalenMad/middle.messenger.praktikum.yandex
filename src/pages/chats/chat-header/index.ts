@@ -1,9 +1,10 @@
+/* eslint-disable @typescript-eslint/no-use-before-define */
 import Block from '../../../modules/block';
 import compileTemplate from './template.pug';
 import './styles.scss';
 import Form from '../../../components/form';
-import ModalWrapper from '../../../components/modal-wrapper';
-import ChatsController from '../../../modules/controllers/chats';
+import ModalWrapper from '../../../components/modals/modal-wrapper';
+import ChatsController from '../../../modules/controllers/chats.ctrl';
 
 const chatsController = new ChatsController();
 
@@ -13,6 +14,7 @@ const createModal = (props: { button: string, title: string }, callback: Functio
     title: props.title,
     submitCallback: (data: { login: string }) => {
       const { login } = data;
+      // TODO: Есть ли возможность избегать использования до объявления?
       const { id } = form.props.chat;
       callback(login, id);
       modal.hide();

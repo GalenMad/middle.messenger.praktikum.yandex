@@ -1,8 +1,8 @@
 import Router from '../router';
 import { mutations, getters } from '../store';
-import LoadingModalController from './loading-modal';
-import ErrorModalController from './error-modal';
-import SuccessModalController from './success-modal';
+import LoadingModalController from './loading-modal.ctrl';
+import ErrorModalController from './error-modal.ctrl';
+import SuccessModalController from './success-modal.ctrl';
 
 export default class BaseController {
   router: typeof Router;
@@ -43,7 +43,7 @@ export default class BaseController {
 
   throwError(response: { data: string, status: string } | RequestResponse) {
     const { data, status } = response;
-    // TODO: Кривоватая конструкция из-за требований TS
+    // TODO: Избыточные проверки для TS
     const reason = typeof data !== 'string' ? data?.reason : data || 'Не придумал что сюда писать, просто посмотри в консоль';
     this.loadingModal.hide();
     this.errorModal.show({ status, reason });

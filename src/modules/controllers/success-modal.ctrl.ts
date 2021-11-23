@@ -1,5 +1,5 @@
-import SuccessModalContent from '../../components/success-modal-content';
-import ModalWrapper from '../../components/modal-wrapper';
+import SuccessModalContent from '../../components/modals/success-modal-content';
+import ModalWrapper from '../../components/modals/modal-wrapper';
 
 let instance: SuccessModalController | null = null;
 
@@ -34,8 +34,7 @@ export default class SuccessModalController {
       document.querySelector('body')?.append(this.modal);
     }
 
-    // TODO: Узнать как избавиться от избыточных проверок для TS
-    // ↓↓↓↓↓↓↓↓↓↓↓
+    // TODO: Избыточные проверки для TS
     if (this.modal) {
       document.querySelector('body')?.append(this.modal);
       this.modalInstance?.show();

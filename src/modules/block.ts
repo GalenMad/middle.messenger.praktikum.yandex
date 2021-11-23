@@ -3,7 +3,7 @@
 import { get, storeEvents } from './store';
 
 interface PropsEvent {
-  type: keyof ElementEventMap | string;
+  type: keyof ElementEventMap | string | [];
   selector?: string;
   cb: (this: Element, ev: Event) => any;
 }
@@ -11,8 +11,8 @@ interface PropsEvent {
 interface PropsAttributes {
   [key: string]: string;
 }
-interface Props {
-  [key: string]: unknown;
+export interface Props {
+  [key: string]: Function | unknown | string;
   events?: PropsEvent[];
   attributes?: PropsAttributes;
 }
@@ -26,10 +26,6 @@ interface ContentChildren {
 }
 
 class Block {
-  checkValidity(): void {
-    throw new Error('Method not implemented.');
-  }
-
   static MESSAGE_ACCESS_ERROR = 'Нет прав';
 
   _element: HTMLElement;

@@ -28,8 +28,8 @@ class Router {
     this._rootQuery = rootQuery;
   }
 
-  use(pathname: string, block: unknown, props: {}, options: {}) {
-    const route = new Route(pathname, block, { rootQuery: this._rootQuery, ...props }, options);
+  use(pathname: string, block: unknown, options: {}) {
+    const route = new Route(pathname, block, { rootQuery: this._rootQuery }, options);
     this.routes.push(route);
     return this;
   }
@@ -52,7 +52,7 @@ class Router {
     root.innerHTML = '';
 
     root.addEventListener('click', (evt) => {
-      const link = evt.path && evt.path.find((elem: HTMLElement) => elem.tagName === 'A' && elem.href);
+      const link = evt.target.closest('a');
       if (link) {
         const pathname = link.getAttribute('href');
         this.go(pathname);
@@ -85,7 +85,6 @@ class Router {
 
     const isAuthorized = this.getAuthorizationStatus();
 
-    // TODO: Узнать что уместнее — редирект или рендер с сохранением адреса
     if (!route) {
       this.replaceRoute(ADDRESSES.ERROR);
     } else if (route.isPrivate && !isAuthorized) {

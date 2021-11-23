@@ -10,6 +10,8 @@ main.chats
         template(data-component="chatTape")
     section.chat-feed
       if activeChat
+        //- TODO: Проверять активность чата другим способом
+        //- Иначе нет возможности обновить данные активного чата, так как теряется фокус инпута при ререндере
         .chat
           template(data-component="chatHeader")
           template(data-component="chatBody")

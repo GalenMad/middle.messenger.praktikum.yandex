@@ -1,6 +1,6 @@
 /* eslint-disable import/prefer-default-export */
 /* eslint-disable max-classes-per-file */
-import BaseAPI from './base';
+import BaseAPI from './base.api';
 
 class ChatsBaseAPI extends BaseAPI {
   constructor() {

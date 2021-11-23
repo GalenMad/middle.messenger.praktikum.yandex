@@ -1,4 +1,4 @@
-import Block from '../../modules/block';
+import Block from '../../../modules/block';
 import compileTemplate from './template.pug';
 import './styles.scss';
 
@@ -9,6 +9,6 @@ export default class LoadingModalContent extends Block {
   }
 
   render() {
-    return compileTemplate();
+    return compileTemplate(this.props);
   }
 }
