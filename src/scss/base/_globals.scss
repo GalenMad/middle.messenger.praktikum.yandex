@@ -1,0 +1,89 @@
+@import '../commons/variables';
+
+* {
+  box-sizing: border-box;
+
+  &::after,
+  &::before {
+    box-sizing: border-box;
+  }
+}
+
+::-webkit-scrollbar {
+  width: 3px;
+  background-color: $base-grey;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: $base-sky;
+  border-radius: 10px;
+}
+
+fieldset {
+  border: 0;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+
+  li {
+    margin-bottom: 16px;
+  }
+}
+
+.content {
+  font-family: $primary-font-family;
+  display: flex;
+  min-height: 100vh;
+  align-items: center;
+  justify-content: center;
+  background-color: $base-dark;
+  color: white;
+  flex-direction: column;
+
+  &-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    border-radius: 6px;
+    width: 520px;
+    box-sizing: border-box;
+    background-color: $base-dark;
+    box-shadow: 0 4px 22px rgb(0 0 0 / 44%);
+    padding: 56px 40px 40px;
+  }
+}
+
+.form-container {
+  @extend .content;
+
+  box-sizing: border-box;
+  padding: 100px 0;
+}
+
+.link {
+  font-family: $primary-font-family;
+  margin: auto 0 6px;
+  color: $base-sky;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 1.1;
+  text-decoration: none;
+  padding-bottom: 1px;
+  border-bottom: 1px solid $base-sky;
+  transition: 0.2s ease-in;
+  width: fit-content;
+
+  &:hover,
+  &:focus {
+    border-bottom-color: transparent;
+    opacity: 80%;
+  }
+
+  &:active {
+    opacity: 100%;
+  }
+}

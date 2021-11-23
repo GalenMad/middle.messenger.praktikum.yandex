@@ -1,0 +1,18 @@
+h1(hidden) Настройки пользователя
+main.profile
+    article.profile_inner
+        header.profile_header
+            img.profile_avatar(src=defaultAvatar)
+            div.profile_title
+                h2.profile_name Иван
+                p 
+                    a.link(href="/") Изменить данные
+                p
+                    a.link(href="/") Изменить пароль
+        ul.profile_list
+            each item in userData
+                li
+                    span= item.name
+                    span= item.value
+        a.link.return-link(href="/") Вернуться
+

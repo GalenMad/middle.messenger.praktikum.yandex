@@ -1,0 +1,9 @@
+main.content
+    div.content-inner
+        h1 Разводящая
+        p Страницы
+        ul 
+            each item in list
+                li
+                    a.link(href=item.path) #{item.name}
+
