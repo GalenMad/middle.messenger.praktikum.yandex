@@ -4,43 +4,6 @@ import EventBus from './event-bus';
 import { data, changeInfoFields } from '../data/fields';
 import userProfileLabels from '../data/user-profile-labels';
 
-interface UserInfo {
-  [key: string]: string;
-}
-
-interface UserProfileItem {
-  name: string;
-  value: string | number;
-}
-
-interface ChatItem {
-  id: number,
-  title: string,
-  avatar: string,
-  unread_count: number,
-  last_message: {
-    user: {
-      first_name: string,
-      second_name: string,
-      avatar: string,
-      emai: string,
-      login: string,
-      phone: string
-    },
-    time: string,
-    content: string
-  }
-}
-
-interface FormField {
-  label: string;
-  id: string | number;
-  name: string;
-  type: string;
-  value: string | number;
-  validators?: Array<(value: any) => boolean | string>;
-}
-
 // TODO: Расширить форматирование дат
 function formatDate(date) {
   const d = [
@@ -52,19 +15,6 @@ function formatDate(date) {
   ].map((component) => component.slice(-2));
 
   return `${d.slice(0, 3).join('.')} ${d.slice(3).join(':')}`;
-}
-
-interface GlobalStore {
-  messages: { [index: number]: {}[] };
-  activeSocket: WebSocket;
-  sockets: { [index: number]: WebSocket };
-  isAuthorized: boolean;
-  activeChat: ChatItem;
-  chatList: ChatItem[];
-  userInfo: UserInfo;
-  chatsUsers: { [index: number]: string[] }
-  userProfile: UserProfileItem[];
-  changeInfoFields: FormField[];
 }
 
 export const storeEvents = new EventBus();

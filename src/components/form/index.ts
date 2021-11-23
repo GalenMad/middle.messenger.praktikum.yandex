@@ -11,6 +11,7 @@ class Form extends Block {
     return this.formGroups.every((element: FormGroup) => element.isValid);
   }
 
+  // TODO: Почему-то не могу задать тип FormGroup
   get formGroups(): Block[] {
     return Object.values(this.children);
   }
