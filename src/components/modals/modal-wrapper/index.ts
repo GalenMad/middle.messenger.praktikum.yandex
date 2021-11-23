@@ -15,7 +15,7 @@ export default class ModalWrapper extends Block {
 
   fixed: boolean;
 
-  constructor(props: { content: Block, fixed: boolean, hideCallback: () => void }) {
+  constructor(props: { content: Block, fixed?: boolean, hideCallback?: () => void }) {
     const { content, fixed = false, hideCallback = null } = props;
     const attributes = { class: 'modal' };
     super('div', { attributes, fixed, hideCallback }, { content });

@@ -7,6 +7,7 @@ import SuccessModalController from './success-modal.ctrl';
 export default class BaseController {
   router: typeof Router;
 
+  // TODO: Переделать геттеры и сеттеры в классы, чтобы не разводить это добро здесь
   getters: {
     checkSocket: (id: number) => boolean;
     isAuthorized: () => boolean;
@@ -20,11 +21,11 @@ export default class BaseController {
     setUserChats: (chats: ChatItem[]) => void;
     setChatUsers: (id: number, users: UserInfo[]) => void;
     setActiveChat: (id: number) => void;
-    getActiveSocket: () => WebSocket;
     setMessages: (id: number, list: {}[]) => void;
     addMessage: (id: number, list: {}[]) => void;
     addSocket: (id: number, socket: WebSocket) => void;
     removeSocket: (id: number) => void;
+    setActiveSocket: (id: number) => void;
   };
 
   loadingModal: LoadingModalController;

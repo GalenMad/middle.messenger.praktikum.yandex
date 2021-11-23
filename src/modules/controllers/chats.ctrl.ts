@@ -35,10 +35,9 @@ export default class ChatsController extends BaseController {
     if (response.error) {
       this.throwError(response);
     }
-    // TODO: Подумать над этим типом
-    // У меня везде предполагается объект, а тут массив
-    // Везде прикручивать проверку на массив не вариант
-    this.mutations.setUserChats(response.data);
+    if (Array.isArray(response.data)) {
+      this.mutations.setUserChats(response.data);
+    }
   }
 
   async createChat(data: { title: string }) {
@@ -55,7 +54,9 @@ export default class ChatsController extends BaseController {
     if (response.error) {
       this.throwError(response);
     }
-    this.mutations.setChatUsers(chatId, response.data);
+    if (Array.isArray(response.data)) {
+      this.mutations.setChatUsers(chatId, response.data);
+    }
   }
 
   async addUsers(data: { chatId: number, users: number[] }) {
@@ -79,9 +80,9 @@ export default class ChatsController extends BaseController {
       this.throwError(response);
     }
 
-    const userList = response.data || [];
+    const userList = (typeof response.data !== 'string' && response.data) || [];
     // eslint-disable-next-line max-len
-    const filteredUserList = userList.length === 1 ? userList : userList.filter((user) => user.login === login);
+    const filteredUserList = userList.length === 1 ? userList : userList.filter((user: { login: string }) => user.login === login);
 
     // TODO: Расширить логику информационных сообщений
     if (!userList.length || !filteredUserList.length || filteredUserList.length > 1) {
@@ -93,15 +94,16 @@ export default class ChatsController extends BaseController {
     }
   }
 
+  // TODO: DRY
   async addUserByLogin(login: string, chatId: number) {
     const response = await userSearchAPI.request({ login });
     if (response.error) {
       this.throwError(response);
     }
 
-    const userList = response.data || [];
+    const userList = (typeof response.data !== 'string' && response.data) || [];
     // eslint-disable-next-line max-len
-    const filteredUserList = userList.length === 1 ? userList : userList.filter((user) => user.login === login);
+    const filteredUserList = userList.length === 1 ? userList : userList.filter((user: { login: string }) => user.login === login);
 
     // TODO: Расширить логику информационных сообщений
     if (!userList.length || !filteredUserList.length || filteredUserList.length > 1) {

@@ -81,7 +81,12 @@ interface RequestOptions {
 interface RequestResponse {
   error: boolean,
   status: string | number,
-  data: { [key: string]: any } | string | null
+  data: { [key: string]: any } | null
 }
 
 interface QueryData { [key: string]: string }
+
+// TODO: Узнать почему это работает
+interface MessageEvent extends Event {
+  message: string
+}

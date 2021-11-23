@@ -21,7 +21,7 @@ export default class ChatsController extends BaseController {
       this.throwError(response);
     }
 
-    const socket = new WebSocket(`wss://ya-praktikum.tech/ws/chats/${userId}/${chatId}/${response.data.token}`);
+    const socket = new WebSocket(`wss://ya-praktikum.tech/ws/chats/${userId}/${chatId}/${response.data?.token}`);
     this.mutations.addSocket(chatId, socket);
 
     // TODO: Подгрузка большего числа сообщений на скролл
@@ -54,8 +54,8 @@ export default class ChatsController extends BaseController {
       this.mutations.removeSocket(chatId);
     };
 
-    socket.onerror = ({ message }) => {
-      this.throwError({ status: `Ошибка в сокете ${chatId}`, data: message });
+    socket.onerror = (evt: MessageEvent) => {
+      this.throwError({ status: `Ошибка в сокете ${chatId}`, data: evt.message });
     };
   }
 
