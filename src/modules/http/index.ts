@@ -1,6 +1,4 @@
 /* eslint-disable max-len */
-import './types.d';
-
 enum METHODS {
   GET = 'GET',
   POST = 'POST',
