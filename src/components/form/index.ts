@@ -1,15 +1,10 @@
-import Block, { Props } from '../../modules/block';
-import FormGroup, { FormField } from '../form-group';
+import Block from '../../modules/block';
+import FormGroup from '../form-group';
 import compileTemplate from './template.pug';
 import './styles.scss';
 
 const FORM_CLASS = 'form';
 const FORM_TAG = 'form';
-
-export interface FormProps extends Props {
-  submitCallback: (data: { [key: string]: unknown }) => void;
-  fields: FormField[]
-}
 
 class Form extends Block {
   get isValid() {

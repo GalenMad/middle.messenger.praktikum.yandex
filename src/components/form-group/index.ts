@@ -1,4 +1,4 @@
-import Block, { Props } from '../../modules/block';
+import Block from '../../modules/block';
 import compileTemplate from './template.pug';
 import './styles.scss';
 
@@ -6,13 +6,6 @@ const FORM_GROUP_CLASS = 'form-group';
 const FORM_GROUP_TAG = 'label';
 const VALIDATION_SELECTOR = '.validation';
 
-export interface FormField extends Props {
-  label: string,
-  id: string,
-  name: string,
-  value: string,
-  validators?: Array<(value: any) => boolean | string>;
-}
 export default class FormGroup extends Block {
   props: FormField;
 

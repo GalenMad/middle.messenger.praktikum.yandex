@@ -1,5 +1,5 @@
-import Block, { Props } from '../../modules/block';
-import Form, { FormProps } from '../form';
+import Block from '../../modules/block';
+import Form from '../form';
 import compileTemplate from './template.pug';
 import './styles.scss';
 

@@ -11,11 +11,6 @@ interface PropsEvent {
 interface PropsAttributes {
   [key: string]: string;
 }
-export interface Props {
-  [key: string]: Function | unknown | string;
-  events?: PropsEvent[];
-  attributes?: PropsAttributes;
-}
 
 interface Selectors {
   [key: string]: string;
