@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-use-before-define */
 import Block from '../../../modules/block';
 import compileTemplate from './template.pug';
 import './styles.scss';
@@ -15,7 +14,9 @@ const createModal = (props: { button: string, title: string }, callback: Functio
     submitCallback: (data: { login: string }) => {
       const { login } = data;
       // TODO: Есть ли возможность избегать использования до объявления?
-      const { id } = form.props.chat;
+      /* eslint-disable @typescript-eslint/no-use-before-define */
+      // TODO: Спорный момент с TS, надо бы избежать этого
+      const { id } = form.props.chat as { id: string };
       callback(login, id);
       modal.hide();
     },

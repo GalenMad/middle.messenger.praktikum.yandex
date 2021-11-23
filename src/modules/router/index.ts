@@ -1,4 +1,5 @@
 /* eslint-disable no-restricted-globals */
+import Block from '../block';
 import Route from './route';
 
 enum ADDRESSES {
@@ -28,7 +29,7 @@ class Router {
     this._rootQuery = rootQuery;
   }
 
-  use(pathname: string, block: unknown, options: {}) {
+  use(pathname: string, block: Block, options: PageOptions) {
     const route = new Route(pathname, block, { rootQuery: this._rootQuery }, options);
     this.routes.push(route);
     return this;
@@ -52,7 +53,7 @@ class Router {
     root.innerHTML = '';
 
     root.addEventListener('click', (evt) => {
-      const link = evt.target.closest('a');
+      const link = evt.target instanceof HTMLElement && evt.target.closest('a');
       if (link) {
         const pathname = link.getAttribute('href');
         this.go(pathname);
@@ -97,7 +98,8 @@ class Router {
     }
   }
 
-  go(pathname: string) {
+  go(pathname: string | null) {
+    if (!pathname) return;
     this.history.pushState({ a: 2 }, '', pathname);
     this._onRoute(pathname);
   }

@@ -1,3 +1,5 @@
+// import Block from './modules/block';
+
 declare module '*.pug';
 declare module '*.svg';
 
@@ -12,14 +14,15 @@ interface PropsEvent {
 }
 
 interface Props {
-  [key: string]: Function | unknown | string;
+  [key: string]: Function | unknown | string | {};
   events?: PropsEvent[];
   attributes?: PropsAttributes;
 }
 
 interface FormProps extends Props {
-  submitCallback: (data: { [key: string]: unknown }) => void;
-  fields: FormField[]
+  submitCallback?: (data: { [key: string]: unknown }) => void;
+  fields?: FormField[];
+  [key: string]: unknown;
 }
 
 interface FormField extends Props {
@@ -89,4 +92,9 @@ interface QueryData { [key: string]: string }
 // TODO: Узнать почему это работает
 interface MessageEvent extends Event {
   message: string
+}
+
+interface PageOptions {
+  isNotForAuthorized: boolean;
+  isPrivate: boolean;
 }

@@ -1,3 +1,6 @@
+// TODO: Обойтись без импорта
+import Block from '../block';
+
 export default class Route {
   _pathname: any;
 
@@ -15,7 +18,7 @@ export default class Route {
 
   isNotForAuthorized: any;
 
-  constructor(pathname: string, view, props, options) {
+  constructor(pathname: string, view: Block, props: Props, options: PageOptions) {
     const { isPrivate = false, isNotForAuthorized = false } = options;
     this._pathname = pathname;
     this._blockClass = view;

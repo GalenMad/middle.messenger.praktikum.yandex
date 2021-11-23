@@ -13,20 +13,20 @@ export default class ChatFooter extends Block {
 
   componentDidMount() {
     // TODO: Перенести и рефакторить слушатели после обновления жизненного цикла
-    const input = this.element.querySelector('.chat_input');
-    const submit = this.element.querySelector('.chat_submit-message');
+    const input: HTMLInputElement | null = this.element.querySelector('.chat_input');
+    const submit: HTMLButtonElement | null = this.element.querySelector('.chat_submit-message');
 
     // TODO: Отслеживать доп. нажатия на Shift, Ctrl и прочие
-    const keydownHandler = (evt) => {
+    const keydownHandler = (evt: KeyboardEvent) => {
       if (evt.key === 'Enter') {
         evt.preventDefault();
-        submit.click();
+        submit?.click();
       }
     };
 
     if (input && submit) {
-      input.addEventListener('input', ({ target }) => {
-        const value = target.value.trim();
+      input.addEventListener('input', () => {
+        const value = input.value.trim();
         if (value) {
           submit.removeAttribute('disabled');
         } else {

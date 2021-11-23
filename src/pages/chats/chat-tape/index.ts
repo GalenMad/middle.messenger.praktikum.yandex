@@ -12,7 +12,7 @@ export default class ChatTape extends Block {
     const events = [{
       type: 'click',
       cb: (evt: Event) => {
-        const chatItem = evt.target.closest('.chat-item');
+        const chatItem = evt.target instanceof HTMLElement && evt.target.closest('.chat-item');
         if (chatItem) {
           const chatItemId = chatItem.dataset.id;
           chatsController.setActiveChat(chatItemId);
