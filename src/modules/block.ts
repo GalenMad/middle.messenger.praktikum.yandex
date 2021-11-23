@@ -2,20 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { get, storeEvents } from './store';
 
-interface PropsEvent {
-  type: keyof ElementEventMap | string | [];
-  selector?: string;
-  cb: (this: Element, ev: Event) => any;
-}
-
-interface PropsAttributes {
-  [key: string]: string;
-}
-
-interface Selectors {
-  [key: string]: string;
-}
-
+// TODO: Вынести в types
 interface ContentChildren {
   [key: string]: Block;
 }
@@ -153,7 +140,7 @@ class Block {
     events.forEach(({ type, selector, cb }) => {
       const element = selector ? this._element.querySelector(selector) : this.element;
       if (!element) return;
-      element.addEventListener(type, cb);
+      element.addEventListener(type as keyof ElementEventMap, cb);
     });
   }
 
@@ -161,7 +148,7 @@ class Block {
     events.forEach(({ type, selector, cb }) => {
       const element = selector ? this._element.querySelector(selector) : this.element;
       if (!element) return;
-      element.addEventListener(type, cb);
+      element.addEventListener(type as keyof ElementEventMap, cb);
     });
   }
 

@@ -1,5 +1,3 @@
-// import Block from './modules/block';
-
 declare module '*.pug';
 declare module '*.svg';
 
@@ -115,4 +113,19 @@ interface SocketMessage {
   time: string
   type: string
   user_id: number
+}
+
+interface PropsEvent {
+  type: keyof ElementEventMap | string | [];
+  selector?: string;
+  cb: (this: Element, ev: Event) => any;
+}
+
+interface Selectors {
+  [key: string]: string;
+}
+
+interface ErrorModalContentProps {
+  status: number | string;
+  reason: string | null;
 }

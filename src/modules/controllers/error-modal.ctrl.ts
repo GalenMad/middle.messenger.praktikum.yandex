@@ -1,11 +1,6 @@
 import ErrorModalContent from '../../components/modals/error-modal-content';
 import ModalWrapper from '../../components/modals/modal-wrapper';
 
-interface ErrorModalContentProps {
-  status: number | string;
-  reason: string | null;
-}
-
 let instance: ErrorModalController | null = null;
 
 // TODO: Допилить и расширить логику появления модалок
