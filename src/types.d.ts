@@ -99,11 +99,6 @@ interface MessageEvent extends Event {
   message: string
 }
 
-interface PageOptions {
-  isNotForAuthorized: boolean;
-  isPrivate: boolean;
-}
-
 interface SocketMessage {
   chat_id: number
   content: string
@@ -128,4 +123,9 @@ interface Selectors {
 interface ErrorModalContentProps {
   status: number | string;
   reason: string | null;
+}
+
+interface PageOptions {
+  isNotForAuthorized?: boolean;
+  isPrivate?: boolean;
 }

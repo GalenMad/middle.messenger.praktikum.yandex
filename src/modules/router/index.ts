@@ -29,7 +29,7 @@ class Router {
     this._rootQuery = rootQuery;
   }
 
-  use(pathname: string, block: Block, options: PageOptions) {
+  use(pathname: string, block: typeof Block, options: PageOptions) {
     const route = new Route(pathname, block, { rootQuery: this._rootQuery }, options);
     this.routes.push(route);
     return this;

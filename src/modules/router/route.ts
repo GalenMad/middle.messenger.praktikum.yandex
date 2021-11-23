@@ -18,7 +18,7 @@ export default class Route {
 
   isNotForAuthorized: any;
 
-  constructor(pathname: string, view: Block, props: Props, options: PageOptions) {
+  constructor(pathname: string, view: typeof Block, props: Props, options: PageOptions) {
     const { isPrivate = false, isNotForAuthorized = false } = options;
     this._pathname = pathname;
     this._blockClass = view;

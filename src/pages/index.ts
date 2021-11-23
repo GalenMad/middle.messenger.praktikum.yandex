@@ -1,3 +1,4 @@
+import Block from '../modules/block';
 import Authorization from './authorization';
 import Registration from './registration';
 import UserSettings from './profile';
@@ -5,7 +6,14 @@ import Error404 from './error-404';
 import Error500 from './error-500';
 import ChatsPage from './chats';
 
-export default [{
+interface RoutePage {
+  name: string;
+  block: typeof Block;
+  path: string;
+  options?: PageOptions
+}
+
+const routeMap: RoutePage[] = [{
   name: 'Авторизация',
   block: Authorization,
   path: '/sign-in',
@@ -47,3 +55,5 @@ export default [{
   block: Error500,
   path: '/error-500',
 }];
+
+export default routeMap;
