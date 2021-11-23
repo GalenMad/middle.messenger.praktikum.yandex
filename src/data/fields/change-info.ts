@@ -2,7 +2,7 @@ import {
   login, required, minLength, maxLength, name, firstCapital, email, phone, notInteger,
 } from './validators';
 
-export default (data: { [key: string]: string }) => [{
+export default (data: UserInfo) => [{
   label: 'Имя',
   id: 'first_name',
   name: 'first_name',
@@ -41,7 +41,7 @@ export default (data: { [key: string]: string }) => [{
   label: 'Имя в чате',
   id: 'display_name',
   name: 'display_name',
-  value: data.display_name,
+  value: data.display_name || '',
   validators: [
     required(),
     maxLength(20),

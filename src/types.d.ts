@@ -34,12 +34,19 @@ interface FormField extends Props {
 }
 
 interface UserInfo {
-  [key: string]: string;
+  avatar: string | null;
+  display_name: string | null;
+  email: string;
+  first_name: string;
+  id: number;
+  login: string;
+  phone: string;
+  second_name: string;
 }
 
 interface UserProfileItem {
   name: string;
-  value: string | number;
+  value: string | number | undefined | null;
 }
 
 interface ChatItem {
@@ -69,7 +76,7 @@ interface GlobalStore {
   activeChat: ChatItem | null;
   chatList: ChatItem[];
   userInfo: UserInfo;
-  chatsUsers: { [index: number]: string[] }
+  chatsUsers: { [index: number]: { [index: number]: string } }
   userProfile: UserProfileItem[];
   changeInfoFields: FormField[];
 }
@@ -97,4 +104,15 @@ interface MessageEvent extends Event {
 interface PageOptions {
   isNotForAuthorized: boolean;
   isPrivate: boolean;
+}
+
+interface SocketMessage {
+  chat_id: number
+  content: string
+  file: null
+  id: number
+  is_read: boolean
+  time: string
+  type: string
+  user_id: number
 }

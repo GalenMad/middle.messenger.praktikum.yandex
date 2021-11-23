@@ -52,7 +52,7 @@ const store: GlobalStore = makeProxy({
 
 // TODO: Сохранять значения инпутов в чате
 function updateUserProfile(info: UserInfo) {
-  return Object.keys(userProfileLabels).map((label: string) => ({
+  return Object.keys(userProfileLabels).map((label: keyof UserInfo) => ({
     name: userProfileLabels[label],
     value: info[label],
   }));
@@ -123,14 +123,14 @@ export const mutations = {
     delete store.sockets[id];
   },
   setChatUsers: (id: number, users: UserInfo[]) => {
-    const userNames = {};
+    const userNames: { [index: string]: string } = {};
     users.forEach((user: UserInfo) => {
       userNames[user.id] = user.display_name || user.login;
     });
     store.chatsUsers[id] = userNames;
     store.chatsUsers = { ...store.chatsUsers };
   },
-  setMessages: (id: number, list: []) => {
+  setMessages: (id: number, list: SocketMessage[]) => {
     list.forEach((item) => {
       item.time = formatDate(new Date(item.time));
     });
@@ -138,7 +138,7 @@ export const mutations = {
     // TODO: Можно ли обойтись без реструктуризации?
     store.messages = { ...store.messages };
   },
-  addMessage: (id: number, message: {}) => {
+  addMessage: (id: number, message: SocketMessage) => {
     message.time = formatDate(new Date(message.time));
     store.messages[id].unshift(message);
     store.messages = { ...store.messages };

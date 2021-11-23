@@ -1,6 +1,4 @@
-const labels: {
-  [key: string]: string
-} = {
+const labels: Record<string, string> = {
   first_name: 'Имя',
   second_name: 'Фамилия',
   login: 'Логин',
