@@ -61,6 +61,7 @@ export default class ChatsController extends BaseController {
 
   async sendMessage(content: string) {
     const socket = this.getters.getActiveSocket();
+    if (!socket) return;
     socket.send(JSON.stringify({
       content,
       type: 'message',

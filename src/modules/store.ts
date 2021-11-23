@@ -5,7 +5,7 @@ import { data, changeInfoFields } from '../data/fields';
 import userProfileLabels from '../data/user-profile-labels';
 
 // TODO: Расширить форматирование дат
-function formatDate(date) {
+function formatDate(date: Date) {
   const d = [
     `0${date.getDate()}`,
     `0${date.getMonth() + 1}`,

@@ -12,7 +12,7 @@ export default class BaseController {
     checkSocket: (id: number) => boolean;
     isAuthorized: () => boolean;
     userId: () => string | number;
-    getActiveSocket: () => WebSocket;
+    getActiveSocket: () => WebSocket | null;
   };
 
   mutations: {

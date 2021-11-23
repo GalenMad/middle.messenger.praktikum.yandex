@@ -63,10 +63,10 @@ interface ChatItem {
 
 interface GlobalStore {
   messages: { [index: number]: {}[] };
-  activeSocket: WebSocket;
+  activeSocket: WebSocket | null;
   sockets: { [index: number]: WebSocket };
   isAuthorized: boolean;
-  activeChat: ChatItem;
+  activeChat: ChatItem | null;
   chatList: ChatItem[];
   userInfo: UserInfo;
   chatsUsers: { [index: number]: string[] }
