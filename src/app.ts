@@ -16,6 +16,8 @@ import AuthController from './modules/controllers/auth.ctrl';
 // Вариант 1 — не использовать ререндер для элементов с инпутами
 // Вариант 2 — при перерендере делать проверку на фокус у вложенного инпута
 
+// TODO: Поработать над выводом крутилок при открывании чатов — тест на слабом соединении
+
 pages.forEach(({
   block, path, options = {},
 }) => Router.use(path, block, options));
