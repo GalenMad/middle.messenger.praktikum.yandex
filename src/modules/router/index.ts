@@ -3,9 +3,9 @@ import Block from '../block';
 import Route from './route';
 
 enum ADDRESSES {
-  ERROR = '/error-404',
-  AUTH = '/sign-in',
-  MAIN = '/',
+  ERROR = '/404',
+  AUTH = '/',
+  MAIN = '/messenger',
 }
 
 const ROOT = '#app';

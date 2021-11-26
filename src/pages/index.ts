@@ -16,7 +16,7 @@ interface RoutePage {
 const routeMap: RoutePage[] = [{
   name: 'Авторизация',
   block: Authorization,
-  path: '/sign-in',
+  path: '/',
   options: {
     isNotForAuthorized: true,
   },
@@ -32,7 +32,7 @@ const routeMap: RoutePage[] = [{
 {
   name: 'Чаты',
   block: ChatsPage,
-  path: '/',
+  path: '/messenger',
   options: {
     isPrivate: true,
   },
@@ -40,7 +40,7 @@ const routeMap: RoutePage[] = [{
 {
   name: 'Профиль пользователя',
   block: UserSettings,
-  path: '/profile',
+  path: '/settings',
   options: {
     isPrivate: true,
   },
@@ -48,12 +48,12 @@ const routeMap: RoutePage[] = [{
 {
   name: 'Ошибка 404',
   block: Error404,
-  path: '/error-404',
+  path: '/404',
 },
 {
   name: 'Ошибка 500',
   block: Error500,
-  path: '/error-500',
+  path: '/500',
 }];
 
 export default routeMap;

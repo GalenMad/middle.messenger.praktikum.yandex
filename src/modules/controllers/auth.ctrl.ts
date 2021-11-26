@@ -29,7 +29,7 @@ export default class AuthController extends BaseController {
     const response = await userInfoAPI.request();
     if (response.error) {
       this.mutations.setAuthorizationStatus(false);
-      this.router.go('/sign-in');
+      this.router.go('/');
       this.throwError(response);
     }
     // TODO: Избыточные проверки для TS
@@ -49,7 +49,7 @@ export default class AuthController extends BaseController {
 
     this.mutations.setAuthorizationStatus(true);
     await this.getUserInfo();
-    this.router.go('/');
+    this.router.go('/messenger');
     this.loadingModal.hide();
   }
 
@@ -62,7 +62,7 @@ export default class AuthController extends BaseController {
 
     this.mutations.setAuthorizationStatus(true);
     this.getUserInfo();
-    this.router.go('/');
+    this.router.go('/messenger');
     this.loadingModal.hide();
   }
 
@@ -76,7 +76,7 @@ export default class AuthController extends BaseController {
     }
 
     this.mutations.setAuthorizationStatus(false);
-    this.router.go('/sign-in');
+    this.router.go('/');
     this.loadingModal.hide();
   }
 }
