@@ -33,6 +33,7 @@ export default class ChatsController extends BaseController {
 
       (function ping() {
         setTimeout(() => {
+          // TODO: Добавить проверку состояния сокета
           socket.send(JSON.stringify({ type: 'ping' }));
           ping();
         }, 3000);
