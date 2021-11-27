@@ -47,6 +47,7 @@ export default class ChatFooter extends Block {
         if (value) {
           socketsController.sendMessage(value);
           input.value = '';
+          submit.setAttribute('disabled', 'disabled');
         }
       });
     }

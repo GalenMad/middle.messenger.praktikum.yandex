@@ -21,7 +21,6 @@
   }
 
   &_input {
-    width: 100%;
     resize: none;
     font-size: 18px;
     font-weight: 300;
@@ -47,9 +46,15 @@
   &_submit-holder {
     width: 64px;
     height: 100%;
+    position: relative;
+    overflow: hidden;
   }
 
   &_submit-message {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
     width: 64px;
     height: 100%;
     background-color: $base-sky;
@@ -57,9 +62,10 @@
     background-size: 22px;
     background-repeat: no-repeat;
     background-position: center;
+    transition: 0.2s ease-in right;
 
     &:disabled {
-      display: none;
+      right: -64px;
     }
   }
 }
