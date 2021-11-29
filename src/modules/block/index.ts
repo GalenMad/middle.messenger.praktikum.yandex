@@ -1,13 +1,13 @@
 /* eslint-disable class-methods-use-this */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { get, storeEvents } from './store';
+import { get, storeEvents } from '../store';
 
 // TODO: Вынести в types
 interface ContentChildren {
   [key: string]: Block;
 }
 
-class Block {
+export default class Block {
   static MESSAGE_ACCESS_ERROR = 'Нет прав';
 
   _element: HTMLElement;
@@ -184,5 +184,3 @@ class Block {
     this.element.style.display = '';
   }
 }
-
-export default Block;
