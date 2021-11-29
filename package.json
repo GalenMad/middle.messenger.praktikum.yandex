@@ -7,6 +7,7 @@
   "scripts": {
     "start": "parcel --port 3000 --no-cache",
     "build": "parcel build",
+    "test" : "mocha src/test.spec.ts",
     "server": "node server.js",
     "lint:styles": "npx stylelint **/*.scss --fix",
     "lint:js": "npx eslint . --fix",
