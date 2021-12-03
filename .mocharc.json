@@ -1,0 +1,5 @@
+{
+    "require": ["./test/register.js", "test/testNullCompiler.js"],
+    "spec": "src/**/*.spec.ts",
+    "reporter": "list"
+}
