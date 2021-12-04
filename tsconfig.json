@@ -10,7 +10,7 @@
         "moduleResolution": "Node",
         "allowSyntheticDefaultImports": true,
         "typeRoots": [
-            "src/types.d.ts",
+            "src/index.d.ts",
             "node_modules/@types"
         ]
     },
