@@ -1,4 +1,7 @@
-declare module '*.pug';
+declare module '*.pug' {
+  function compileFn(props: any): string;
+  export default compileFn;
+}
 declare module '*.svg';
 
 interface PropsAttributes {
