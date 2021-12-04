@@ -129,7 +129,7 @@ export default class Block {
   }
 
   render() {
-    return false;
+    return '';
   }
 
   getContent() {
