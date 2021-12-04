@@ -148,7 +148,7 @@ export default class Block {
     events.forEach(({ type, selector, cb }) => {
       const element = selector ? this._element.querySelector(selector) : this.element;
       if (!element) return;
-      element.addEventListener(type as keyof ElementEventMap, cb);
+      element.removeEventListener(type as keyof ElementEventMap, cb);
     });
   }
 
