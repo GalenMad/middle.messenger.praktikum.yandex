@@ -1,5 +1,5 @@
 {
-    "extends": "../tsconfig.json",
+    "extends": "../../tsconfig.json",
     "compilerOptions": {
         "baseUrl": "./",
         "module": "commonjs",
@@ -9,7 +9,7 @@
         "strict": false,
         "noImplicitAny": false,
         "typeRoots": [
-            "../node_modules/@types"
+            "../../node_modules/@types"
         ]
     }
 }

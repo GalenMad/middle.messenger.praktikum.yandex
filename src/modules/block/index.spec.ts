@@ -1,20 +1,9 @@
 /* eslint-disable func-names */
 /* eslint-disable prefer-arrow-callback */
 import { expect } from 'chai';
-import { JSDOM } from 'jsdom';
 import Block from './index';
 
 describe('Родительский класс Block', () => {
-  const jsdom = new JSDOM('', { url: 'http://localhost' });
-  const { window } = jsdom;
-
-  Object.assign(global, {
-    window,
-    document: window.document,
-    expect,
-    JSDOM,
-  });
-
   let clickCounter = 0;
   let antoherClickCounter = 0;
 
