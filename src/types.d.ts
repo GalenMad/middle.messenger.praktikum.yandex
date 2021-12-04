@@ -1,6 +1,6 @@
 declare module '*.pug' {
-  function compileFn(props: any): string;
-  export default compileFn;
+  function compileTemplate(props: any): string;
+  export default compileTemplate;
 }
 declare module '*.svg';
 

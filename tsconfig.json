@@ -8,11 +8,12 @@
         "strictNullChecks": true,
         "target": "ES6",
         "moduleResolution": "Node",
-        "allowSyntheticDefaultImports": true
+        "allowSyntheticDefaultImports": true,
+        "typeRoots": [
+            "src/types.d.ts",
+            "node_modules/@types"
+        ]
     },
-    "typeRoots": [
-        "src/types.d.ts"
-    ],
     "exclude": [
         "node_modules"
     ],
