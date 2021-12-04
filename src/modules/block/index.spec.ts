@@ -1,40 +1,87 @@
 /* eslint-disable func-names */
 /* eslint-disable prefer-arrow-callback */
 import { expect } from 'chai';
+import { JSDOM } from 'jsdom';
 import Block from './index';
 
 describe('Родительский класс Block', () => {
-  // before
-  // Создаю экземпляр класса Block
-  // с атрибутами id, class, data-id
-  // Навешиваю ивент на клик
-  // Применяю селектор 'isAuthorized'
-  function createBlock() {
-    const tagName = 'div';
-    const attributes = {
-      id: 'id',
-      class: 'class',
-      'data-id': 'data-id',
-    };
-    const props = { attributes };
-    const children = {};
-    const selectors = {};
-    return new Block(tagName, props, children, selectors);
-  }
+  const jsdom = new JSDOM('', { url: 'http://localhost' });
+  const { window } = jsdom;
 
-  // Проверка создания обёрточного тега с атрибутами
-  // Проверка наличия пропса
-  // Проверка изменяемости пропсов
-  // Проверка навешивания ивентов
-  // Проверка селекторов
-
-  it('Генерация обёрточного элемента', () => {
-    const element = createBlock().getContent();
-    expect(element).to.have.property('fgd');
-    // property(element.id, 'id');
+  Object.assign(global, {
+    window,
+    document: window.document,
+    expect,
+    JSDOM,
   });
 
-  // Проверка цикла добавления/удаления ивентов
+  let clickCounter = 0;
+  let antoherClickCounter = 0;
+
+  const tagName = 'article';
+  const attributes = {
+    id: 'id',
+    class: 'class',
+    'data-id': 'data-id',
+  };
+  const events = [{
+    type: 'click',
+    cb: () => { clickCounter += 1; },
+  }];
+  const props = { attributes, foo: 'bar', events };
+  const children = {};
+  const selectors = { data: 'mockData' };
+  const block = new Block(tagName, props, children, selectors);
+  const element = block.getContent();
+
+  it('Корректный тег', () => {
+    expect(element.tagName.toLowerCase()).to.equal(tagName);
+  });
+
+  it('Присвоение атрибутов', () => {
+    expect(element).to.have.property('id');
+    expect(element).to.have.property('className');
+    expect(element.dataset).to.have.property('id');
+  });
+
+  it('Наличие пропса', () => {
+    expect(block.props).to.have.property('foo');
+    expect(block.props.foo).to.equal('bar');
+  });
+
+  it('Перезапись пропса', () => {
+    block.setProps({ foo: 1 });
+    expect(block.props.foo).to.equal(1);
+  });
+
+  it('Наличие пропса из селектора', () => {
+    expect(block.props).to.have.property('data');
+    expect(block.props.data).to.equal('data');
+  });
+
+  it('Срабатывание слушателей', () => {
+    element.click();
+    expect(clickCounter).to.equal(1);
+  });
+
+  it('Перезапись слушателей', () => {
+    const anotherEvents = [{
+      type: 'click',
+      cb: () => { antoherClickCounter += 1; },
+    }];
+    block.setProps({ events: anotherEvents });
+    element.click();
+    expect(antoherClickCounter).to.equal(1);
+  });
+
+  it('Отсутствие срабатывания перезаписанных слушателей', () => {
+    expect(clickCounter).to.equal(1);
+  });
+
+  // TODO: Доп. тесты Block
+  // Проверка на значения атрибутов
   // Проверка генерации шаблонов
+  // Проверка render
+  // Асинхронные тесты для добавления пропсов
   // Проверка генерации дочерних элементов
 });

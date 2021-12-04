@@ -37,6 +37,8 @@ const makeProxy = (props: {}) => {
 const RESOURCES_HOST = 'https://ya-praktikum.tech/api/v2/resources';
 
 const store: GlobalStore = makeProxy({
+  // TODO: Придумать другой способ проверки селектора
+  mockData: 'data',
   isAuthorized: false,
   userInfo: {},
   userProfile: {},
