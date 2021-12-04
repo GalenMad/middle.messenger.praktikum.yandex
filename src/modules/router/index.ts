@@ -36,7 +36,7 @@ class Router {
   }
 
   replaceRoute(pathname: string) {
-    history.replaceState({}, '', pathname);
+    this.history.replaceState({}, '', pathname);
     this._currentRoute = this.getRoute(pathname);
     this._currentRoute?.render();
   }
