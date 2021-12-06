@@ -5,7 +5,7 @@ const pageProps = {
   title: 'Регистрация',
   footerText: 'Уже есть аккаунт?',
   linkText: 'Войти',
-  link: '/sign-in',
+  link: '/',
 };
 const formProps = {
   title: 'Регистрация',
