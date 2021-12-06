@@ -23,7 +23,7 @@ describe('Модуль Block.', () => {
   const block = new Block(tagName, props, children, selectors);
   const element = block.getContent();
 
-  describe('Генерация обёртки:', () => {
+  describe('Генерация обёртки —', () => {
     it('Корректный тег', () => {
       expect(element.tagName.toLowerCase()).to.equal(tagName);
     });
@@ -35,7 +35,7 @@ describe('Модуль Block.', () => {
     });
   });
 
-  describe('Работа с пропсами:', () => {
+  describe('Работа с пропсами —', () => {
     it('Наличие пропса', () => {
       expect(block.props).to.have.property('foo');
       expect(block.props.foo).to.equal('bar');
@@ -52,7 +52,7 @@ describe('Модуль Block.', () => {
     });
   });
 
-  describe('Работа с событиями:', () => {
+  describe('Работа с событиями —', () => {
     it('Срабатывание слушателей', () => {
       element.click();
       expect(clickCounter).to.equal(1);
