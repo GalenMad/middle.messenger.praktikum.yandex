@@ -22,10 +22,11 @@ export default class BaseController {
     setChatUsers: (id: number, users: UserInfo[]) => void;
     setActiveChat: (id: number) => void;
     setMessages: (id: number, list: {}[]) => void;
-    addMessage: (id: number, list: {}[]) => void;
+    addMessage: (id: number, message: SocketMessage) => void;
     addSocket: (id: number, socket: WebSocket) => void;
     removeSocket: (id: number) => void;
     setActiveSocket: (id: number) => void;
+    resetStore: () => void;
   };
 
   loadingModal: LoadingModalController;

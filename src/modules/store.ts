@@ -146,6 +146,16 @@ export const mutations = {
     store.messages[id].unshift(message);
     store.messages = { ...store.messages };
   },
+  resetStore: () => {
+    // TODO: Сделать нормальный ресет
+    store.activeChat = null;
+    store.chatsUsers = {};
+    Object.values(store.sockets).forEach((socket) => socket.close());
+    store.sockets = {};
+    store.messages = {};
+    store.activeSocket?.close();
+    store.activeSocket = null;
+  },
 };
 
 export const getters = {
