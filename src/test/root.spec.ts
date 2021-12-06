@@ -8,5 +8,7 @@ const config = {
 };
 const jsdom = new JSDOM(html, config);
 const { window } = jsdom;
-const { document } = window;
-Object.assign(global, { document, window, XMLHttpRequest });
+const { document, FormData } = window;
+Object.assign(global, {
+  document, window, XMLHttpRequest, FormData,
+});
