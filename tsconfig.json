@@ -8,7 +8,7 @@
         "strictNullChecks": true,
         "target": "ES6",
         "moduleResolution": "Node",
-        "allowSyntheticDefaultImports": true,
+        "esModuleInterop": true,
         "typeRoots": [
             "src/index.d.ts",
             "node_modules/@types"

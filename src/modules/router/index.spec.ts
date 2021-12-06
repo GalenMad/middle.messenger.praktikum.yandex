@@ -1,20 +1,10 @@
 /* eslint-disable func-names */
 /* eslint-disable prefer-arrow-callback */
-import { expect } from 'chai';
-import pages from '../../pages';
-import Router from './index';
+// import Router from './index';
+// import pages from '../../pages/index';
 
 describe('Роутер', () => {
-  const isAuthorized = () => false;
-  pages.forEach(({
-    block, path, options = {},
-  }) => Router.use(path, block, options));
-  Router.start(isAuthorized);
-
-  // it('404', () => {
-  Router.go('/404');
-  console.log(window.history);
-  // });
+  // TODO: Тест роутера
   // Проверка отправки на 404
   // Проверка отправки на авторизацию
   // Проверка отправки к чатам
