@@ -7,14 +7,14 @@ enum METHODS {
   DELETE = 'DELETE',
 }
 
-const stringifyQuery = (data: QueryData) => {
+export const stringifyQuery = (data: QueryData) => {
   if (!data || typeof data !== 'object') {
     return '';
   }
   return Object.entries(data).reduceRight((prev: string | null, curr: string[]): string => `${curr[0]}=${curr[1].toString()}${prev ? `&${prev}` : ''}`, null);
 };
 
-const getJSONFromString = (string: string) => {
+export const getJSONFromString = (string: string) => {
   try {
     const json = JSON.parse(string);
     return json;
@@ -25,7 +25,7 @@ const getJSONFromString = (string: string) => {
 
 const BASE_HOST = 'https://ya-praktikum.tech/api/v2';
 
-class HTTPTransport {
+export default class HTTPTransport {
   private _host: string;
 
   private _hand: string;
@@ -81,5 +81,3 @@ class HTTPTransport {
     });
   };
 }
-
-export default HTTPTransport;
