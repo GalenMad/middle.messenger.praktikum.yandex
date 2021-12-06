@@ -1,4 +1,6 @@
 /* eslint-disable max-len */
+import stringifyQuery from '../utils/stringifyQuery';
+
 enum METHODS {
   GET = 'GET',
   POST = 'POST',
@@ -6,13 +8,6 @@ enum METHODS {
   PATCH = 'PATCH',
   DELETE = 'DELETE',
 }
-
-export const stringifyQuery = (data: QueryData) => {
-  if (!data || typeof data !== 'object') {
-    return '';
-  }
-  return Object.entries(data).reduceRight((prev: string | null, curr: string[]): string => `${curr[0]}=${curr[1].toString()}${prev ? `&${prev}` : ''}`, null);
-};
 
 export const getJSONFromString = (string: string) => {
   try {
