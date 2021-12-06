@@ -1,12 +1,18 @@
 /* eslint-disable max-len */
 import stringifyQuery from '../utils/stringifyQuery';
 
-enum METHODS {
+export enum Methods {
   GET = 'GET',
   POST = 'POST',
   PUT = 'PUT',
   PATCH = 'PATCH',
   DELETE = 'DELETE',
+}
+
+export enum ErrorStatuses {
+  ABORT = 'abort',
+  UNKNOWN = 'unknown',
+  TIMEOUT = 'timeout',
 }
 
 export const getJSONFromString = (string: string) => {
@@ -31,19 +37,19 @@ export default class HTTPTransport {
   }
 
   get = (url: string, options: RequestOptions = {}) => {
-    const path = options.data && !(options.data instanceof FormData) ? `${url}?${stringifyQuery(options.data)}` : url;
-    return this.request(path, { ...options, method: METHODS.GET });
+    const urlWithParams = options.data && !(options.data instanceof FormData) ? `${url}?${stringifyQuery(options.data)}` : url;
+    return this.request(urlWithParams, { ...options, method: Methods.GET });
   };
 
-  put = (url: string, options: RequestOptions = {}) => this.request(url, { ...options, method: METHODS.PUT });
+  put = (url: string, options: RequestOptions = {}) => this.request(url, { ...options, method: Methods.PUT });
 
-  post = (url: string, options: RequestOptions = {}) => this.request(url, { ...options, method: METHODS.POST });
+  post = (url: string, options: RequestOptions = {}) => this.request(url, { ...options, method: Methods.POST });
 
-  delete = (url: string, options: RequestOptions = {}) => this.request(url, { ...options, method: METHODS.DELETE });
+  delete = (url: string, options: RequestOptions = {}) => this.request(url, { ...options, method: Methods.DELETE });
 
   request = (url: string, options: RequestOptions): Promise<RequestResponse> => {
     const {
-      method = METHODS.GET,
+      method = Methods.GET,
       headers = null,
       data = null,
       timeout = 10000,
@@ -51,10 +57,8 @@ export default class HTTPTransport {
 
     return new Promise((resolve) => {
       const xhr = new XMLHttpRequest();
-      const path = method === METHODS.GET && data ? `${url}?${stringifyQuery(data)}` : url;
       const requestBody = data && data instanceof FormData ? data : JSON.stringify(data);
-
-      xhr.open(method, this._host + this._hand + path);
+      xhr.open(method, this._host + this._hand + url);
       xhr.timeout = timeout;
       xhr.withCredentials = true;
 
@@ -69,10 +73,15 @@ export default class HTTPTransport {
       ): RequestResponse => ({ error, status, data: responseData });
 
       xhr.onload = () => resolve(getResponse(!(xhr.status >= 200 && xhr.status < 300)));
-      xhr.onabort = () => resolve(getResponse(true, 'abort', null));
-      xhr.onerror = () => resolve(getResponse(true, 'unknown', null));
-      xhr.ontimeout = () => resolve(getResponse(true, 'timeout', null));
-      xhr.send(requestBody);
+      // TODO: Статусы ошибок в enum
+      xhr.onabort = () => resolve(getResponse(true, ErrorStatuses.ABORT, null));
+      xhr.onerror = () => resolve(getResponse(true, ErrorStatuses.UNKNOWN, null));
+      xhr.ontimeout = () => resolve(getResponse(true, ErrorStatuses.TIMEOUT, null));
+      if (method === Methods.GET && !(requestBody instanceof FormData)) {
+        xhr.send();
+      } else {
+        xhr.send(requestBody);
+      }
     });
   };
 }
