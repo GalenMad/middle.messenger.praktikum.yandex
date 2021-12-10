@@ -115,7 +115,7 @@ export const hasLowercase = () => {
 };
 
 export const hasDigit = () => {
-  const validator = (value: string): boolean => testRegExp(REG_EXP.HAS_LOWERCASE, value);
+  const validator = (value: string): boolean => testRegExp(REG_EXP.HAS_DIGIT, value);
   const message = 'Должна быть хотя бы одна цифра';
   return (value: string) => (validator(value) ? false : message);
 };
