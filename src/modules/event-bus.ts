@@ -1,5 +1,6 @@
-class EventBus {
-  listeners: Record<string, Function[]>
+export default class EventBus {
+  listeners: Record<string, Function[]>;
+
   constructor() {
     this.listeners = {};
   }
@@ -26,12 +27,9 @@ class EventBus {
   }
 
   emit(event: string, ...args: any): void {
-    if (!this.listeners[event]) {
-      throw new Error(`Нет события: ${event}`);
+    if (this.listeners[event]) {
+      // TODO: Тут была ошибка, если такого события нет. Возможно, что это было важно.
+      this.listeners[event].forEach((handler: Function) => handler(...args));
     }
-
-    this.listeners[event].forEach((handler: Function) => handler(...args));
   }
 }
-
-export default EventBus;

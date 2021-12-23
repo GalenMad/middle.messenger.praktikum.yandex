@@ -2,17 +2,25 @@ h1(hidden) Настройки пользователя
 main.profile
     article.profile_inner
         header.profile_header
-            img.profile_avatar(src=defaultAvatar)
+            button.profile_avatar-holder#change-avatar
+                img.profile_avatar(src=avatar crossorigin='use-credentials')
             div.profile_title
-                h2.profile_name Иван
+                h2.profile_name= userName
                 p 
-                    a.link(href="/") Изменить данные
+                    button.link#change-info Изменить данные
                 p
-                    a.link(href="/") Изменить пароль
+                    a.link#change-password Изменить пароль
         ul.profile_list
-            each item in userData
-                li
-                    span= item.name
-                    span= item.value
-        a.link.return-link(href="/") Вернуться
+            if userData
+                each item in userData
+                    li
+                        span= item.name
+                        span= item.value
+        footer.profile_footer 
+            a.link(href="/messenger") Вернуться
+            button#logout.link Выход
+    template(data-component="changePasswordModal")
+    template(data-component="changeInfoModal")
+    template(data-component="changeAvatarModal")
+
 

@@ -1,30 +1,25 @@
 import './scss/styles.scss';
-import pages, { SpreadPage } from './pages';
+import pages from './pages';
 import Router from './modules/router';
+import AuthController from './modules/controllers/auth.ctrl';
 
-const root: HTMLElement | null = document.querySelector('#app');
+// TODO: Прикрутить алиасы когда будет вебпак
 
-if (root === null) {
-    throw new Error('Не найден root-элемент');
-}
+// TODO: Поправить именование классов по БЭМ
+// TODO: Настроить аутлайны (глобально для всех контролов)
 
-const router = new Router({
-    mode: 'hash',
-    root: '/',
-});
+// TODO: Попробовать организовать глобальные события, чтобы чистить валидацию,
+//        хайдить модалки и т.д. Возможно, стоит хранить его в сторе
 
-// eslint-disable-next-line @typescript-eslint/ban-types
-pages.forEach((page: { path: string, render: Function }): void => {
-    const { render, path } = page;
-    router.add(path, () => {
-        root.innerHTML = '';
-        root.appendChild(render());
-    });
-});
+// TODO: Рефактор жизненного цикла компонента
+// TODO: Глобальная проблема потеря инпутами фокуса при ререндере
+// Вариант 1 — не использовать ререндер для элементов с инпутами
+// Вариант 2 — при перерендере делать проверку на фокус у вложенного инпута
 
-// TODO: Временная заглушка для разводящей страницы;
-router.add('', (): void => {
-    root.innerHTML = '';
-    root.appendChild(SpreadPage({ list: pages }));
-});
+// TODO: Поработать над выводом крутилок при открывании чатов — тест на слабом соединении
+// TODO: Единая инфа о линках(href) по всему приложению
 
+pages.forEach(({
+  block, path, options = {},
+}) => Router.use(path, block, options));
+new AuthController().init();

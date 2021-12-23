@@ -1,28 +1,20 @@
-import allFields from '../../data/fields';
-import Form from '../../components/form';
-import compileTemplate from './template.pug';
-import Block from '../../modules/block';
-
-const fields = allFields.filter((field) => ['login', 'password'].includes(field.name));
+import FormPage from '../../components/form-page';
+import AuthController from '../../modules/controllers/auth.ctrl';
 
 const pageProps = {
-  fields,
+  title: 'Авторизация',
+  footerText: 'Нет аккаунта?',
+  linkText: 'Зарегистрироваться',
+  link: '/sign-up',
+};
+const formProps = {
   title: 'Авторизация',
   buttonText: 'Поехали',
-  footerText: 'Нет аккаунта?',
-  linkText: 'Зарегестрироваться',
-  link: '/registration',
 };
-
-class Page extends Block {
-  constructor(props = {}) {
-    const form = new Form(props);
-    super('div', props, { form });
-  }
-
-  render() {
-    return compileTemplate(this.props);
+const authController = new AuthController();
+const submitCallback = authController.login.bind(authController);
+export default class Page extends FormPage {
+  constructor() {
+    super(pageProps, formProps, submitCallback, { fields: 'loginFields' });
   }
 }
-
-export default () => new Page(pageProps).getContent();

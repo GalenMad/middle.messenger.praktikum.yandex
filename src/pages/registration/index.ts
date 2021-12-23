@@ -1,28 +1,20 @@
-import Block from '../../modules/block';
-import allFields from '../../data/fields';
-import Form from '../../components/form';
-import compileTemplate from './template.pug';
-
-const fields = Object.values(allFields);
+import FormPage from '../../components/form-page';
+import AuthController from '../../modules/controllers/auth.ctrl';
 
 const pageProps = {
-  fields,
   title: 'Регистрация',
-  buttonText: 'Поехали',
   footerText: 'Уже есть аккаунт?',
   linkText: 'Войти',
-  link: '/authorization',
+  link: '/',
 };
-
-class Page extends Block {
-  constructor(props = {}) {
-    const form = new Form(props);
-    super('div', props, { form });
-  }
-
-  render() {
-    return compileTemplate(this.props);
+const formProps = {
+  title: 'Регистрация',
+  buttonText: 'Поехали',
+};
+const authController = new AuthController();
+const submitCallback = authController.registration.bind(authController);
+export default class Page extends FormPage {
+  constructor() {
+    super(pageProps, formProps, submitCallback, { fields: 'registrationFields' });
   }
 }
-
-export default () => new Page(pageProps).getContent();

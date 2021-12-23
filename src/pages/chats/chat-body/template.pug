@@ -1,0 +1,8 @@
+if chat
+    if messages[chat.id]
+        each message in messages[chat.id]
+            article(class= userId !== message.user_id ? 'message' : 'message message_user')
+                if userId !== message.user_id
+                    span.message_title= chatsUsers[chat.id][message.user_id]
+                pre.message_content= message.content
+                span.message_time= message.time

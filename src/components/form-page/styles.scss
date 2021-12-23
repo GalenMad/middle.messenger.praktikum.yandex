@@ -1,0 +1,48 @@
+@import './../../scss/commons/variables';
+@import './../../scss/base/globals';
+
+.form {
+  &-inner {
+    @extend .content-inner;
+
+    padding: 56px 74px 40px;
+  }
+
+  &-title {
+    font-family: $primary-font-family;
+    font-weight: 600;
+    font-size: 40px;
+    margin: 0 0 48px;
+    text-align: center;
+
+    &::after {
+      content: '';
+      display: block;
+      width: 72px;
+      height: 2px;
+      background-color: white;
+      margin: auto;
+      margin-top: 40px;
+    }
+  }
+
+  &-footer {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: flex-start;
+
+    p {
+      font-family: $secondary-font-family;
+      letter-spacing: $secondary-spacing;
+      color: white;
+      opacity: 70%;
+      font-size: 18px;
+      margin: 0 0 8px;
+    }
+
+    .link {
+      font-weight: 700;
+    }
+  }
+}

@@ -1,49 +1,59 @@
+import Block from '../modules/block';
 import Authorization from './authorization';
 import Registration from './registration';
 import UserSettings from './profile';
-import ErrorPage from './error-page';
+import Error404 from './error-404';
+import Error500 from './error-500';
 import ChatsPage from './chats';
-import SpreadPage from './spread-page';
 
-const errorPages = {
-	404: {
-		errorCode: '404', title: 'Ошибка', message: 'Не туда попали?', linkText: 'Вернуться к чатам', linkAddress: '/',
-	},
-	500: {
-		errorCode: '500', title: 'Ошибка', message: 'Ага, уже бежим', linkText: 'Вернуться к чатам', linkAddress: '/',
-	},
-};
+interface RoutePage {
+  name: string;
+  block: typeof Block;
+  path: string;
+  options?: PageOptions
+}
 
-// TODO: Временная заглушка для разводящей страницы;
-export { SpreadPage };
-
-export default [{
-	name: 'Авторизация',
-	render: Authorization,
-	path: 'authorization',
+const routeMap: RoutePage[] = [{
+  name: 'Авторизация',
+  block: Authorization,
+  path: '/',
+  options: {
+    isNotForAuthorized: true,
+  },
 },
 {
-	name: 'Регистрация',
-	render: Registration,
-	path: 'registration',
+  name: 'Регистрация',
+  block: Registration,
+  path: '/sign-up',
+  options: {
+    isNotForAuthorized: true,
+  },
 },
 {
-	name: 'Чаты',
-	render: ChatsPage,
-	path: 'chats',
+  name: 'Чаты',
+  block: ChatsPage,
+  path: '/messenger',
+  options: {
+    isPrivate: true,
+  },
 },
 {
-	name: 'Профиль пользователя',
-	render: UserSettings,
-	path: 'profile',
+  name: 'Профиль пользователя',
+  block: UserSettings,
+  path: '/settings',
+  options: {
+    isPrivate: true,
+  },
 },
 {
-	name: 'Ошибка 404',
-	render: () => ErrorPage({ ...errorPages['404'] }),
-	path: '404',
+  name: 'Ошибка 404',
+  block: Error404,
+  path: '/404',
 },
 {
-	name: 'Ошибка 500',
-	render: () => ErrorPage({ ...errorPages['500'] }),
-	path: '500',
+  name: 'Ошибка 500',
+  block: Error500,
+  path: '/500',
 }];
+
+export default routeMap;

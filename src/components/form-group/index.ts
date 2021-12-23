@@ -1,77 +1,68 @@
 import Block from '../../modules/block';
-import Input from '../input';
 import compileTemplate from './template.pug';
 import './styles.scss';
-
-const createInputElement = (props: { name: string; type?: string; id: string; attributes?: { class?: string; }; validators?: any; }) => {
-  const {
-    id, name, validators, type = 'text',
-  } = props;
-  return new Input({
-    attributes: {
-      class: 'control',
-      type,
-      id,
-      name,
-    },
-    validators,
-  });
-};
 
 const FORM_GROUP_CLASS = 'form-group';
 const FORM_GROUP_TAG = 'label';
 const VALIDATION_SELECTOR = '.validation';
 
-class FormGroup extends Block {
+export default class FormGroup extends Block {
+  props: FormField;
 
-  get value() {
-    return this.children.input.value;
+  get value(): string | File | null | undefined {
+    const input = this.element.querySelector('input');
+    return input && input.type === 'file' ? input.files && input.files[0] : input?.value;
   }
 
-  get isValid() {
-    return !this.children.input.triggeredValidator;
+  get isValid(): boolean {
+    // eslint-disable-next-line max-len
+    return Array.isArray(this.props.validators) && !this.props.validators.some((validator) => validator(this.value));
   }
 
-  get name() {
-    return this.props.name;
+  get name(): string {
+    // TODO: Видимо, хреновая архитектура, если приходится такие проверки ставить
+    return (typeof this.props.name === 'string' && this.props.name) || 'empty';
   }
 
-  constructor(props: { name: string, type?: string, id: string, attributes?: Record<string, string>, validators?: Record<string, {argument: number, func: Function, message: string | Function}> }) {
-    // Конструкция ниже нужна для того, чтобы класс, заданный снаружи, был в приоритете
-    const className = (props.attributes && props.attributes.class) || FORM_GROUP_CLASS;
-    const attributes = { ...props.attributes, class: className };
-    super(FORM_GROUP_TAG, { ...props, attributes }, { input: createInputElement(props) });
+  constructor(props: FormField) {
+    const attributes = { ...props.attributes, class: FORM_GROUP_CLASS };
+    super(FORM_GROUP_TAG, { ...props, attributes });
   }
 
+  // TODO: Добить дизайн и логику работы file инпута
   componentDidMount() {
-    const input = this.children.input.getContent();
-    input.addEventListener('focus', () => this._hideValidationMessage());
-    input.addEventListener('blur', () => this.checkValidity());
-  }
-
-  _hideValidationMessage() {
-    const container: HTMLElement | null = this.element.querySelector(VALIDATION_SELECTOR);
-    if (container) {
-      container.style.display = 'none';
+    const input = this.element.querySelector('input');
+    if (this.props.type !== 'file') {
+      input?.addEventListener('focus', () => {
+        this.hideValidationMessage();
+      });
+      input?.addEventListener('blur', () => {
+        this.checkValidity();
+      });
+    } else {
+      // eslint-disable-next-line no-console
+      input?.addEventListener('input', () => console.info('Загружено:', input.value));
     }
   }
 
-  componentDidUpdate(newProps: { name: string; type?: string; id: string; attributes?: { class?: string; }; validators?: any; }) {
-    this.children.input = createInputElement(newProps);
+  hideValidationMessage() {
+    const container: HTMLElement | null = this.element.querySelector(VALIDATION_SELECTOR);
+    if (container) {
+      container.textContent = '';
+    }
   }
 
   checkValidity() {
-    if (!this.props.validators) {
-      return;
-    }
-    const validators: Record<string, any>  = this.props.validators;
-    const validity = this.children.input.triggeredValidator;
-    if (validity) {
-      const { message, argument = null } = validators[validity];
+    const { validators } = this.props;
+    if (validators && Array.isArray(validators)) {
+      const { value } = this;
       const container: HTMLElement | null = this.element.querySelector(VALIDATION_SELECTOR);
-      if (container) {
-        container.style.display = 'block';
-        container.textContent = typeof message === 'function' ? message(argument) : message;
+      for (let i: number = 0; i < validators.length; i += 1) {
+        const message = validators[i](value);
+        if (typeof message === 'string' && container) {
+          container.textContent = message;
+          break;
+        }
       }
     }
   }
@@ -80,5 +71,3 @@ class FormGroup extends Block {
     return compileTemplate(this.props);
   }
 }
-
-export default FormGroup;
