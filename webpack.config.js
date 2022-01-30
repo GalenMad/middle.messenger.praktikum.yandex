@@ -19,6 +19,9 @@ module.exports = {
     },
     historyApiFallback: true,
     compress: true,
+    progress: true,
+    reconnect: true,
+    open: true,
     port: 3000,
   },
   module: {
