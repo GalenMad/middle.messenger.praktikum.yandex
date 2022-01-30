@@ -105,16 +105,13 @@ export default class Block {
 
   replaceChildren() {
     if (!Object.values(this.children).length) return;
-    const childrensToReplace = this.element.querySelectorAll('[data-component]');
-    childrensToReplace.forEach((childrenToReplace) => {
-      // TODO: Разобраться с типами вебпака, тут избыточная проверка
-      if (childrenToReplace instanceof HTMLElement && childrenToReplace.dataset.component) {
-        const componentName = childrenToReplace.dataset.component;
-        const parentBlock = childrenToReplace.parentNode;
-        const child = this.children[componentName];
-        if (parentBlock !== null) {
-          parentBlock.replaceChild(child.getContent(), childrenToReplace);
-        }
+    const childrensToReplace: NodeList = this.element.querySelectorAll('[data-component]');
+    childrensToReplace.forEach((childrenToReplace: HTMLElement) => {
+      const componentName: string = childrenToReplace.dataset.component || '';
+      const parentBlock = childrenToReplace.parentNode;
+      const child = this.children[componentName];
+      if (parentBlock !== null) {
+        parentBlock.replaceChild(child.getContent(), childrenToReplace);
       }
     });
   }
