@@ -3,7 +3,7 @@
 /* eslint @typescript-eslint/no-var-requires: 0 */
 /* eslint no-undef: 0 */
 
-const PORT = 4000;
+const PORT = process.env.PORT || 4000;
 const app = require('express')();
 const static = require('express').static;
 const dir = `${__dirname}/dist`;
