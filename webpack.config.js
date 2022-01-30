@@ -5,6 +5,14 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const webpack = require("webpack");
 
+const csp = {
+  "default-src": "'self' 'unsafe-eval'",
+  "font-src": "'self' https://fonts.gstatic.com",
+  "img-src": "'self' https://ya-praktikum.tech data: https:",
+  "connect-src": "'self' https://ya-praktikum.tech wss://ya-praktikum.tech",
+  "style-src": "'self' https://fonts.googleapis.com",
+}
+
 module.exports = {
   entry: {
     app: './src/app.ts',
@@ -83,7 +91,14 @@ module.exports = {
         removeRedundantAttributes: true,
         useShortDoctype: true,
       },
+      meta: {
+        'Content-Security-Policy': {
+          'http-equiv': 'Content-Security-Policy',
+          'content': Object.entries(csp).map(e => e.join(' ')).join(';')
+        }
+      }
     }),
+    new webpack.HotModuleReplacementPlugin(),
     new MiniCssExtractPlugin({
       filename: 'style.[hash].css',
     }),
