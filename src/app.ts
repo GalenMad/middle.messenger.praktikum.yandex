@@ -21,6 +21,8 @@ import AuthController from './modules/controllers/auth.ctrl';
 
 // TODO: Prettier
 
+// TODO: При 401 ошибке перезагружаться
+
 pages.forEach(({
   block, path, options = {},
 }) => Router.use(path, block, options));
