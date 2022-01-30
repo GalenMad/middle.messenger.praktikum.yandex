@@ -38,7 +38,7 @@ export default class UserController extends BaseController {
     }
     // TODO: Избыточные проверки для TS
     if (response.data && typeof response.data !== 'string') {
-      this.mutations.setUserInfo(response.data  as UserInfo);
+      this.mutations.setUserInfo(response.data as UserInfo);
       this.successModal.show();
     }
   }

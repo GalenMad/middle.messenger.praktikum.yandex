@@ -16,11 +16,11 @@
   background-color: $base-dark-overlay;
   position: relative;
   z-index: 109;
-  box-shadow: -6px 5px 8px rgba(0, 0, 0, 0.3);
+  box-shadow: -6px 5px 8px rgba(0, 0, 0, 30%);
 
   &_header {
     padding: 16px;
-    box-shadow: -2px 5px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: -2px 5px 4px rgba(0, 0, 0, 10%);
     display: grid;
     grid-template: 48px / 80px 1fr;
     grid-gap: 10px;
