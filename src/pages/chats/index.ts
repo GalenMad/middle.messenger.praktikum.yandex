@@ -16,7 +16,7 @@ const createNewChatModal = () => {
   const formProps = {
     buttonText: 'Назвать',
     title: 'Назовите чат',
-    submitCallback: (data: { [key: string]: any }) => {
+    submitCallback: (data: { title: string }) => {
       modal.hide();
       chatsController.createChat(data);
     },

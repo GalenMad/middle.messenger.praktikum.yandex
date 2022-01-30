@@ -63,7 +63,7 @@ class Router {
 
     window.addEventListener('popstate', (evt) => {
       if (evt.currentTarget) {
-        this._onRoute(evt.currentTarget.location.pathname);
+        this._onRoute(window.location.pathname);
       } else {
         throw new Error('Не обнаружен evt.currentTarget');
       }

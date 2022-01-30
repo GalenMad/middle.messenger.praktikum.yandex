@@ -88,7 +88,7 @@ pre {
     width: 520px;
     box-sizing: border-box;
     background-color: $base-dark;
-    box-shadow: 0 4px 22px rgb(0 0 0 / 44%);
+    box-shadow: 0 4px 22px rgba(0, 0, 0, 0.44);
     padding: 56px 40px 40px;
   }
 }
@@ -142,5 +142,5 @@ pre {
   font-weight: 700;
   font-size: 20px;
   border-radius: 10px;
-  box-shadow: 0 4px 4px rgb(0 0 0 / 25%);
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
 }

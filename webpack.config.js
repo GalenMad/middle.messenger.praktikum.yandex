@@ -8,43 +8,47 @@ module.exports = {
   entry: './src/app.ts',
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: 'bundle-[hash].js',
+    filename: 'app.[hash].js',
   },
   resolve: {
-    extensions: ['.ts', '.js'],
+    extensions: ['.ts', '.js', '.json'],
   },
   devServer: {
     static: {
       directory: path.join(__dirname, 'dist'),
     },
+    historyApiFallback: true,
     compress: true,
     port: 3000,
   },
   module: {
     rules: [
       {
-        test: /\.ts?$/,
-        loader: 'ts-loader',
+        test: /\.tsx?$/,
+        use: 'ts-loader',
+        exclude: /node_modules/,
       },
       {
         test: /\.(sc|c)ss$/,
         use: [
+          MiniCssExtractPlugin.loader,
           {
-            loader: MiniCssExtractPlugin.loader,
-            options: {},
+            loader: 'css-loader',
+            options: {
+              url: false
+            },
           },
-          'css-loader',
           'sass-loader',
         ],
       },
-      // {
-      //   test: /\.(svg|woff|woff2|ttf|eot|otf)([\?]?.*)$/,
-      //   use: [
-      //     {
-      //       loader: 'file-loader?name=assets/fonts/[name].[ext]',
-      //     },
-      //   ],
-      // },
+      {
+        test: /\.pug$/,
+        use: '@webdiscus/pug-loader',
+      },
+      {
+        test: /\.svg/,
+        use:'svg-url-loader',
+      },
     ],
   },
   plugins: [
@@ -52,8 +56,9 @@ module.exports = {
     new CopyWebpackPlugin({
       patterns: [
         {
-          from: '**/*',
+          // TODO: Понять в чём проблема с SVG in CSS (bg url)
           context: path.resolve(__dirname, 'src', 'assets'),
+          from: '**/*',
           to: './assets',
         },
       ],
@@ -69,7 +74,7 @@ module.exports = {
       },
     }),
     new MiniCssExtractPlugin({
-      filename: 'style-[hash].css',
+      filename: 'style.[hash].css',
     }),
   ],
 };
