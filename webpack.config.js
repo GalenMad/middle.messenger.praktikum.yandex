@@ -3,26 +3,34 @@ const CleanWebpackPlugin = require('clean-webpack-plugin').CleanWebpackPlugin;
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const webpack = require("webpack");
 
 module.exports = {
-  entry: './src/app.ts',
+  entry: {
+    app: './src/app.ts',
+    hot: 'webpack/hot/dev-server.js',
+    client: 'webpack-dev-server/client/index.js?hot=true&live-reload=true',
+  },
   output: {
-    path: path.resolve(__dirname, 'dist'),
-    filename: 'app.[hash].js',
+    filename: '[name].js',
+    path: __dirname + '/dist',
+    chunkFilename: '[id].[chunkhash].js'
   },
   resolve: {
-    extensions: ['.ts', '.js', '.json'],
+    extensions: ['.ts', '.js'],
   },
   devServer: {
-    static: {
-      directory: path.join(__dirname, 'dist'),
-    },
+    static: './dist',
+    hot: false,
+    liveReload: true,
     historyApiFallback: true,
     compress: true,
-    progress: true,
-    reconnect: true,
-    open: true,
     port: 3000,
+    client: {
+      reconnect: true,
+      progress: false,
+      overlay: true,
+    },
   },
   module: {
     rules: [
@@ -50,7 +58,7 @@ module.exports = {
       },
       {
         test: /\.svg/,
-        use:'svg-url-loader',
+        use: 'svg-url-loader',
       },
     ],
   },

@@ -3,12 +3,16 @@
 /* eslint @typescript-eslint/no-var-requires: 0 */
 /* eslint no-undef: 0 */
 
-import express, { static } from 'express';
+const PORT = 4000;
+const app = require('express')();
+const static = require('express').static;
+const dir = `${__dirname}/dist`;
 
-const PORT = 3000;
-const app = express();
+app.use(static(dir));
 
-app.use(static(`${__dirname}/dist/`));
+app.get('*', function (req, res) {
+  res.sendFile(`${dir}/index.html`);
+});
 
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}!`);

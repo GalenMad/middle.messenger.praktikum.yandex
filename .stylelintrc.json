@@ -3,6 +3,7 @@
     "rules": {
         "string-quotes": "single",
         "color-function-notation": "legacy",
+        "alpha-value-notation": "number",
         "scss/at-extend-no-missing-placeholder": null
     }
 }
