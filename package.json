@@ -70,5 +70,8 @@
     "webpack-dev-server": "4.7.3",
     "webpack-merge": "5.8.0",
     "xhr2": "0.2.1"
+  },
+  "dependencies": {
+    "typescript": "^4.5.5"
   }
 }

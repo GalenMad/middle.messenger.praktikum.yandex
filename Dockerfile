@@ -1,13 +1,13 @@
+# TODO: Настроить хук на гитхабе 
+# https://medium.com/geekculture/deploy-to-heroku-from-a-macbook-m1-heroku-cli-or-githubactions-868bc3a50935
 FROM node:12
 
-# создание директории приложения
 WORKDIR /usr/src/app
 
-COPY package*.json ./
-RUN npm ci --only=production
 COPY . .
+RUN npm install husky -g
+RUN npm install
+RUN npm run build
 
-EXPOSE 3000
+EXPOSE 4000
 CMD [ "node", "server.js" ]
-
-# docker build . -t amvoronkov/node-web-app
