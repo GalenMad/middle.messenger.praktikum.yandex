@@ -19,6 +19,10 @@ import AuthController from './modules/controllers/auth.ctrl';
 // TODO: Поработать над выводом крутилок при открывании чатов — тест на слабом соединении
 // TODO: Единая инфа о линках(href) по всему приложению
 
+// TODO: Prettier
+
+// TODO: При 401 ошибке перезагружаться
+
 pages.forEach(({
   block, path, options = {},
 }) => Router.use(path, block, options));

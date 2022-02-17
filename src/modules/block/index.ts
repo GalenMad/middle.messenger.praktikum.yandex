@@ -105,9 +105,9 @@ export default class Block {
 
   replaceChildren() {
     if (!Object.values(this.children).length) return;
-    const childrensToReplace = this.element.querySelectorAll('[data-component]');
-    childrensToReplace.forEach((childrenToReplace) => {
-      const componentName = childrenToReplace.dataset.component;
+    const childrensToReplace: NodeList = this.element.querySelectorAll('[data-component]');
+    childrensToReplace.forEach((childrenToReplace: HTMLElement) => {
+      const componentName: string = childrenToReplace.dataset.component || '';
       const parentBlock = childrenToReplace.parentNode;
       const child = this.children[componentName];
       if (parentBlock !== null) {

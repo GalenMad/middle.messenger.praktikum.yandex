@@ -16,11 +16,11 @@
   background-color: $base-dark-overlay;
   position: relative;
   z-index: 109;
-  box-shadow: -6px 5px 8px rgb(0 0 0 / 30%);
+  box-shadow: -6px 5px 8px rgba(0, 0, 0, 0.3);
 
   &_header {
     padding: 16px;
-    box-shadow: -2px 5px 4px rgb(0 0 0 / 5%);
+    box-shadow: -2px 5px 4px rgba(0, 0, 0, 0.1);
     display: grid;
     grid-template: 48px / 80px 1fr;
     grid-gap: 10px;
@@ -47,7 +47,7 @@
   }
 
   .icon-holder {
-    background-image: url('/src/assets/images/menu-left.svg');
+    background-image: url('../../assets/images/menu-left.svg?encoding=base64');
     background-repeat: no-repeat;
     background-position: center;
     background-size: contain;
@@ -64,7 +64,7 @@
   align-items: center;
   text-align: center;
   background-color: white;
-  opacity: 80%;
+  opacity: 0.8;
   border-radius: 5px;
   outline: 0;
   border: 0;
@@ -87,7 +87,7 @@
   }
 
   &:focus {
-    opacity: 100%;
+    opacity: 1;
   }
 }
 

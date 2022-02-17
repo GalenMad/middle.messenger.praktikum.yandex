@@ -9,6 +9,7 @@ Voronkov Production представляет прототип уникально
 * Макет пректа в Figma: [link](https://www.figma.com/file/06T7F3jCKad58dX8vH7MN7/Yandex.Praktikum?node-id=0%3A1 "Ultimate Chat 🍍 — Figma")
 * Ссылка на Pull Request четвертого спринта: [link](https://github.com/GalenMad/middle.messenger.praktikum.yandex/pull/6)
 * Ссылка на домен Netlify: [link](https://boring-goldwasser-8ca173.netlify.app/)
+* Ссылка на домен Heroku: [link](https://ulti-mate-chat.herokuapp.com/)
 
 ## Работа с проектом
 
@@ -35,6 +36,11 @@ npm run server
 ### Launch linters
 ```
 npm run lint
+```
+
+### Launch unit-tests
+```
+npm run test
 ```
 ## Ход разработки
 ### На данный момент реализовано:

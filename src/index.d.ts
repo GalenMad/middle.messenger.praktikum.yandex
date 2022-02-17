@@ -2,7 +2,11 @@ declare module '*.pug' {
   function compileTemplate(props: any): string;
   export default compileTemplate;
 }
-declare module '*.svg';
+declare module '*.svg' {
+  const content: any;
+  export default content;
+}
+declare module 'xhr2';
 
 interface PropsAttributes {
   [key: string]: string;

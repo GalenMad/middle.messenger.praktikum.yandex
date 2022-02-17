@@ -13,10 +13,10 @@ export default class ChatTape extends Block {
       type: 'click',
       cb: (evt: Event) => {
         const chatItem = evt.target instanceof HTMLElement && evt.target.closest('.chat-item');
-        if (chatItem) {
+        if (chatItem instanceof HTMLElement && chatItem.dataset.id) {
           const chatItemId = chatItem.dataset.id;
-          chatsController.setActiveChat(chatItemId);
-          socketsController.setActiveSocket(chatItemId);
+          chatsController.setActiveChat(Number(chatItemId));
+          socketsController.setActiveSocket(Number(chatItemId));
         }
       },
     }];

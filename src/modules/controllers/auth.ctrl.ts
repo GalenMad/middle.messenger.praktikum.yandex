@@ -35,7 +35,9 @@ export default class AuthController extends BaseController {
     // TODO: Избыточные проверки для TS
     if (response.data && typeof response.data !== 'string') {
       // TODO: Проверка для UserInfo?
-      this.mutations.setUserInfo(response.data);
+      // → простой возвращать Promise<UserDataResponse || Error>
+      // → возвращать Promise и при помощи парсера выводить тип ответа. (typescript-is)
+      this.mutations.setUserInfo(response.data as UserInfo);
       await chatsController.setUserChatList();
       chatsController.launchUpdateChatListTimeout();
     }

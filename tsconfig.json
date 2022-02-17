@@ -1,11 +1,13 @@
 {
     "compilerOptions": {
+        "skipLibCheck": true,
         "downlevelIteration": true,
         "noImplicitAny": true,
         "noUnusedLocals": true,
         "noUnusedParameters": true,
         "sourceMap": true,
         "strictNullChecks": true,
+        "outDir": "./dist/",
         "target": "ES6",
         "moduleResolution": "Node",
         "esModuleInterop": true,
@@ -18,6 +20,7 @@
         "node_modules"
     ],
     "include": [
-        "src/**/*.ts"
+        "src/**/*.ts",
+        "server.ts"
     ]
 }

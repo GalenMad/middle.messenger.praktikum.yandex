@@ -2,7 +2,11 @@ $primary-font-family: 'Montserrat', sans-serif;
 $secondary-font-family: 'Roboto', sans-serif;
 $secondary-spacing: 0.03em;
 $base-dark: #2e2e38;
-$base-dark-overlay: rgb(19 176 229 / 4%);
+
+// TODO: Попробовать dart-sass для краткой нотации
+// https://github.com/stylelint/stylelint/issues/5638
+// $base-dark-overlay: rgb(19 176 229 / 4%);
+$base-dark-overlay: rgba(19, 176, 229, 0.04);
 $sky-blue-overlay: #2d333f;
 $sky-blue-overlay-darker: #3b4558;
 $base-grey: #ababaf;
